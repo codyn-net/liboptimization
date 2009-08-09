@@ -1,0 +1,113 @@
+package optimization.messages.command;
+
+enum CommandType {
+	AddJob = 0;
+	RemoveJob = 1;
+	ListJobs = 2;
+	JobProgress = 3;
+	JobInfo = 4;
+	NumCommands = 5;
+}
+
+message AddJobCommand {
+	required string description = 1;
+	optional int32 priority = 2;
+	optional string token = 3;
+}
+
+message RemoveJobCommand {
+	required string name = 1;
+}
+
+message ListJobsCommand {
+}
+
+message JobProgressCommand {
+	required string name = 1;
+}
+
+message JobInfoCommand {
+	required string name = 1;
+}
+
+message Command {
+	required CommandType type = 1;
+	
+	optional AddJobCommand addjob = 2;
+	optional RemoveJobCommand rmjob = 3;
+	optional ListJobsCommand listjobs = 4;
+	optional JobProgressCommand jobprogress = 5;
+	optional JobInfoCommand jobinfo = 6;
+}
+
+message Job {
+	required string name = 1;
+	required string optimizer = 2;
+	required uint32 iteration = 3;
+	required uint32 maxiterations = 4;
+	required uint64 time = 5;
+	required uint32 priority = 6;
+	repeated double fitnessweights = 7;
+}
+
+message JobInfoResponse {
+	required Job job = 1;
+}
+	
+message ListJobsResponse {
+	repeated Job jobs = 1;
+}
+
+message KeyValue {
+	required string key = 1;
+	required string value = 2;
+}
+
+message Iteration {
+	required uint32 id = 1;
+	repeated double fitness = 2;
+	repeated KeyValue parameters = 3;
+	repeated double meanfitness = 4;
+	repeated double stdfitness = 5;
+	required uint64 time = 6;
+}
+
+message JobProgressResponse {
+	repeated Iteration iterations = 1;
+}
+
+message Response {
+	required CommandType type = 1;
+	required bool status = 2;
+	required string message = 3;
+	
+	optional ListJobsResponse listjobs = 4;
+	optional JobProgressResponse jobprogress = 5;
+	optional JobInfoResponse jobinfo = 6;
+}
+
+message JobAddedSignal {
+	required string name = 1;
+}
+
+message JobRemovedSignal {
+	required string name = 1;
+}
+
+message NewIterationSignal {
+	required string name = 1;
+	required Iteration iteration = 2;
+}
+
+message Signal {
+	enum SignalType {
+		JobAdded = 1;
+		JobRemoved = 2;
+		NewIteration = 3;
+	}
+	
+	required SignalType type = 1;
+	optional JobAddedSignal jobadded = 2;
+	optional JobRemovedSignal jobremoved = 3;
+	optional NewIterationSignal newiteration = 4;
+}

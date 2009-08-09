@@ -1,0 +1,72 @@
+package optimization.messages.worker;
+
+message Token {
+	required int32 id = 1;
+	required string response = 2;
+}
+
+message Request {
+	required int32 id = 1;
+	required string dispatcher = 2;
+
+	message Dispatch {
+		required string job = 1;
+		required string optimizer = 2;
+		required string fitness = 3;
+		
+		message Parameter {
+			required string name = 1;
+			required double value = 2;
+			required double min = 3;
+			required double max = 4; 
+		}
+		
+		repeated Parameter parameters = 4;
+		
+		message KeyValue {
+			required string key = 1;
+			required string value = 2;
+		}
+		
+		repeated KeyValue settings = 5;
+		extensions 1000 to max;
+	}
+	
+	required Dispatch dispatch = 3;
+}
+
+message Response {
+	enum Status {
+		Success = 0;
+		Timeout = 1;
+		Failed = 2;
+		Challenge = 3;
+	}
+	
+	message Fitness {
+		required string name = 1;
+		required double value = 2;
+	}
+	
+	required int32 id = 1;
+	required Status status = 2;
+	repeated Fitness fitness = 3;
+	optional string challenge = 4;
+	
+	extensions 1000 to max;
+}
+
+message Communication {
+	enum Type {
+		CommunicationRequest = 0;
+		CommunicationToken = 1;
+	}
+	
+	required Type type = 1;
+	optional Request request = 2;
+	optional Token token = 3;
+}
+
+message CancelRequest {
+	required int32 id = 1;
+}
