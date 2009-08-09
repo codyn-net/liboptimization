@@ -14,8 +14,6 @@ void Optimizer::initialize(Parameters const &parameters, Boundaries const &bound
 	d_data->settings.registerProperty("populationSize", d_data->populationSize);
 	d_data->settings.registerProperty("timeout", d_data->timeout);
 	d_data->settings.registerProperty("seed", d_data->seed, *d_data, &Data::setSeed);
-
-	d_data->parameters = parameters;
-	d_data->boundaries = boundaries;
-	d_data->fitness = fitness;
+	
+	setup(parameters, boundaries, fitness);
 }

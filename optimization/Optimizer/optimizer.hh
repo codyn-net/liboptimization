@@ -136,6 +136,8 @@ namespace optimization
 			std::vector<base::Cloneable<Solution> > &solutions();
 			std::vector<base::Cloneable<Solution> > const &solutions() const;
 
+			void setup(Parameters const &parameters, Boundaries const &boundaries, Fitness const &fitness);
+
 			// Reset
 			void reset();
 			void addSolution(Solution &solution);

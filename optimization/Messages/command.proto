@@ -67,9 +67,7 @@ message Iteration {
 	required uint32 id = 1;
 	repeated double fitness = 2;
 	repeated KeyValue parameters = 3;
-	repeated double meanfitness = 4;
-	repeated double stdfitness = 5;
-	required uint64 time = 6;
+	required uint64 time = 4;
 }
 
 message JobProgressResponse {
