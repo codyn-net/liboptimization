@@ -2,7 +2,7 @@
 
 void Optimizer::initializeDatabase()
 {
-	if (d_data->dataFilename == "")
+	if (d_data->db || d_data->dataFilename == "")
 	{
 		return;
 	}
