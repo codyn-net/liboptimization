@@ -25,11 +25,7 @@ pkgbasedir=""
 AC_SUBST(pkgbasedir)
 
 PKG_CHECK_MODULES(PACKAGE_LIBOPTIMIZATION, [
-	libjessevdk-base-0.1
-	libjessevdk-os-0.1
-	libjessevdk-math-0.1
-	libjessevdk-db-0.1
-	libjessevdk-network-0.1
+	libjessevdk-0.1
 	cpg-network-1.0
 	glibmm-2.4
 ])
