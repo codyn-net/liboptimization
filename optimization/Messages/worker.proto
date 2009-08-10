@@ -38,9 +38,8 @@ message Request {
 message Response {
 	enum Status {
 		Success = 0;
-		Timeout = 1;
-		Failed = 2;
-		Challenge = 3;
+		Failed = 1;
+		Challenge = 2;
 	}
 	
 	message Fitness {
@@ -48,10 +47,23 @@ message Response {
 		required double value = 2;
 	}
 	
+	message Failure {
+		enum Type
+		{
+			Timeout = 0;
+			DispatcherNotFound = 1;
+			NoResponse = 2;
+		}
+		
+		required Type type = 1;
+		optional string message = 2;
+	}
+	
 	required int32 id = 1;
 	required Status status = 2;
 	repeated Fitness fitness = 3;
 	optional string challenge = 4;
+	optional Failure failure = 5;
 	
 	extensions 1000 to max;
 }

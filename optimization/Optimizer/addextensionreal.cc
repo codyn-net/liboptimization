@@ -1,6 +1,6 @@
 #include "optimizer.ih"
 
-void Optimizer::addExtension(Extension &extension) 
+void Optimizer::addExtensionReal(Extension &extension) 
 {
 	extension.setOptimizer(*this);
 	d_data->extensions.push_back(extension);

@@ -4,6 +4,7 @@
 #include <base/Object/object.hh>
 #include <base/Signals/Signal/signal.hh>
 #include <math/math.hh>
+#include <sstream>
 
 #include <optimization/Boundaries/boundaries.hh>
 #include <optimization/Parameters/parameters.hh>
@@ -96,6 +97,38 @@ namespace optimization
 				typedef void (*Loader)(Module *info);
 			};
 
+			struct LogType
+			{
+				static std::string names[4];
+
+				enum Values
+				{
+					None = 0,
+					Info = 1,
+					Warning = 2,
+					Error = 3
+				};
+			};
+			
+			class Logger
+			{
+				base::Enum<LogType> d_logType;
+				Optimizer *d_optimizer;
+
+				std::stringstream d_stream;
+			
+				public:
+					struct End
+					{
+					};
+
+					Logger(Optimizer *job, base::Enum<LogType> const &logtype);
+					Logger(Logger const &other);
+					
+					template <typename T>
+					Logger &operator<<(T t);
+			};
+
 			Optimizer();
 			Optimizer(Parameters const &parameters, Boundaries const &boundaries, Fitness const &fitness);
 			
@@ -128,7 +161,9 @@ namespace optimization
 			void setDataFilename(std::string const &filename);
 			
 			// Extensions
-			void addExtension(Extension &extension);
+			template <typename T>
+			void addExtension(T &extension);
+
 			Extension &getExtension(std::string const &name);
 			Extension const &getExtension(std::string const &name) const;
 			
@@ -143,6 +178,10 @@ namespace optimization
 			void addSolution(Solution &solution);
 			bool iteration();
 			db::SQLite &db();
+			
+			// Logging
+			void log(base::Enum<LogType> const &type, std::string const &message);
+			Logger log(base::Enum<LogType> const &type);
 			
 			// Virtual methods
 			virtual Solution *createSolution(size_t id);
@@ -178,7 +217,8 @@ namespace optimization
 			
 				std::string name;
 
-				base::Cloneable<Fitness> fitness;
+				Fitness fitness;
+
 				std::vector<base::Cloneable<Solution> > solutions;
 				std::vector<base::Cloneable<Extension> > extensions;
 
@@ -200,7 +240,35 @@ namespace optimization
 			Data *d_data;
 
 			void initialize(Parameters const &parameters, Boundaries const &boundaries, Fitness const &fitness);
+			void addExtensionReal(Extension &extension);
 	};
+	
+	template <typename T>
+	inline Optimizer::Logger &Optimizer::Logger::operator<<(T t)
+	{
+		d_stream << t;
+		return *this;
+	}
+	
+	template <>
+	inline Optimizer::Logger &Optimizer::Logger::operator<<(Optimizer::Logger::End t)
+	{
+		d_optimizer->log(d_logType, d_stream.str());
+	}
+	
+	inline Optimizer::Logger::Logger(Optimizer *optimizer, base::Enum<LogType> const &logType)
+	:
+		d_optimizer(optimizer),
+		d_logType(logType)
+	{
+	}
+	
+	inline Optimizer::Logger::Logger(Optimizer::Logger const &other)
+	:
+		d_optimizer(other.d_optimizer),
+		d_logType(other.d_logType)
+	{
+	}
 	
 	inline std::string const &Optimizer::name() const
 	{
@@ -270,6 +338,12 @@ namespace optimization
 	inline size_t Optimizer::currentIteration() const
 	{
 		return d_data->iteration;
+	}
+	
+	template <typename T>
+	inline void Optimizer::addExtension(T &extension)
+	{
+		addExtensionReal(base::Object::Cloned<T>(extension));
 	}
 }
 

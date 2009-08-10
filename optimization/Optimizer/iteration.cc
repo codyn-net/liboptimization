@@ -5,6 +5,8 @@ bool Optimizer::iteration()
 	vector<Cloneable<Solution> > sols = solutions();
 	vector<Cloneable<Solution> >::iterator iter;
 
+	Cloneable<Solution> curbest = d_data->best ? d_data->best->copy() : 0;
+
 	// Determine best solution from current iteration
 	for (iter = sols.begin(); iter != sols.end(); ++iter)
 	{
@@ -16,11 +18,19 @@ bool Optimizer::iteration()
 		}
 	}
 	
+	log(LogType::Info) << "Iteration " << d_data->iteration << " done" << Logger::End();
+	
+	if (!curbest || d_data->best->fitness() > curbest->fitness())
+	{
+		log(LogType::Info) << "New best solution: " << d_data->best->id() << " = " << d_data->best->fitness().value() << Logger::End();
+	}
+	
 	save();
 
 	// Increase iteration, returns false when there is a stopping condition
 	if (done())
 	{
+		log(LogType::Info) << "Finished" << Logger::End();
 		return false;
 	}
 
