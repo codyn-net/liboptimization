@@ -12,5 +12,10 @@ double Fitness::value() const
 		return 0;
 	}
 	
-	return cpg_expression_evaluate(d_data->expression);
+	double v = cpg_expression_evaluate(d_data->expression);
+	
+	if (isnan(v))
+	{
+		return 0;
+	}
 }
