@@ -18,7 +18,7 @@ bool Optimizer::iteration()
 		}
 	}
 	
-	log(LogType::Info) << "Iteration " << d_data->iteration << " done" << Logger::End();
+	log(LogType::Info) << "Iteration " << d_data->iteration << " done (" << (d_data->best ? string(d_data->best->fitness()) : "*") << ")" << Logger::End();
 	
 	if (!curbest || d_data->best->fitness() > curbest->fitness())
 	{

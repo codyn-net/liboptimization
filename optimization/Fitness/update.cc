@@ -22,7 +22,10 @@ void Fitness::update(map<string, double> const &fitness)
 		
 		if (property)
 		{
-			cpg_property_set_value(property, iter->second);
+			stringstream s;
+			s << iter->second;
+			
+			cpg_property_set_value_expression(property, s.str().c_str());
 		}
 	}
 	
@@ -32,4 +35,6 @@ void Fitness::update(map<string, double> const &fitness)
 	{
 		cpg_expression_reset_cache (d_data->expression);
 	}
+	
+	compileCpg();
 }

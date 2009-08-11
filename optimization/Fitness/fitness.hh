@@ -22,6 +22,7 @@ namespace optimization
 
 			virtual void reset();
 			
+			operator std::string() const;
 			virtual bool operator<(Fitness const &other) const;
 			virtual bool operator>(Fitness const &other) const;
 			

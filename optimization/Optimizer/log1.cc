@@ -2,7 +2,10 @@
 
 void Optimizer::log(base::Enum<LogType> const &type, string const &message)
 {
-	initializeDatabase();
+	if (!d_data->db)
+	{
+		initializeDatabase();
+	}
 
 	if (!d_data->db)
 	{
