@@ -2,7 +2,7 @@
 
 Fitness::Data::Data()
 :
-	expression(0),
-	state(0)
+	state(0),
+	expression(0)
 {
 }
