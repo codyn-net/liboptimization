@@ -40,17 +40,17 @@ void Optimizer::initializeDatabase()
 	           << SQLite::Query::end();
 
 	// Create and store fitness settings
-	db.query() << "CREATE TABLE IF NOT EXISTS `fitness` ("
+	db.query() << "CREATE TABLE IF NOT EXISTS `fitness_settings` ("
 		       << "`name` TEXT, "
 		       << "`value` TEXT)"
 		       << SQLite::Query::End();
 
-	db.query("DELETE FROM fitness");
+	db.query("DELETE FROM fitness_settings");
 	props = d_data->fitness.settings().properties();
 	
 	for (vector<string>::iterator iter = props.begin(); iter != props.end(); ++iter)
 	{
-		db.query() << "INSERT INTO fitness (`name`, `value`) VALUES ('"
+		db.query() << "INSERT INTO fitness_settings (`name`, `value`) VALUES ('"
 			       << SQLite::serialize(*iter) << "', '"
 			       << SQLite::serialize(d_data->fitness.settings().property(*iter)) << "')"
 		           << SQLite::Query::end();
@@ -59,9 +59,8 @@ void Optimizer::initializeDatabase()
 	// Create iteration table
 	db.query() << "CREATE TABLE IF NOT EXISTS `iteration` ("
 		       << "`iteration` INT PRIMARY KEY, "
-		       << "`best_id` INT, `best_values` TEXT, "
-		       << "`best_names` TEXT, "
-		       << "`best_fitness` TEXT, "
+		       << "`best_id` INT, "
+		       << "`best_fitness` DOUBLE, "
 		       << "`random_state` BLOB, "
 		       << "`time` INT)"
 		       << SQLite::Query::End();
@@ -72,8 +71,7 @@ void Optimizer::initializeDatabase()
 		       << "`iteration` INT REFERENCES `iteration` (`iteration`), "
 		       << "`values` TEXT, "
 		       << "`value_names` TEXT, "
-		       << "`fitness` DOUBLE, "
-		       << "`fitness_raw` TEXT)"
+		       << "`fitness` DOUBLE)"
 		       << SQLite::Query::End();
 
 	// Create and store boundaries

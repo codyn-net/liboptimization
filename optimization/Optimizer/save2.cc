@@ -12,18 +12,20 @@ void Optimizer::save()
 		return;
 	}
 	
+	if (d_data->iteration == 0)
+	{
+		initializeFitnessTable();
+	}
+	
 	int bestid = -1;
-	string bestparams;
-	string bestnames;
-	string bestfitness;
+	double bestfitness = 0;
 	
 	if (d_data->best)
 	{
 		Solution &best = d_data->best;
 
 		bestid = best.id();
-		bestnames = SQLite::serialize(best.parameters().names());
-		bestfitness = SQLite::serialize(best.fitness().value());
+		bestfitness = best.fitness().value();
 	}
 	
 	char const *s = d_data->random.state();
@@ -31,13 +33,11 @@ void Optimizer::save()
 	
 	// Insert iteration stuff
 	d_data->db.query() << "INSERT INTO iteration ("
-	                   << "`iteration`, `best_id`, `best_values`, `best_names`, "
-	                   << "`best_fitness`, `random_state`, `time`) VALUES ("
+	                   << "`iteration`, `best_id`, `best_fitness`, "
+	                   << "`random_state`, `time`) VALUES ("
 	                   << currentIteration() << ", "
-	                   << bestid << ", '"
-	                   << bestparams << "', '"
-	                   << bestnames << "', '"
-	                   << bestfitness << "', X'"
+	                   << bestid << ", "
+	                   << bestfitness << ", X'"
 	                   << state << "', "
 	                   << time(0) << ")"
 	                   << SQLite::Query::end();

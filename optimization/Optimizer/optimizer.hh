@@ -14,6 +14,7 @@
 #include <optimization/Messages/worker.pb.h>
 
 #include <db/SQLite/sqlite.hh>
+#include <string>
 
 namespace optimization
 {
@@ -241,6 +242,9 @@ namespace optimization
 
 			void initialize(Parameters const &parameters, Boundaries const &boundaries, Fitness const &fitness);
 			void addExtensionReal(Extension &extension);
+			
+			void initializeFitnessTable();
+			std::string normalizeFitnessName(std::string const &name);
 	};
 	
 	template <typename T>
@@ -259,8 +263,8 @@ namespace optimization
 	
 	inline Optimizer::Logger::Logger(Optimizer *optimizer, base::Enum<LogType> const &logType)
 	:
-		d_optimizer(optimizer),
-		d_logType(logType)
+		d_logType(logType),
+		d_optimizer(optimizer)
 	{
 	}
 	
