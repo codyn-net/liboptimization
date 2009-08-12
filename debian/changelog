@@ -1,0 +1,5 @@
+liboptimization (0.1-1) $DIST; urgency=low
+
+  * Initial release
+
+ -- Jesse van den Kieboom <jesse.vandenkieboom@epfl.ch>  Wed, 12 Aug 2009 03:57:38 +0200
