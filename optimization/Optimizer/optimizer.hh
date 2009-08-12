@@ -253,7 +253,8 @@ namespace optimization
 	template <>
 	inline Optimizer::Logger &Optimizer::Logger::operator<<(Optimizer::Logger::End t)
 	{
-		return d_optimizer->log(d_logType, d_stream.str());
+		d_optimizer->log(d_logType, d_stream.str());
+		return *this;
 	}
 	
 	inline Optimizer::Logger::Logger(Optimizer *optimizer, base::Enum<LogType> const &logType)
