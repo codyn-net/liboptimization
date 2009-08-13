@@ -21,14 +21,28 @@ AC_SUBST(LIBOPTIMIZATION_API_VERSION)
 pkgincludedir="$includedir/liboptimization-$LIBOPTIMIZATION_API_VERSION"
 AC_SUBST(pkgincludedir)
 
-pkgbasedir=""
-AC_SUBST(pkgbasedir)
+dnl Testing for google protobuf
+AC_LANG(C++)
+SAVED_LDFLAGS=$LDFLAGS
+LDFLAGS="$LDFLAGS -lprotobuf"
+
+AC_MSG_CHECKING([for google protobuf])
+
+AC_LINK_IFELSE(
+	[AC_LANG_PROGRAM([#include <google/protobuf/dynamic_message.h>],
+		[google::protobuf::DynamicMessageFactory dummy])],
+	[AC_MSG_RESULT([yes])],
+	[
+		AC_MSG_RESULT([no])
+		AC_MSG_ERROR([google protobuf is not installed.])])
 
 PKG_CHECK_MODULES(PACKAGE_LIBOPTIMIZATION, [
 	libjessevdk-0.1
 	cpg-network-1.0
 	glibmm-2.4
 ])
+
+LDFLAGS=$SAVED_LDFLAGS
 
 AC_SUBST(PACKAGE_LIBOPTIMIZATION_CFLAGS)
 AC_SUBST(PACKAGE_LIBOPTIMIZATION_LIBS)

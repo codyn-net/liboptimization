@@ -10,6 +10,8 @@ INCLUDES = \
 	$(PACKAGE_LIBOPTIMIZATION_CFLAGS) \
 	-DDATADIR=\""$(datadir)"\" \
 	-DLIBDIR=\""$(libdir)"\" \
+	-DCONFDIR=\""$(sysconfdir)"\" \
+	-DPREFIXDIR=\""$(prefix)"\" \
 	-DPKGDATADIR=\""$(pkgdatadir)"\" \
 	-DPKGLIBDIR=\""$(pkglibdir)"\"
 
