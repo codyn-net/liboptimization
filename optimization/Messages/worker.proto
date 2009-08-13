@@ -53,6 +53,7 @@ message Response {
 			Timeout = 0;
 			DispatcherNotFound = 1;
 			NoResponse = 2;
+			Dispatcher = 3;
 		}
 		
 		required Type type = 1;
