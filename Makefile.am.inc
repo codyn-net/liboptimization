@@ -16,8 +16,7 @@ INCLUDES = \
 	-DPKGLIBDIR=\""$(pkglibdir)"\"
 
 liboptimization_0_1_la_SOURCES = 	\
-	dummy.cc	\
-	test.cc
+	dummy.cc
 
 headerdir = $(pkgincludedir)/
 header_DATA = 
