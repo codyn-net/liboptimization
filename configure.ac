@@ -24,7 +24,7 @@ AC_SUBST(pkgincludedir)
 dnl Testing for google protobuf
 AC_LANG(C++)
 SAVED_LDFLAGS=$LDFLAGS
-LDFLAGS="$LDFLAGS -lprotobuf"
+LDFLAGS="$LDFLAGS -lprotobuf -lpthread"
 
 AC_MSG_CHECKING([for google protobuf])
 
