@@ -15,20 +15,28 @@ INCLUDES = \
 	-DPKGDATADIR=\""$(pkgdatadir)"\" \
 	-DPKGLIBDIR=\""$(pkglibdir)"\"
 
-noinst_LTLIBRARIES = liboptimizationoptimizationdiscovery.la
+noinst_LTLIBRARIES = liboptimizationoptimizationfitness.la
 
-liboptimizationoptimizationdiscovery_la_SOURCES = 	\
-	datacheckns.cc	\
-	discovery.cc	\
-	listen.cc	\
-	ns.cc	\
-	ondatahandler.cc	\
-	setns.cc
+liboptimizationoptimizationfitness_la_SOURCES = 	\
+	clone.cc	\
+	compile.cc	\
+	compilecpg.cc	\
+	copy.cc	\
+	datadata.cc	\
+	datadestructor.cc	\
+	fitness1.cc	\
+	operatorgreater.cc	\
+	operatorless.cc	\
+	operatorstring.cc	\
+	reset.cc	\
+	update.cc	\
+	value.cc	\
+	values.cc
 
-headerdir = $(pkgincludedir)/optimization/Discovery
+headerdir = $(pkgincludedir)/optimization/Fitness
 header_DATA = 	\
-	discovery.hh
+	fitness.hh
 
 EXTRA_DIST = \
 	$(header_DATA)	\
-	discovery.ih
+	fitness.ih

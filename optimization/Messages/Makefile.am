@@ -15,20 +15,18 @@ INCLUDES = \
 	-DPKGDATADIR=\""$(pkgdatadir)"\" \
 	-DPKGLIBDIR=\""$(pkglibdir)"\"
 
-noinst_LTLIBRARIES = liboptimizationoptimizationdiscovery.la
+noinst_LTLIBRARIES = liboptimizationoptimizationmessages.la
 
-liboptimizationoptimizationdiscovery_la_SOURCES = 	\
-	datacheckns.cc	\
-	discovery.cc	\
-	listen.cc	\
-	ns.cc	\
-	ondatahandler.cc	\
-	setns.cc
+liboptimizationoptimizationmessages_la_SOURCES = 	\
+	create.cc
 
-headerdir = $(pkgincludedir)/optimization/Discovery
+headerdir = $(pkgincludedir)/optimization/Messages
 header_DATA = 	\
-	discovery.hh
+	messages.hh
 
 EXTRA_DIST = \
 	$(header_DATA)	\
-	discovery.ih
+	Makefile.am.inc	\
+	messages.ih
+
+include Makefile.am.inc

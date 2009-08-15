@@ -15,20 +15,15 @@ INCLUDES = \
 	-DPKGDATADIR=\""$(pkgdatadir)"\" \
 	-DPKGLIBDIR=\""$(pkglibdir)"\"
 
-noinst_LTLIBRARIES = liboptimizationoptimizationdiscovery.la
+noinst_LTLIBRARIES = liboptimizationoptimizationconstants.la
 
-liboptimizationoptimizationdiscovery_la_SOURCES = 	\
-	datacheckns.cc	\
-	discovery.cc	\
-	listen.cc	\
-	ns.cc	\
-	ondatahandler.cc	\
-	setns.cc
+liboptimizationoptimizationconstants_la_SOURCES = 	\
+	statics.cc
 
-headerdir = $(pkgincludedir)/optimization/Discovery
+headerdir = $(pkgincludedir)/optimization/Constants
 header_DATA = 	\
-	discovery.hh
+	constants.hh
 
 EXTRA_DIST = \
 	$(header_DATA)	\
-	discovery.ih
+	constants.ih

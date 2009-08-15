@@ -13,6 +13,8 @@ message AddJobCommand {
 	required string description = 1;
 	optional int32 priority = 2;
 	optional string token = 3;
+	optional string user = 4;
+	optional string chain = 5;
 }
 
 message RemoveJobCommand {

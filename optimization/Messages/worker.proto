@@ -53,6 +53,10 @@ message Response {
 			Timeout = 0;
 			DispatcherNotFound = 1;
 			NoResponse = 2;
+			Dispatcher = 3;
+			Unknown = 4;
+			WrongRequest = 5;
+			Disconnected = 6;
 		}
 		
 		required Type type = 1;

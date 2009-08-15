@@ -15,20 +15,28 @@ INCLUDES = \
 	-DPKGDATADIR=\""$(pkgdatadir)"\" \
 	-DPKGLIBDIR=\""$(pkglibdir)"\"
 
-noinst_LTLIBRARIES = liboptimizationoptimizationdiscovery.la
+noinst_LTLIBRARIES = liboptimizationoptimizationwebots.la
 
-liboptimizationoptimizationdiscovery_la_SOURCES = 	\
-	datacheckns.cc	\
-	discovery.cc	\
-	listen.cc	\
-	ns.cc	\
-	ondatahandler.cc	\
-	setns.cc
+liboptimizationoptimizationwebots_la_SOURCES = 	\
+	hasrequest.cc	\
+	instance.cc	\
+	ondata.cc	\
+	operatortypebool.cc	\
+	request.cc	\
+	respond1.cc	\
+	respond2.cc	\
+	respondfail.cc	\
+	response.cc	\
+	setting1.cc	\
+	setting2.cc	\
+	statics.cc	\
+	waitforrequest.cc	\
+	webots.cc
 
-headerdir = $(pkgincludedir)/optimization/Discovery
+headerdir = $(pkgincludedir)/optimization/Webots
 header_DATA = 	\
-	discovery.hh
+	webots.hh
 
 EXTRA_DIST = \
 	$(header_DATA)	\
-	discovery.ih
+	webots.ih

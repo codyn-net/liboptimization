@@ -15,20 +15,21 @@ INCLUDES = \
 	-DPKGDATADIR=\""$(pkgdatadir)"\" \
 	-DPKGLIBDIR=\""$(pkglibdir)"\"
 
-noinst_LTLIBRARIES = liboptimizationoptimizationdiscovery.la
+noinst_LTLIBRARIES = liboptimizationoptimizationdispatcher.la
 
-liboptimizationoptimizationdiscovery_la_SOURCES = 	\
-	datacheckns.cc	\
-	discovery.cc	\
-	listen.cc	\
-	ns.cc	\
-	ondatahandler.cc	\
-	setns.cc
+liboptimizationoptimizationdispatcher_la_SOURCES = 	\
+	main.cc	\
+	readrequest.cc	\
+	run.cc	\
+	setting1.cc	\
+	setting2.cc	\
+	usemainloop.cc	\
+	writeresponse.cc
 
-headerdir = $(pkgincludedir)/optimization/Discovery
+headerdir = $(pkgincludedir)/optimization/Dispatcher
 header_DATA = 	\
-	discovery.hh
+	dispatcher.hh
 
 EXTRA_DIST = \
 	$(header_DATA)	\
-	discovery.ih
+	dispatcher.ih
