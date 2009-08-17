@@ -9,25 +9,25 @@ BUILT_HDRS = 		\
 	command.pb.h
 
 _worker.pb.cc: worker.proto worker.pb.h
-	protoc --cpp_out=/tmp/ -I. $(srcdir)/worker.proto && mv /tmp/worker.pb.cc $@
+	protoc --cpp_out=/tmp/ -I$(srcdir) $(srcdir)/worker.proto && mv /tmp/worker.pb.cc $@
 
 worker.pb.h: worker.proto
-	protoc --cpp_out=/tmp/ -I. $< && mv /tmp/$@ $@	
+	protoc --cpp_out=/tmp/ -I$(srcdir) $< && mv /tmp/$@ $@	
 
 _discovery.pb.cc: discovery.proto discovery.pb.h
-	protoc --cpp_out=/tmp/ -I. $(srcdir)/discovery.proto && mv /tmp/discovery.pb.cc $@
+	protoc --cpp_out=/tmp/ -I$(srcdir) $(srcdir)/discovery.proto && mv /tmp/discovery.pb.cc $@
 
 discovery.pb.h: discovery.proto
-	protoc --cpp_out=/tmp/ -I. $< && mv /tmp/$@ $@
+	protoc --cpp_out=/tmp/ -I$(srcdir) $< && mv /tmp/$@ $@
 
 _command.pb.cc: command.proto command.pb.h
-	protoc --cpp_out=/tmp/ -I. $(srcdir)/command.proto && mv /tmp/command.pb.cc $@
+	protoc --cpp_out=/tmp/ -I$(srcdir) $(srcdir)/command.proto && mv /tmp/command.pb.cc $@
 
 command.pb.h: command.proto
-	protoc --cpp_out=/tmp/ -I. $< && mv /tmp/$@ $@
+	protoc --cpp_out=/tmp/ -I$(srcdir) $< && mv /tmp/$@ $@
 
-liboptimizationoptimizationmessages_la_SOURCES += $(BUILT_SOURCES)
-header_DATA += $(BUILT_HDRS)
+nodist_liboptimizationoptimizationmessages_la_SOURCES = $(BUILT_SOURCES)
+nodist_header_DATA = $(BUILT_HDRS)
 
 protodir = $(pkgincludedir)/optimization/Messages
 proto_DATA = 		\
@@ -37,4 +37,3 @@ proto_DATA = 		\
 
 EXTRA_DIST += $(proto_DATA)
 CLEANFILES = $(BUILT_SOURCES) $(BUILT_HDRS)
-
