@@ -2,6 +2,9 @@
 
 bool Webots::setting(string const &key, string &value) const
 {
+	/* Make sure to wait for request first */
+	waitForRequest();
+	
 	size_t num = d_request.settings_size();
 	
 	for (size_t i = 0; i < num; ++i)
