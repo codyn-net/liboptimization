@@ -19,14 +19,14 @@ bool Discovery::Data::onDataHandler(UdpServer::DataArgs &args)
 
 		info.host = args.address.host(true);
 
-		if (gr.type() == messages::discovery::Discovery::GREETING)
+		if (gr.type() == messages::discovery::Discovery::TypeGreeting)
 		{
 			info.connection = gr.greeting().connection();
 
 			debug_worker << "Received greeting: " << info.connection << endl;
 			onGreeting(info);
 		}
-		else if (gr.type() == messages::discovery::Discovery::WAKEUP)
+		else if (gr.type() == messages::discovery::Discovery::TypeWakeup)
 		{
 			info.connection = gr.wakeup().connection();
 			

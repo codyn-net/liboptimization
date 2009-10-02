@@ -25,11 +25,11 @@ void Optimizer::save()
 		Solution &best = d_data->best;
 
 		bestid = best.id();
-		bestfitness = best.fitness().value();
+		bestfitness = d_data->fitness.evaluate(best.fitness());
 	}
 	
-	char const *s = d_data->random.state();
-	string state = String::hex(s, d_data->random.stateSize());
+	char const *s = d_data->state.random.state();
+	string state = String::hex(s, d_data->state.random.stateSize());
 	
 	// Insert iteration stuff
 	d_data->db.query() << "INSERT INTO iteration ("
@@ -54,15 +54,4 @@ void Optimizer::save()
 	}
 	
 	d_data->db.commit();
-
-	vector<Cloneable<Extension> >::iterator it;
-	
-	for (it = d_data->extensions.begin(); it != d_data->extensions.end(); ++it)
-	{
-		d_data->db.begin();
-		
-		(*it)->save();
-		
-		d_data->db.commit();
-	}	
 }

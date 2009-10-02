@@ -8,138 +8,106 @@
 
 #include <optimization/Fitness/fitness.hh>
 #include <optimization/Parameters/parameters.hh>
-#include <optimization/Settings/settings.hh>
+#include <optimization/State/state.hh>
 
 namespace optimization
 {
 	class Solution : public base::Object
 	{
 		public:
-			class ExtensionData
-			{
-				public:
-					virtual ExtensionData *copy() const = 0;
-					virtual ~ExtensionData() {};
-			};
-
 			/* Public functions */
 			Solution();
-			Solution(size_t id, Parameters const &parameters, Fitness const &fitness, math::Random const &random, Settings const &settings);
+			Solution(size_t id, Parameters const &parameters, State const &state);
 
-			Fitness &fitness();
-			Parameters &parameters();
-			
 			size_t id() const;
 			
-			Fitness const &fitness() const;
+			Parameters &parameters();
 			Parameters const &parameters() const;
 			
-			math::Random &random();
-			math::Random const &random() const;
+			Fitness::Values &fitness();
+			Fitness::Values const &fitness() const;			
 			
-			Settings &settings();
-			Settings const &settings() const;
+			State &state();
+			State const &state() const;
+			
+			std::string const &data() const;
+			void setData(std::string const &data);
 
 			virtual Solution *clone() const;
 			virtual Solution *copy() const;
 			
+			// Manipulating individual parameters
 			Parameters::value_type &addParameter(std::string const &name, Boundaries::value_type const &boundary);			
 			virtual Parameters::value_type &addParameter(Parameters::value_type const &other);
 			virtual int removeParameter(std::string const &name);
 			
 			virtual void reset();
-			virtual operator std::string() const;
 
-			void addData(std::string const &name, ExtensionData *data);
-			
-			template <typename T>
-			T &getData(std::string const &name);
-			
-			template <typename T>
-			T const &getData(std::string const &name) const;
-			
-			virtual void clear();
+			virtual operator std::string() const;
 		protected:
-			void setFitness(Fitness const &fitness);
 			virtual void copy(Solution const &other);
 		private:
 			struct Data : public base::Object::PrivateData
 			{
 				/* Instance data */
 				size_t id;
-				base::Cloneable<Fitness> fitness;
-				base::Cloneable<Parameters> parameters;
-				
-				std::map<std::string, ExtensionData *> extensionData;
 
-				math::Random random;
-				Settings settings;
+				Parameters parameters;
+				Fitness::Values fitness;
 
-				~Data();
+				State state;
 				
-				void clear();
+				std::string data;
 			};
 	
 			Data *d_data;
 
-			void initialize(size_t id, Parameters const &parameters, Fitness const &fitness, math::Random const &random, Settings const &settings);
+			void initialize(size_t id, Parameters const &parameters, State const &state);
 	};
 
-	inline Fitness &Solution::fitness()
-	{
-		return d_data->fitness;
-	}
-	
-	inline Parameters &Solution::parameters()
-	{
-		return d_data->parameters;
-	}
-	
-	inline Fitness const &Solution::fitness() const
-	{
-		return d_data->fitness;
-	}
-	
-	inline math::Random &Solution::random()
-	{
-		return d_data->random;
-	}
-	
-	inline math::Random const &Solution::random() const
-	{
-		return d_data->random;
-	}
-	
 	inline size_t Solution::id() const
 	{
 		return d_data->id;
 	}
-	
+
+	inline Parameters &Solution::parameters()
+	{
+		return d_data->parameters;
+	}
+
 	inline Parameters const &Solution::parameters() const
 	{
 		return d_data->parameters;
 	}
-	
-	inline Settings const &Solution::settings() const
+
+	inline Fitness::Values &Solution::fitness()
 	{
-		return d_data->settings;
+		return d_data->fitness;
 	}
 	
-	inline Settings &Solution::settings()
+	inline Fitness::Values const &Solution::fitness() const
 	{
-		return d_data->settings;
+		return d_data->fitness;
 	}
 	
-	template <typename T>
-	T &Solution::getData(std::string const &name)
+	inline State &Solution::state()
 	{
-		return dynamic_cast<T &>(*d_data->extensionData[name]);
+		return d_data->state;
+	}
+
+	inline State const &Solution::state() const
+	{
+		return d_data->state;
 	}
 	
-	template <typename T>
-	T const &Solution::getData(std::string const &name) const
+	inline std::string const &Solution::data() const
 	{
-		return dynamic_cast<T const &>(*d_data->extensionData[name]);
+		return d_data->data;
+	}
+	
+	inline void Solution::setData(std::string const &data)
+	{
+		d_data->data = data;
 	}
 }
 

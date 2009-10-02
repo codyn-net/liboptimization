@@ -2,5 +2,5 @@
 
 Solution::operator string() const
 {
-	return String::join(d_data->parameters->values(), ", ");
+	return String::join(d_data->parameters.values(), ", ");
 }

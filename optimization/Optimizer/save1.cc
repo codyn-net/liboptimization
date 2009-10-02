@@ -2,8 +2,9 @@
 
 void Optimizer::save(Solution &solution)
 {
-	vector<double> fitness = solution.fitness().values();
-
+	Fitness &fitness = d_data->fitness;
+	double fit = fitness.evaluate(solution.fitness());
+	
 	d_data->db.query() << "INSERT INTO solution ("
 	                   << "`index`, `iteration`, `values`, `value_names`, "
 	                   << "`fitness`) VALUES ("
@@ -11,18 +12,18 @@ void Optimizer::save(Solution &solution)
 		               << currentIteration() << ", '"
 		               << SQLite::serialize(solution.parameters().values()) << "', '"
 		               << SQLite::serialize(solution.parameters().names()) << "', "
-		               << solution.fitness().value() << ")"
+		               << fit << ")"
 		               << SQLite::Query::end();
 
 	SQLite::Query q = d_data->db.query();
 	q << "INSERT INTO `fitness` ("
 	  << "`index`, `iteration`, `value`";
 	  
-	map<string, double> const &components = solution.fitness().components();
-	map<string, double>::const_iterator iter;
+	Fitness::Values const &components = solution.fitness();
+	Fitness::Values::const_iterator iter;
 	stringstream values;
 	
-	values << "VALUES(" << solution.id() << ", " << currentIteration() << ", " << solution.fitness().value();
+	values << "VALUES(" << solution.id() << ", " << currentIteration() << ", " << fit;
 	
 	for (iter = components.begin(); iter != components.end(); ++iter)
 	{

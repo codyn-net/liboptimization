@@ -2,5 +2,5 @@
 
 Optimizer::Optimizer() 
 {
-	initialize(Parameters(), Boundaries(), Fitness());
+	setup(Parameters(), Boundaries(), Fitness());
 }

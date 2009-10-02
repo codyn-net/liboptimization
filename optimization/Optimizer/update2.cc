@@ -10,11 +10,4 @@ void Optimizer::update()
 	{
 		update(**iter);
 	}
-
-	vector<Cloneable<Extension> >::iterator it;
-	
-	for (it = d_data->extensions.begin(); it != d_data->extensions.end(); ++it)
-	{
-		(*it)->update();
-	}
 }

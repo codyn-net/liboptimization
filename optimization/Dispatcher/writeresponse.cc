@@ -1,6 +1,6 @@
 #include "dispatcher.ih"
 
-bool Dispatcher::writeResponse(messages::worker::Response &response) 
+bool Dispatcher::writeResponse(messages::task::Response &response) 
 {
 	string serialized;
 

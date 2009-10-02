@@ -24,13 +24,13 @@ void Optimizer::initializeDatabase()
 		       << SQLite::Query::End();
 
 	db.query("DELETE FROM settings");
-	vector<string> props = d_data->settings.properties();
+	vector<string> props = d_data->state.settings.properties();
 	
 	for (vector<string>::iterator iter = props.begin(); iter != props.end(); ++iter)
 	{
 		db.query() << "INSERT INTO settings (`name`, `value`) VALUES ('"
 			       << SQLite::serialize(*iter) << "', '"
-			       << SQLite::serialize(d_data->settings.property(*iter)) << "')"
+			       << SQLite::serialize(d_data->state.settings.property(*iter)) << "')"
 		           << SQLite::Query::end();
 	}
 	
@@ -122,11 +122,4 @@ void Optimizer::initializeDatabase()
 	           << SQLite::Query::End();
 
 	db.commit();
-	
-	vector<Cloneable<Extension> >::iterator ite;
-	
-	for (ite = d_data->extensions.begin(); ite != d_data->extensions.end(); ++ite)
-	{
-		(*ite)->initializeDatabase();
-	}
 }

@@ -9,7 +9,7 @@ bool Webots::setting(string const &key, string &value) const
 	
 	for (size_t i = 0; i < num; ++i)
 	{
-		messages::worker::Request::Dispatch::KeyValue const &kv = d_request.settings(i);
+		messages::task::Task::Description::KeyValue const &kv = d_request.settings(i);
 		
 		if (kv.key() == key)
 		{

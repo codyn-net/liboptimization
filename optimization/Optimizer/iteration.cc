@@ -6,23 +6,28 @@ bool Optimizer::iteration()
 	vector<Cloneable<Solution> >::iterator iter;
 
 	Cloneable<Solution> curbest = d_data->best ? d_data->best->copy() : 0;
+	Fitness &fitness = d_data->fitness;
+	
+	double bestFitness = d_data->best ? fitness.evaluate(d_data->best->fitness()) : 0;
 
 	// Determine best solution from current iteration
 	for (iter = sols.begin(); iter != sols.end(); ++iter)
 	{
 		Solution &solution = **iter;
+		double fit = fitness.evaluate(solution.fitness());
 
-		if (!d_data->best || solution.fitness() > d_data->best->fitness())
+		if (!d_data->best || fit > bestFitness)
 		{
 			d_data->best = solution.copy();
+			bestFitness = fit;
 		}
 	}
 	
-	log(LogType::Info) << "Iteration " << d_data->iteration << " done (" << (d_data->best ? string(d_data->best->fitness()) : "*") << ")" << Logger::End();
+	log(LogType::Info) << "Iteration " << d_data->iteration << " done" << Logger::End();
 	
-	if (!curbest || d_data->best->fitness() > curbest->fitness())
+	if (!curbest || bestFitness > fitness.evaluate(curbest->fitness()))
 	{
-		log(LogType::Info) << "New best solution: " << d_data->best->id() << " = " << d_data->best->fitness().value() << Logger::End();
+		log(LogType::Info) << "New best solution: " << d_data->best->id() << " = " << bestFitness << Logger::End();
 	}
 	
 	save();
@@ -34,16 +39,6 @@ bool Optimizer::iteration()
 		return false;
 	}
 
-	vector<Cloneable<Extension> >::iterator it;
-	
-	for (it = d_data->extensions.begin(); it != d_data->extensions.end(); ++it)
-	{
-		if ((*it)->done())
-		{
-			return false;
-		}
-	}
-	
 	update();
 	return true;
 }

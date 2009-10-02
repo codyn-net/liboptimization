@@ -1,6 +1,6 @@
 #include "webots.ih"
 
-void Webots::response(messages::worker::Response &res) 
+void Webots::response(messages::task::Response &res) 
 {
 	if (!d_client)
 	{

@@ -1,7 +1,7 @@
 #ifndef __OPTIMIZATION_WEBOTS_H__
 #define __OPTIMIZATION_WEBOTS_H__
 
-#include <optimization/Messages/worker.pb.h>
+#include <optimization/Messages/task.pb.h>
 #include <network/network.hh>
 #include <os/os.hh>
 #include <map>
@@ -14,7 +14,7 @@ namespace optimization
 		static Webots *s_instance;
 
 		network::Client d_client;
-		messages::worker::Request::Dispatch d_request;
+		messages::task::Task::Description d_request;
 
 		bool d_hasRequest;
 
@@ -23,11 +23,11 @@ namespace optimization
 			static Webots &instance();
 
 			/* Public functions */
-			messages::worker::Request::Dispatch &request();
-			void response(messages::worker::Response &response);
+			messages::task::Task::Description &request();
+			void response(messages::task::Response &response);
 			
 			void respond(std::map<std::string, double> const &fitness);
-			void respond(messages::worker::Response::Status status, std::map<std::string, double> const &fitness);
+			void respond(messages::task::Response::Status status, std::map<std::string, double> const &fitness);
 
 			void respondFail();
 			

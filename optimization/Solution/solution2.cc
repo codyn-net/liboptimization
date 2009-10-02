@@ -2,5 +2,5 @@
 
 Solution::Solution() 
 {
-	initialize(0, Parameters(), Fitness(), Random(), Settings());
+	initialize(0, Parameters(), State());
 }

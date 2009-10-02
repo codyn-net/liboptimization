@@ -3,5 +3,5 @@
 void Webots::respondFail() 
 {
 	map<string, double> fitness;
-	respond(messages::worker::Response::Failed, fitness);
+	respond(messages::task::Response::Failed, fitness);
 }

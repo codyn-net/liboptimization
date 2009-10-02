@@ -14,11 +14,10 @@ void Optimizer::initializeFitnessTable()
 	  << "`index` INT, "
 	  << "`value` DOUBLE";
 
-	Fitness &fit = d_data->solutions[0]->fitness();
-	map<string, double> const &components = fit.components();
-	map<string, double>::const_iterator iter;
+	Fitness::Values const &fitness = d_data->solutions[0]->fitness();
+	Fitness::Values::const_iterator iter;
 	
-	for (iter = components.begin(); iter != components.end(); ++iter)
+	for (iter = fitness.begin(); iter != fitness.end(); ++iter)
 	{
 		string norm = normalizeFitnessName(iter->first);
 		q << ", `_" << norm << "` DOUBLE";

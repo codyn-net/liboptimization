@@ -2,5 +2,5 @@
 
 void Webots::respond(map<string, double> const &fitness) 
 {
-	respond(messages::worker::Response::Success, fitness);
+	respond(messages::task::Response::Success, fitness);
 }

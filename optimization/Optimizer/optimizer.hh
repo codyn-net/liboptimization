@@ -11,7 +11,6 @@
 #include <optimization/Settings/settings.hh>
 #include <optimization/Solution/solution.hh>
 #include <optimization/Fitness/fitness.hh>
-#include <optimization/Messages/worker.pb.h>
 
 #include <db/SQLite/sqlite.hh>
 #include <string>
@@ -23,81 +22,6 @@ namespace optimization
 	class Optimizer : public base::Object
 	{
 		public:
-			class Extension : public base::Object
-			{
-				struct Data : public base::Object::PrivateData
-				{
-					Optimizer *optimizer;
-					Settings settings;
-					std::string name;
-		
-					~Data();
-				};
-	
-				Data *d_data;
-	
-				public:
-					Extension();
-		
-					std::string const &name() const;
-					void setName(std::string const &name);
-		
-					void setOptimizer(Optimizer const &optimizer);
-					Optimizer &optimizer();
-					Optimizer const &optimizer() const;
-
-					Settings &settings();
-					void set(Settings const &settings, std::string const &name);
-
-					/* Interface functions */
-					virtual Extension *clone() const;
-
-					virtual void newSolution(Solution &solution);
-
-					virtual void update(Solution &solution);
-					virtual void update();
-					
-					virtual void save(Solution &solution);
-					virtual void save();
-
-					virtual bool done();
-
-					virtual void customRequest(Solution &solution, messages::worker::Request &request);
-					virtual void customResponse(Solution &solution, messages::worker::Response &response);
-					virtual void initializeDatabase();
-					
-					virtual void clear();
-				private:
-					/* Private functions */
-	
-			};
-			
-			struct Module
-			{
-				struct Extension
-				{
-					typedef optimization::Optimizer::Extension type;
-					typedef optimization::Optimizer::Extension *(*Constructor)();
-
-					static std::string const loader;
-
-					std::string name;
-
-					Constructor constructor;
-					typedef void (*Loader)(Extension *info);		
-				};
-				
-				typedef Optimizer type;
-				typedef Optimizer *(*Constructor)(void);
-
-				static std::string const loader;
-
-				std::string name;
-
-				Constructor constructor;
-				typedef void (*Loader)(Module *info);
-			};
-
 			struct LogType
 			{
 				static std::string names[4];
@@ -135,19 +59,22 @@ namespace optimization
 			
 			// Accessors
 			Boundaries const &boundaries() const;
-			Parameters const &parameters() const;
-			Settings const &settings() const;
-			Fitness const &fitness() const;
-
 			Boundaries &boundaries();
-			Parameters &parameters();
-			Settings &settings();
-			Fitness &fitness();
-			math::Random &random();
-
-			// Bes solution so far			
-			bool hasBest() const;
 			
+			Parameters const &parameters() const;
+			Parameters &parameters();
+			
+			Fitness const &fitness() const;
+			Fitness &fitness();
+
+			Settings const &settings() const;
+			Settings &settings();
+
+			State const &state() const;
+			State &state();
+
+			// Best solution so far			
+			bool hasBest() const;
 			Solution &best();
 			Solution const &best() const;
 			
@@ -161,23 +88,15 @@ namespace optimization
 			// Data file name
 			void setDataFilename(std::string const &filename);
 			
-			// Extensions
-			template <typename T>
-			void addExtension(T &extension);
-
-			Extension &getExtension(std::string const &name);
-			Extension const &getExtension(std::string const &name) const;
-			
 			// Solutions
 			std::vector<base::Cloneable<Solution> > &solutions();
 			std::vector<base::Cloneable<Solution> > const &solutions() const;
 
-			void setup(Parameters const &parameters, Boundaries const &boundaries, Fitness const &fitness);
+			void initialize(Parameters const &parameters, Boundaries const &boundaries, Fitness const &fitness);
 
-			// Reset
-			void reset();
-			void addSolution(Solution &solution);
+			// New iteration
 			bool iteration();
+
 			db::SQLite &db();
 			
 			// Logging
@@ -186,13 +105,10 @@ namespace optimization
 			
 			// Virtual methods
 			virtual Solution *createSolution(size_t id);
-			virtual Optimizer *clone() const;
-			
-			// Custom request/response to add/process extensions
-			virtual void customRequest(Solution &solution, messages::worker::Request &request);
-			virtual void customResponse(Solution &solution, messages::worker::Response &response);
-			
+			virtual void addSolution(Solution &solution);
+
 			virtual void clear();
+			virtual Optimizer *clone() const;
 		protected:
 			virtual void save();
 			virtual void save(Solution &solution);
@@ -212,37 +128,31 @@ namespace optimization
 
 				Boundaries boundaries;
 				Parameters parameters;
-				Settings settings;
-			
-				math::Random random;
+				
+				State state;
 			
 				std::string name;
 
 				Fitness fitness;
 
 				std::vector<base::Cloneable<Solution> > solutions;
-				std::vector<base::Cloneable<Extension> > extensions;
-
 				base::Cloneable<Solution> best;
-			
+
 				size_t iteration;
 
 				/* Default settings */
 				size_t maxIterations;
 				size_t populationSize;
-				size_t timeout;
 				unsigned int seed;
-			
-				void setSeed(unsigned int const &seed);
 				
-				~Data();
+				// Setter function for seed property			
+				void setSeed(unsigned int const &seed);
 			};
 		
 			Data *d_data;
 
-			void initialize(Parameters const &parameters, Boundaries const &boundaries, Fitness const &fitness);
-			void addExtensionReal(Extension &extension);
-			
+			void setup(Parameters const &parameters, Boundaries const &boundaries, Fitness const &fitness);
+
 			void initializeFitnessTable();
 			std::string normalizeFitnessName(std::string const &name);
 	};
@@ -285,27 +195,12 @@ namespace optimization
 		d_data->name = name;
 	}
 
-	inline Boundaries const &Optimizer::boundaries() const
+	inline Boundaries &Optimizer::boundaries()
 	{
 		return d_data->boundaries;
 	}
-	
-	inline Parameters const &Optimizer::parameters() const
-	{
-		return d_data->parameters;
-	}
-	
-	inline Settings const &Optimizer::settings() const
-	{
-		return d_data->settings;
-	}
-	
-	inline Fitness const &Optimizer::fitness() const
-	{
-		return d_data->fitness;
-	}
-	
-	inline Boundaries &Optimizer::boundaries()
+
+	inline Boundaries const &Optimizer::boundaries() const
 	{
 		return d_data->boundaries;
 	}
@@ -314,10 +209,20 @@ namespace optimization
 	{
 		return d_data->parameters;
 	}
-	
+
+	inline Parameters const &Optimizer::parameters() const
+	{
+		return d_data->parameters;
+	}
+
 	inline Settings &Optimizer::settings()
 	{
-		return d_data->settings;
+		return d_data->state.settings;
+	}
+		
+	inline Settings const &Optimizer::settings() const
+	{
+		return d_data->state.settings;
 	}
 	
 	inline Fitness &Optimizer::fitness()
@@ -325,9 +230,19 @@ namespace optimization
 		return d_data->fitness;
 	}
 	
-	inline math::Random &Optimizer::random()
+	inline Fitness const &Optimizer::fitness() const
 	{
-		return d_data->random;
+		return d_data->fitness;
+	}
+	
+	inline State &Optimizer::state()
+	{
+		return d_data->state;
+	}
+	
+	inline State const &Optimizer::state() const
+	{
+		return d_data->state;
 	}
 	
 	inline std::vector<base::Cloneable<Solution> > &Optimizer::solutions()
@@ -343,12 +258,6 @@ namespace optimization
 	inline size_t Optimizer::currentIteration() const
 	{
 		return d_data->iteration;
-	}
-	
-	template <typename T>
-	inline void Optimizer::addExtension(T &extension)
-	{
-		addExtensionReal(base::Object::Cloned<T>(extension));
 	}
 }
 

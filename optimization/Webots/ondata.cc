@@ -2,8 +2,8 @@
 
 bool Webots::onData(os::FileDescriptor::DataArgs &args) 
 {
-	vector<messages::worker::Request::Dispatch> request;
-	vector<messages::worker::Request::Dispatch>::iterator iter;
+	vector<messages::task::Task::Description> request;
+	vector<messages::task::Task::Description>::iterator iter;
 	
 	Messages::extract(args, request);
 	

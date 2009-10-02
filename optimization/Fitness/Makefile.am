@@ -24,14 +24,8 @@ liboptimizationoptimizationfitness_la_SOURCES = 	\
 	copy.cc	\
 	datadata.cc	\
 	datadestructor.cc	\
-	fitness1.cc	\
-	operatorgreater.cc	\
-	operatorless.cc	\
-	operatorstring.cc	\
-	reset.cc	\
-	update.cc	\
-	value.cc	\
-	values.cc
+	fitness.cc	\
+	evaluate.cc
 
 headerdir = $(pkgincludedir)/optimization/Fitness
 header_DATA = 	\

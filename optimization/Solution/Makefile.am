@@ -18,20 +18,15 @@ INCLUDES = \
 noinst_LTLIBRARIES = liboptimizationoptimizationsolution.la
 
 liboptimizationoptimizationsolution_la_SOURCES = 	\
-	adddata.cc	\
 	addparameter1.cc	\
 	addparameter2.cc	\
-	clear.cc	\
 	clone.cc	\
 	copy1.cc	\
 	copy2.cc	\
-	dataclear.cc	\
-	datadestructor.cc	\
 	initialize.cc	\
 	operatorstring.cc	\
 	removeparameter.cc	\
 	reset.cc	\
-	setfitness.cc	\
 	solution1.cc	\
 	solution2.cc
 

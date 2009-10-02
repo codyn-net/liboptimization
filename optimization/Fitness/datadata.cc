@@ -3,6 +3,7 @@
 Fitness::Data::Data()
 :
 	state(0),
-	expression(0)
+	expression(0),
+	value(0)
 {
 }

@@ -6,8 +6,7 @@
 #include <string>
 #include <sstream>
 #include <google/protobuf/message.h>
-#include <optimization/Messages/command.pb.h>
-#include <optimization/Messages/worker.pb.h>
+#include <optimization/Messages/task.pb.h>
 #include <optimization/Messages/discovery.pb.h>
 
 namespace optimization

@@ -1,22 +1,42 @@
 package optimization.messages.discovery;
 
+/* 
+ * A greeting message send from the worker to the master to announce itself
+ */
 message Greeting {
+	// Connection string describing how to connect to the worker
 	required string connection = 1;
 }
 
+/*
+ * A wakeup message send from the master to workers to request them to send
+ * a greeting message
+ */
 message Wakeup {
+	// Connection string describing how to connect to the master
 	required string connection = 1;
 }
 
+/*
+ * The discovery message is used for workers and masters to discover each
+ * other. These messages are usually multicasted
+ */
 message Discovery {
+	// Discovery type
 	enum Type {
-		GREETING = 0;
-		WAKEUP = 1;
+		TypeGreeting = 0;
+		TypeWakeup = 1;
 	}
 	
+	// The type of discovery message
 	required Type type = 1;
+	
+	// A Greeting message in case of type Greeting
 	optional Greeting greeting = 2;
+	
+	// A Wakeup message in case of type Wakeup
 	optional Wakeup wakeup = 3;
 	
+	// The discovery namespace
 	optional string namespace = 4;
 }

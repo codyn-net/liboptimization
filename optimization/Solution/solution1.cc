@@ -1,6 +1,6 @@
 #include "solution.ih"
 
-Solution::Solution(size_t id, Parameters const &parameters, Fitness const &fitness, Random const &random, Settings const &settings)
+Solution::Solution(size_t id, Parameters const &parameters, State const &state)
 {
-	initialize(id, parameters, fitness, random, settings);
+	initialize(id, parameters, state);
 }
