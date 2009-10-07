@@ -1,1 +1,1 @@
-SUBDIRS = Messages Boundaries Constants Container Discovery Dispatcher Fitness Optimizer Parameters Settings Solution Webots
+SUBDIRS = Messages Constants Discovery Dispatcher Webots

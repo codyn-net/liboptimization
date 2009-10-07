@@ -6,7 +6,7 @@ package optimization.messages.task;
  * Response.
  */
 message Token {
-	required int32 id = 1;
+	required uint32 id = 1;
 	required string response = 2;
 }
 
@@ -14,7 +14,7 @@ message Token {
  */ 
 message Task {
 	// A unique task id
-	required int32 id = 1;
+	required uint32 id = 1;
 	
 	// The dispatcher to dispatch this task to
 	required string dispatcher = 2;
@@ -70,7 +70,8 @@ message Task {
  * A batch of tasks send from the optimizer to the master
  */
 message Batch {
-	repeated Task tasks = 1;
+	required double priority = 1;
+	repeated Task tasks = 2;
 }
 
 /* A response message is the response to a certain request. It is send from the
@@ -112,7 +113,7 @@ message Response {
 	}
 	
 	// The task id to which this is a response
-	required int32 id = 1;
+	required uint32 id = 1;
 	
 	// The status of the response
 	required Status status = 2;

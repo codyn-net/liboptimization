@@ -3,7 +3,7 @@
 
 if which ccbuild-autotools;
 then
-	ccbuild-autotools --version 0.1 generate
+	ccbuild-autotools --version 1.0 generate
 fi
 
 autoreconf --install

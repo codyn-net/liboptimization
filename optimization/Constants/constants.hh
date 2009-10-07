@@ -11,7 +11,7 @@ namespace optimization
 		{
 			DiscoveryPort = 4756,
 			WorkerPort = 8723,
-			CommandPort = 7592
+			MasterPort = 9485
 		};
 		
 		static std::string DiscoveryGroup;

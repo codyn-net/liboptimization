@@ -1,4 +1,4 @@
-AC_INIT(liboptimization, 0.1)
+AC_INIT(liboptimization, 1.0)
 
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 
@@ -15,7 +15,7 @@ AC_PROG_MAKE_SET
 
 AM_MAINTAINER_MODE
 
-LIBOPTIMIZATION_API_VERSION=0.1
+LIBOPTIMIZATION_API_VERSION=1.0
 AC_SUBST(LIBOPTIMIZATION_API_VERSION)
 
 pkgincludedir="$includedir/liboptimization-$LIBOPTIMIZATION_API_VERSION"
@@ -49,18 +49,10 @@ AC_SUBST(PACKAGE_LIBOPTIMIZATION_LIBS)
 
 AC_OUTPUT(
 Makefile
-optimization/Boundaries/Makefile
 optimization/Constants/Makefile
-optimization/Container/Makefile
 optimization/Discovery/Makefile
 optimization/Dispatcher/Makefile
-optimization/Fitness/Makefile
 optimization/Messages/Makefile
-optimization/Optimizer/Extension/Makefile
-optimization/Optimizer/Makefile
-optimization/Parameters/Makefile
-optimization/Settings/Makefile
-optimization/Solution/Makefile
 optimization/Webots/Makefile
 optimization/Makefile
 

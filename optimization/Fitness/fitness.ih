@@ -1,6 +1,0 @@
-#include "fitness.hh"
-#include <math/math.hh>
-
-using namespace base;
-using namespace optimization;
-using namespace std;

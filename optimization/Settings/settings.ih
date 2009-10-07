@@ -1,5 +1,0 @@
-#include "settings.hh"
-
-using namespace optimization;
-using namespace std;
-using namespace base;
