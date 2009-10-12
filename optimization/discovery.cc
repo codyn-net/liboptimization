@@ -28,6 +28,35 @@ using namespace std;
 using namespace optimization;
 using namespace base::signals;
 
+/** \class optimization::Discovery
+ * \brief Optimization discovery
+ *
+ * This class implements a very simple discovery protocol used by the master
+ * and worker process to be able to discovery each other. There are two 
+ * messages: Wakeup and Greeting. The workers will periodically send Greeting
+ * messages (by default over multicast, see Constants::DiscoveryGroup). This
+ * message contains the address description of the location of the worker, so
+ * that when a master receives it, it knows how to connect to the worker.
+ *
+ * In addition, a master may send a Wakeup message requesting any workers to
+ * send him a Greeting message. This way when a master is started, it can
+ * immediately receive all the active workers without having to wait for them
+ * to send there periodic greeting.
+ *
+ * The discovery protocol implements a namespace to seperate different groups
+ * of workers and masters (see Namespace() and SetNamespace()). By default 
+ * a discovery object is in the anonymous namespace.
+ *
+ */
+
+/** \class optimization::Discovery::Info
+ * \brief Discovery info
+ *
+ * Simple struct used in the discovery signals to provide information on
+ * the connection string and host of the discovery request.
+ *
+ */
+
 /** \brief Check the discovery namespace (const).
  * @param ns the namespace to check
  *
