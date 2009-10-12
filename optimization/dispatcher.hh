@@ -45,7 +45,7 @@ namespace optimization
 			void ReadSettings();
 
 			virtual bool WriteResponse(messages::task::Response &response);
-			virtual bool RunSolution() = 0;
+			virtual bool RunTask() = 0;
 			virtual bool UseMainLoop() const;
 			
 			Glib::RefPtr<Glib::MainLoop> Main();

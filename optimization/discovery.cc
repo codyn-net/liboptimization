@@ -28,8 +28,9 @@ using namespace std;
 using namespace optimization;
 using namespace base::signals;
 
-/** \class optimization::Discovery
- * \brief Optimization discovery
+/**
+ * @class optimization::Discovery
+ * @brief Optimization discovery
  *
  * This class implements a very simple discovery protocol used by the master
  * and worker process to be able to discovery each other. There are two 
@@ -49,15 +50,17 @@ using namespace base::signals;
  *
  */
 
-/** \class optimization::Discovery::Info
- * \brief Discovery info
+/**
+ * @class optimization::Discovery::Info
+ * @brief Discovery info
  *
  * Simple struct used in the discovery signals to provide information on
  * the connection string and host of the discovery request.
  *
  */
 
-/** \brief Check the discovery namespace (const).
+/**
+ * @brief Check the discovery namespace (const).
  * @param ns the namespace to check
  *
  * Check if the specified namespace matches with the namespace set for this
@@ -72,7 +75,8 @@ Discovery::Data::CheckNamespace(string const &ns) const
 	return (this->ns == ns);
 }
 
-/** \brief Discovery constructor.
+/**
+ * @brief Discovery constructor.
  *
  * Constructor.
  *
@@ -87,7 +91,8 @@ Discovery::Discovery()
 	addPrivateData(d_data);
 }
 
-/** \brief Listen on the discovery address.
+/**
+ * @brief Listen on the discovery address.
  *
  * Start listening on the discovery address.
  *
@@ -107,7 +112,8 @@ Discovery::Listen()
 	return ret;
 }
 
-/** \brief The discovery namespace (const).
+/**
+ * @brief The discovery namespace (const).
  *
  * Get the discovery namespace. The namespace is used to separate several
  * groups of master and worker processes.
@@ -121,7 +127,8 @@ Discovery::Namespace() const
 	return d_data->ns;
 }
 
-/** \brief Discovery data callback handler.
+/**
+ * @brief Discovery data callback handler.
  * @param args data args
  *
  * Called when data is received on the discovery port.
@@ -164,7 +171,8 @@ Discovery::Data::OnDataHandler(UdpServer::DataArgs &args)
 	}
 }
 
-/** \brief Set the discovery namespace.
+/**
+ * @brief Set the discovery namespace.
  * @param ns the namespace
  *
  * Set the discovery namespace. The namespace is used to separate several
@@ -177,7 +185,8 @@ Discovery::SetNamespace(string const &ns)
 	d_data->ns = ns;
 }
 
-/** \brief Greeting signal.
+/**
+ * @brief Greeting signal.
  *
  * Signal emitted when a greeting message was received.
  *
@@ -190,7 +199,8 @@ Discovery::OnGreeting()
 	return d_data->onGreeting;
 }
 
-/** \brief OnWakeup signal
+/**
+ * @brief OnWakeup signal
  *
  * Signal emitted when a wakeup message was received.
  *

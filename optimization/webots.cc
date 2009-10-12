@@ -28,8 +28,9 @@
 using namespace std;
 using namespace optimization;
 
-/** \class optimization::Webots
- * \brief Convenience optimization class for webots controllers
+/**
+ * @class optimization::Webots
+ * @brief Convenience optimization class for webots controllers
  *
  * The optimization::Webots class is a convenient class for evaluating
  * optimization solutions in webots. It is used in conjunction with the
@@ -62,7 +63,8 @@ using namespace optimization;
 
 Webots *Webots::s_instance = 0;
 
-/** \brief Default constructor.
+/**
+ * @brief Default constructor.
  *
  * Constructor.
  *
@@ -94,7 +96,8 @@ Webots::Webots()
 	d_client.onData().add(*this, &Webots::OnData);
 }
 
-/** \brief Check whether a request has been received (const).
+/**
+ * @brief Check whether a request has been received (const).
  *
  * Check whether a dispatcher task request has been received.
  *
@@ -107,7 +110,8 @@ Webots::HasRequest() const
 	return d_hasRequest;
 }
 
-/** \brief Get webots dispatcher singleton instance.
+/**
+ * @brief Get webots dispatcher singleton instance.
  *
  * Get the webots dispatcher singleton instance.
  *
@@ -125,7 +129,8 @@ Webots::Instance()
 	return *s_instance;
 }
 
-/** \brief Data received callback.
+/**
+ * @brief Data received callback.
  * @param args data args
  *
  * Called when data has been received.
@@ -147,7 +152,8 @@ Webots::OnData(os::FileDescriptor::DataArgs &args)
 	}
 }
 
-/** \brief Get dispatcher validity (const).
+/**
+ * @brief Get dispatcher validity (const).
  *
  * Get whether there is a connection with the webots dispatcher process. This
  * can be very useful if you want to test your webots controller. You can use
@@ -163,7 +169,8 @@ Webots::operator bool() const
 	return d_client;
 }
 
-/** \brief Read settings.
+/**
+ * @brief Read settings.
  *
  * Read settings.
  *
@@ -180,7 +187,8 @@ Webots::ReadSettings()
 	}
 }
 
-/** \brief Get the dispatcher task request.
+/**
+ * @brief Get the dispatcher task request.
  *
  * Get the dispatcher task request. Make sure to call WaitForRequest() before
  * calling this function to ensure the request is received.
@@ -194,7 +202,8 @@ Webots::Request()
 	return d_request;
 }
 
-/** \brief Write success response to the dispatcher.
+/**
+ * @brief Write success response to the dispatcher.
  * @param fitness the solution fitness
  *
  * Write a success response to the dispatcher. This is the most convenient way
@@ -207,7 +216,8 @@ Webots::Respond(map<string, double> const &fitness)
 	Respond(messages::task::Response::Success, fitness);
 }
 
-/** \brief Write fitness response to the dispatcher.
+/**
+ * @brief Write fitness response to the dispatcher.
  * @param status the response status
  * @param fitness the fitness
  *
@@ -234,7 +244,8 @@ Webots::Respond(messages::task::Response::Status  status,
 	Response(res);
 }
 
-/** \brief Write a fail response to the dispatcher.
+/**
+ * @brief Write a fail response to the dispatcher.
  *
  * Write a fail response back to the dispatcher. You can use this to indicate
  * a failure in trying to execute the task. Note that by default, the master
@@ -253,7 +264,8 @@ Webots::RespondFail()
 	Respond(messages::task::Response::Failed, fitness);
 }
 
-/** \brief Write a response to the dispatcher.
+/**
+ * @brief Write a response to the dispatcher.
  * @param res the response
  *
  * Write a response back to the dispatcher. This is a low level function and
@@ -278,7 +290,8 @@ Webots::Response(messages::task::Response &res)
 	}
 }
 
-/** \brief Get dispatcher setting.
+/**
+ * @brief Get dispatcher setting.
  * @param key setting key
  * @param value setting value return value
  *
@@ -305,7 +318,8 @@ Webots::Setting(string const &key,
 	return true;
 }
 
-/** \brief Check if a dispatcher setting is set.
+/**
+ * @brief Check if a dispatcher setting is set.
  * @param key setting key
  *
  * Check whether a dispatcher setting is set.
@@ -321,7 +335,8 @@ Webots::Setting(string const &key)
 	return Setting(key, dummy);
 }
 
-/** \brief Wait for request from dispatcher.
+/**
+ * @brief Wait for request from dispatcher.
  *
  * Wait for a task request from the webots dispatcher. You should always wait
  * for the request to arrive before doing anything.

@@ -23,8 +23,9 @@
 using namespace std;
 using namespace optimization;
 
-/** \class optimization::Messages
- * \brief Optimization messages
+/**
+ * @class optimization::Messages
+ * @brief Optimization messages
  *
  * Class providing useful functions to serialize and deserialize protobuf
  * messages. In particular, extract messages from data received from a
@@ -33,7 +34,8 @@ using namespace optimization;
  *
  */
 
-/** \brief Serialize protobuf message to string.
+/**
+ * @brief Serialize protobuf message to string.
  * @param message message to serialize
  * @param serialized serialized return value
  *

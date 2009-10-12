@@ -1,8 +1,8 @@
 PROJECT_NAME = liboptimization
 
-INPUT = @top_srcdir@/optimization
+INPUT = @top_srcdir@/optimization mainpage.hh messages.hh optimization.hh
 
-FILE_PATTERNS = *.cc *.hh
+FILE_PATTERNS = *.cc *.hh *.pb.h
 
 GENERATE_HTML = YES
 GENERATE_LATEX = NO
@@ -12,4 +12,13 @@ SEARCHENGINE = YES
 GENERATE_TREEVIEW = YES
 USE_INLINE_TREES = YES
 
-EXCLUDE_PATTERNS = *.pb.cc
+HTML_FOOTER = templates/footer.html
+HTML_HEADER = templates/header.html
+HTML_STYLESHEET = templates/stylesheet.css
+HTML_DYNAMIC_SECTIONS = YES
+FULL_PATH_NAMES = NO
+
+JAVADOC_AUTOBRIEF = YES
+SORT_BY_SCOPE_NAME = YES
+SHOW_USED_FILES = NO
+SHOW_FILES = NO

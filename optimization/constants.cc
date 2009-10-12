@@ -23,8 +23,9 @@
 using namespace optimization;
 using namespace std;
 
-/** \class optimization::Constants
- * \brief Optimization constants
+/**
+ * @class optimization::Constants
+ * @brief Optimization constants
  *
  * Class that defines some useful constants used in optimization.
  *

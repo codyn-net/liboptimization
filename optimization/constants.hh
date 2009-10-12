@@ -29,8 +29,13 @@ namespace optimization
 	{
 		enum
 		{
+			/** Default discovery port. */
 			DiscoveryPort = 4756,
+
+			/** Default worker port. */
 			WorkerPort = 8723,
+
+			/** Default master port. */
 			MasterPort = 9485
 		};
 		
