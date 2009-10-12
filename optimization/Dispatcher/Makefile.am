@@ -24,7 +24,8 @@ liboptimizationoptimizationdispatcher_la_SOURCES = 	\
 	setting1.cc	\
 	setting2.cc	\
 	usemainloop.cc	\
-	writeresponse.cc
+	writeresponse.cc \
+	readsettings.cc
 
 headerdir = $(pkgincludedir)/optimization/Dispatcher
 header_DATA = 	\

@@ -22,18 +22,13 @@
 
 bool Dispatcher::setting(string const &key, string &value) const
 {
-	size_t num = d_request.settings_size();
-	
-	for (size_t i = 0; i < num; ++i)
-	{
-		messages::task::Task::Description::KeyValue const &kv = d_request.settings(i);
+	map<string, string>::const_iterator found = d_settings.find(key);
 
-		if (kv.key() == key)
-		{
-			value = kv.value();
-			return true;
-		}
+	if (found == d_settings.end())
+	{
+		return false;
 	}
-	
-	return false;
+
+	value = found->second;
+	return true;
 }

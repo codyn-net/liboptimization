@@ -29,6 +29,7 @@ namespace optimization
 	class Dispatcher
 	{
 		messages::task::Task::Description d_request;
+		std::map<std::string, std::string> d_settings;
 		Glib::RefPtr<Glib::MainLoop> d_main;
 
 		public:
@@ -41,6 +42,8 @@ namespace optimization
 			bool setting(std::string const &key) const;
 		protected:
 			virtual bool readRequest();
+			void readSettings();
+
 			virtual bool writeResponse(messages::task::Response &response);
 
 			virtual bool runSolution() = 0;

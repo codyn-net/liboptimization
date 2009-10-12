@@ -43,9 +43,14 @@ bool Dispatcher::readRequest()
 	if (cin.read(s, num))
 	{		
 		if (d_request.ParseFromArray(s, num))
+		{
 			ret = true;
+			readSettings();
+		}
 		else
+		{
 			cerr << "** [Dispatcher] Could not parse message from array" << endl;
+		}
 	}
 	else
 	{
