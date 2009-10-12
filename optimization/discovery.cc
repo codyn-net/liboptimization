@@ -66,7 +66,7 @@ using namespace base::signals;
  * Check if the specified namespace matches with the namespace set for this
  * discovery object.
  *
- * @return: true if the namespaces match, false otherwise
+ * @return true if the namespaces match, false otherwise
  *
  */
 bool
@@ -96,7 +96,7 @@ Discovery::Discovery()
  *
  * Start listening on the discovery address.
  *
- * @return: true if listening, false otherwise
+ * @return true if listening, false otherwise
  *
  */
 bool
@@ -118,7 +118,7 @@ Discovery::Listen()
  * Get the discovery namespace. The namespace is used to separate several
  * groups of master and worker processes.
  *
- * @return: Description
+ * @return Description
  *
  */
 string const &
@@ -177,7 +177,7 @@ Discovery::Data::OnDataHandler(UdpServer::DataArgs &args)
  *
  * Set the discovery namespace. The namespace is used to separate several
  * groups of master and worker processes.
- * \fn void Discovery::SetNamespace(std::string const &ns)
+ * @fn void Discovery::SetNamespace(std::string const &ns)
  */
 void
 Discovery::SetNamespace(string const &ns)
@@ -190,7 +190,7 @@ Discovery::SetNamespace(string const &ns)
  *
  * Signal emitted when a greeting message was received.
  *
- * @return: the signal object
+ * @return the signal object
  *
  */
 Signal<Discovery::Info> &
@@ -204,7 +204,7 @@ Discovery::OnGreeting()
  *
  * Signal emitted when a wakeup message was received.
  *
- * @return: the signal object
+ * @return the signal object
  *
  */
 Signal<Discovery::Info> &

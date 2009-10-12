@@ -59,6 +59,12 @@ using namespace optimization;
  * could add a MaximumTime setting, and read it using Setting(). Then after
  * running the simulation for that amount of time, use Respond() to send back
  * the fitness of the simulation and quit the simulation.
+ *
+ * If you want to send additional data back to the optimizer, you can use
+ * one of the Respond() functions that accepts an additional map of string key
+ * values. The optimizer will save this additional data so you can extract
+ * it later.
+ *
  */
 
 Webots *Webots::s_instance = 0;
@@ -101,7 +107,7 @@ Webots::Webots()
  *
  * Check whether a dispatcher task request has been received.
  *
- * @return: true if a request has been received, false otherwise
+ * @return true if a request has been received, false otherwise
  *
  */
 bool
@@ -115,7 +121,7 @@ Webots::HasRequest() const
  *
  * Get the webots dispatcher singleton instance.
  *
- * @return: the webots dispatcher instance
+ * @return the webots dispatcher instance
  *
  */
 Webots &
@@ -160,7 +166,7 @@ Webots::OnData(os::FileDescriptor::DataArgs &args)
  * this function to see if you are in optimization mode or not, and setup
  * your controller accordingly.
  *
- * @return: true if there is a connection with the webots dispatcher process,
+ * @return true if there is a connection with the webots dispatcher process,
  * false otherwise
  *
  */
@@ -193,7 +199,7 @@ Webots::ReadSettings()
  * Get the dispatcher task request. Make sure to call WaitForRequest() before
  * calling this function to ensure the request is received.
  *
- * @return: the dispatcher task request
+ * @return the dispatcher task request
  *
  */
 optimization::messages::task::Task::Description &
@@ -207,13 +213,35 @@ Webots::Request()
  * @param fitness the solution fitness
  *
  * Write a success response to the dispatcher. This is the most convenient way
- * of writing a response back to the dispatcher.
- * \fn void Webots::Respond(std::map<std::string, double> const &fitness)
+ * of writing a response back to the dispatcher. The fitness is a map of
+ * fitness names to values. You can thus set multiple fitness values if you
+ * have a multi objective fitness function (and your optimizer supports this
+ * kind of fitness evaluation).
+ *
+ * @fn void Webots::Respond(std::map<std::string, double> const &fitness)
  */
 void
 Webots::Respond(map<string, double> const &fitness) 
 {
-	Respond(messages::task::Response::Success, fitness);
+	map<string, string> data;
+	Respond(fitness, data);
+}
+
+/**
+ * @brief Write success response to the dispatcher.
+ * @param fitness the solution fitness
+ *
+ * Write a success response to the dispatcher. This is the most convenient way
+ * of writing a response back to the dispatcher. This sends a single fitness
+ * value, if you want to send multiple fitness values, you can use:
+ * void Webots::Response(std::map<std::string, double> const &fitness)
+ *
+ */
+void
+Webots::Respond(double fitness) 
+{
+	map<string, string> data;
+	Respond(fitness, data);
 }
 
 /**
@@ -222,11 +250,73 @@ Webots::Respond(map<string, double> const &fitness)
  * @param fitness the fitness
  *
  * Write a response back to the dispatcher. Consider using Respond(std::map<std::string, double> const &fitness) which automatically sets the status to Success.
- * \fn void Webots::Respond(messages::task::Response::Status status, std::map<std::string, double> const &fitness)
+ * @fn void Webots::Respond(messages::task::Response::Status status, std::map<std::string, double> const &fitness)
  */
 void
 Webots::Respond(messages::task::Response::Status  status, 
                 map<string, double> const        &fitness) 
+{
+	map<string, string> data;
+	Respond(status, fitness, data);
+}
+
+/**
+ * @brief Write success response to the dispatcher with additional data.
+ * @param fitness the solution fitness
+ * @param data additional data
+ *
+ * Write a success response to the dispatcher with additional data. 
+ * This is the most convenient way
+ * of writing a response back to the dispatcher. This sends a single fitness
+ * value, if you want to send multiple fitness values, you can use:
+ * void Webots::Response(std::map<std::string, double> const &fitness, std::map<std::string, std::string> const &data)
+ *
+ * @fn void Webots::Respond(double fitness, std::map<std::string, std::string> const &data)
+ */
+void
+Webots::Respond(double fitness, std::map<string, string> const &data)
+{
+	map<string, double> fitnessmap;
+	fitnessmap["value"] = fitness;
+	
+	Respond(fitnessmap, data);
+}
+
+/**
+ * @brief Write success response to the dispatcher with additional data.
+ * @param fitness the solution fitness
+ * @param data additional data
+ *
+ * Write a success response to the dispatcher with additional data. 
+ * This is the most convenient way
+ * of writing a response back to the dispatcher. The fitness is a map of
+ * fitness names to values. You can thus set multiple fitness values if you
+ * have a multi objective fitness function (and your optimizer supports this
+ * kind of fitness evaluation).
+ *
+ * @fn void Webots::Respond(std::map<std::string, double> const &fitness, std::map<std::string, std::string> const &data)
+ */
+void
+Webots::Respond(std::map<std::string, double> const &fitness, std::map<string, string> const &data)
+{
+	Respond(messages::task::Response::Success, fitness, data);
+}
+
+/**
+ * @brief Write fitness response to the dispatcher with additional data.
+ * @param status the response status
+ * @param fitness the fitness
+ * @param data additional data
+ *
+ * Write a response back to the dispatcher with some additional data. Consider
+ * using 
+ * Respond(std::map<std::string, double> const &fitness, std::map<std::string, std::string> const &data)
+ * which automatically sets the status to Success.
+ *
+ * @fn void Webots::Respond(messages::task::Response::Status status, std::map<std::string, double> const &fitness, std::map<std::string, std::string> const &data)
+ */
+void
+Webots::Respond(messages::task::Response::Status status, std::map<std::string, double> const &fitness, std::map<string, string> const &data)
 {
 	messages::task::Response res;
 
@@ -239,6 +329,14 @@ Webots::Respond(messages::task::Response::Status  status,
 
 		f->set_name(iter->first);
 		f->set_value(iter->second);
+	}
+
+	for (map<string, string>::const_iterator iter = data.begin(); iter != data.end(); ++iter)
+	{
+		messages::task::Response::KeyValue *d = res.add_data();
+
+		d->set_key(iter->first);
+		d->set_value(iter->second);
 	}
 
 	Response(res);
@@ -297,8 +395,8 @@ Webots::Response(messages::task::Response &res)
  *
  * Get a dispatcher setting.
  *
- * @return: true if the setting was found, false otherwise
- * \fn bool Webots::Setting(std::string const &key, std::string &value)
+ * @return true if the setting was found, false otherwise
+ * @fn bool Webots::Setting(std::string const &key, std::string &value)
  */
 bool
 Webots::Setting(string const &key, 
@@ -324,8 +422,8 @@ Webots::Setting(string const &key,
  *
  * Check whether a dispatcher setting is set.
  *
- * @return: true if the setting is set, false otherwise
- * \fn bool Webots::Setting(std::string const &key)
+ * @return true if the setting is set, false otherwise
+ * @fn bool Webots::Setting(std::string const &key)
  */
 bool
 Webots::Setting(string const &key)

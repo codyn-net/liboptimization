@@ -41,8 +41,8 @@ using namespace optimization;
  *
  * Serializes a protobuf message to a string.
  *
- * @return: true if serialization was successful, false otherwise
- * \fn bool Messages::Create(::google::protobuf::Message const &message, std::string &serialized)
+ * @return true if serialization was successful, false otherwise
+ * @fn bool Messages::Create(::google::protobuf::Message const &message, std::string &serialized)
  */
 bool
 Messages::Create(::google::protobuf::Message const &message,

@@ -63,7 +63,7 @@ using namespace optimization::messages;
  * response at a later time.
  *
  * @return false if the request was invalid, true otherwise
- * \fn bool Dispatcher::RunTask()
+ * @fn bool Dispatcher::RunTask()
  */
 
 /**
@@ -72,7 +72,7 @@ using namespace optimization::messages;
  * Get the glib main loop for this dispatcher. The main loop will only be
  * created if UseMainLoop returns TRUE.
  *
- * @return: the glib main loop
+ * @return the glib main loop
  *
  */
 Glib::RefPtr<Glib::MainLoop> 
@@ -86,7 +86,7 @@ Dispatcher::Main()
  *
  * Reads the dispatcher request from STDIN.
  *
- * @return: true if the request could be read, false otherwise
+ * @return true if the request could be read, false otherwise
  *
  */
 bool
@@ -157,7 +157,7 @@ Dispatcher::ReadSettings()
  * request from STDIN. Then it calls RunTask and if needed will start a
  * glib main loop (this can be used for asynchronous dispatching).
  *
- * @return: true if the dispatch was successfull, false otherwise
+ * @return true if the dispatch was successfull, false otherwise
  *
  */
 bool
@@ -196,8 +196,8 @@ Dispatcher::Run()
  *
  * Get a dispatcher setting from the task request.
  *
- * @return: true if the setting could be found, false otherwise
- * \fn bool Dispatcher::Setting(std::string const &key, std::string &value) const
+ * @return true if the setting could be found, false otherwise
+ * @fn bool Dispatcher::Setting(std::string const &key, std::string &value) const
  */
 bool
 Dispatcher::Setting(string const &key, string &value) const
@@ -219,8 +219,8 @@ Dispatcher::Setting(string const &key, string &value) const
  *
  * Check whether a dispatcher setting in the task request is set.
  *
- * @return: true if the dispatcher setting is set, false otherwise
- * \fn bool Dispatcher::Setting(std::string const &key) const
+ * @return true if the dispatcher setting is set, false otherwise
+ * @fn bool Dispatcher::Setting(std::string const &key) const
  */
 bool
 Dispatcher::Setting(string const &key) const
@@ -236,7 +236,7 @@ Dispatcher::Setting(string const &key) const
  * Subclasses can override this if they do not need a main loop. The default
  * is TRUE.
  *
- * @return: true if the dispatcher needs a main loop, false otherwise
+ * @return true if the dispatcher needs a main loop, false otherwise
  *
  */
 bool
@@ -251,7 +251,7 @@ Dispatcher::UseMainLoop() const
  *
  * Write a response back to the worker process.
  *
- * @return: true if the response was written, false otherwise
+ * @return true if the response was written, false otherwise
  *
  */
 bool
@@ -277,7 +277,7 @@ Dispatcher::WriteResponse(messages::task::Response &response)
  *
  * Get the task request to be processed by the dispatcher.
  *
- * @return: the task request
+ * @return the task request
  *
  */
 optimization::messages::task::Task::Description &

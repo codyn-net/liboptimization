@@ -47,8 +47,13 @@ namespace optimization
 			messages::task::Task::Description &Request();
 			void Response(messages::task::Response &response);
 			
+			void Respond(double fitness);
 			void Respond(std::map<std::string, double> const &fitness);
 			void Respond(messages::task::Response::Status status, std::map<std::string, double> const &fitness);
+
+			void Respond(double fitness, std::map<std::string, std::string> const &data);
+			void Respond(std::map<std::string, double> const &fitness, std::map<std::string, std::string> const &data);
+			void Respond(messages::task::Response::Status status, std::map<std::string, double> const &fitness, std::map<std::string, std::string> const &data);
 
 			void RespondFail();
 			
