@@ -20,7 +20,7 @@
 
 #include "webots.ih"
 
-void Webots::waitForRequest() const
+void Webots::waitForRequest()
 {
 	Glib::RefPtr<Glib::MainContext> ctx = Glib::MainContext::get_default();
 
@@ -28,4 +28,6 @@ void Webots::waitForRequest() const
 	{
 		ctx->iteration(true);
 	}
+	
+	readSettings();
 }

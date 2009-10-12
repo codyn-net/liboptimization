@@ -20,23 +20,18 @@
 
 #include "webots.ih"
 
-bool Webots::setting(string const &key, string &value) const
+bool Webots::setting(string const &key, string &value)
 {
-	/* Make sure to wait for request first */
+	// Make sure to wait for request first
 	waitForRequest();
-	
-	size_t num = d_request.settings_size();
-	
-	for (size_t i = 0; i < num; ++i)
+
+	map<string, string>::const_iterator found = d_settings.find(key);
+
+	if (found == d_settings.end())
 	{
-		messages::task::Task::Description::KeyValue const &kv = d_request.settings(i);
-		
-		if (kv.key() == key)
-		{
-			value = kv.value();
-			return true;
-		}
+		return false;
 	}
-	
-	return false;
+
+	value = found->second;
+	return true;
 }

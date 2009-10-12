@@ -31,7 +31,8 @@ liboptimizationoptimizationwebots_la_SOURCES = 	\
 	setting2.cc	\
 	statics.cc	\
 	waitforrequest.cc	\
-	webots.cc
+	webots.cc \
+	readsettings.cc
 
 headerdir = $(pkgincludedir)/optimization/Webots
 header_DATA = 	\

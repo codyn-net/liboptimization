@@ -20,7 +20,7 @@
 
 #include "webots.ih"
 
-bool Webots::setting(string const &key) const
+bool Webots::setting(string const &key)
 {
 	string dummy;
 	return setting(key, dummy);
