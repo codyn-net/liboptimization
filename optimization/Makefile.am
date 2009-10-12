@@ -39,6 +39,7 @@ proto_DATA = 		\
 headerdir = $(pkgincludedir)/optimization
 header_DATA = 	\
 	optimization.hh \
+	constants.hh \
 	messages.hh \
 	discovery.hh \
 	dispatcher.hh \
@@ -48,6 +49,7 @@ header_DATA = 	\
 lib_LTLIBRARIES = liboptimization-1.0.la
 liboptimization_1_0_la_SOURCES = \
 	messages.cc \
+	constants.cc \
 	discovery.cc \
 	dispatcher.cc \
 	webots.cc \
