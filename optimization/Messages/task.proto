@@ -10,6 +10,10 @@ message Token {
 	required string response = 2;
 }
 
+message Cancel {
+	required uint32 id = 1;
+}
+
 /* The task message describes a task to be executed on a worker.
  */ 
 message Task {
@@ -137,16 +141,28 @@ message Response {
  */
 message Communication {
 	enum Type {
-		CommunicationRequest = 0;
-		CommunicationToken = 1;
+		CommunicationBatch = 0;
+		CommunicationTask = 1;
+		CommunicationResponse = 2;
+		CommunicationToken = 3;
+		CommunicationCancel = 4;
 	}
 	
 	// The type of communication
 	required Type type = 1;
 	
-	// The task description in case of a CommunicationRequest type
-	optional Task task = 2;
+	// The batch description in case of a CommunicationBatch type
+	optional Batch batch = 2;
 	
+	// The task description in case of a CommunicationTask type
+	optional Task task = 3;
+	
+	// The response description in case of a CommunicationResponse type
+	optional Response response = 4;
+
 	// The token response in case of a CommunicationToken type
-	optional Token token = 3;
+	optional Token token = 5;
+	
+	// The cancel description in case of CommunicationCancel type
+	optional Cancel cancel = 6;
 }
