@@ -64,7 +64,7 @@ namespace optimization
 			Webots();
 			void ReadSettings();
 			
-			bool OnData(os::FileDescriptor::DataArgs &args);
+			void OnData(os::FileDescriptor::DataArgs &args);
 	};
 }
 

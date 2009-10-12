@@ -23,4 +23,5 @@
 using namespace optimization;
 using namespace std;
 
+/** Default multicast discovery group address */
 string Constants::DiscoveryGroup = "225.0.0.37";

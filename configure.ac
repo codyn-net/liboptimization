@@ -47,8 +47,25 @@ LDFLAGS=$SAVED_LDFLAGS
 AC_SUBST(PACKAGE_LIBOPTIMIZATION_CFLAGS)
 AC_SUBST(PACKAGE_LIBOPTIMIZATION_LIBS)
 
+AC_ARG_ENABLE([docs],
+	AS_HELP_STRING([--enable-docs],[Enable documentation building (default: disabled)]),
+	[enable_docs=$enableval],
+	[enable_docs=no])
+
+if test "x$enable_docs" != "xno"; then
+	AC_CHECK_PROG(DOXYGEN, doxygen, doxygen, no)
+	
+	if test x"$DOXYGEN" == "xno"; then
+		AC_MSG_ERROR([you need to have doxygen installed for generating documentation])
+	fi
+fi
+
+AM_CONDITIONAL(ENABLE_DOCS, test x"$enable_docs" = "xyes")
+
 AC_OUTPUT(
 Makefile
 optimization/Makefile
 liboptimization.pc
+docs/Makefile
+docs/doxygen.cfg
 )

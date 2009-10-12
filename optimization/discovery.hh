@@ -30,7 +30,10 @@ namespace optimization
 		public:
 			struct Info
 			{
+				/** Advertized connection string */
 				std::string Connection;
+				
+				/** Host name of client connection */
 				std::string Host;
 			};
 			
@@ -54,7 +57,7 @@ namespace optimization
 				base::signals::Signal<Info> onGreeting;
 				base::signals::Signal<Info> onWakeup;
 
-				bool OnDataHandler(UdpServer::DataArgs &args);
+				void OnDataHandler(UdpServer::DataArgs &args);
 				bool CheckNamespace(std::string const &ns) const;
 			};
 			

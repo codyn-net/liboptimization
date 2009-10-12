@@ -1,5 +1,9 @@
 SUBDIRS = optimization
 
+if ENABLE_DOCS
+SUBDIRS += docs
+endif
+
 # pkg-config stuff
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = \

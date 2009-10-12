@@ -23,6 +23,15 @@
 using namespace std;
 using namespace optimization;
 
+/** \brief Serialize protobuf message to string.
+ * @param message message to serialize
+ * @param serialized serialized return value
+ *
+ * Serializes a protobuf message to a string.
+ *
+ * @return: true if serialization was successful, false otherwise
+ * \fn bool Messages::Create(::google::protobuf::Message const &message, std::string &serialized)
+ */
 bool
 Messages::Create(::google::protobuf::Message const &message,
                  string                            &serialized)

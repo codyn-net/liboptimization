@@ -40,6 +40,14 @@ namespace optimization
 			static bool Create(::google::protobuf::Message const &message, std::string &serialized);
 	};
 	
+	/** \brief Extract protobuf messages from buffered data.
+	 * @param args the data args from a file descriptor (socket, stream, file)
+	 * @param messages return value for received messages
+	 *
+	 * Extract protobuf messages from data as received from a FileDescriptor or
+	 * any subclass of FileDescriptor.
+	 *
+	 */
 	template <typename T>
 	void Messages::Extract(os::FileDescriptor::DataArgs &args, std::vector<T> &messages)
 	{

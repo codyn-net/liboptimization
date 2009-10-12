@@ -23,3 +23,7 @@ missing
 /optimization/task.pb.h
 /optimization/_discovery.pb.cc
 /optimization/discovery.pb.h
+docs/html
+docs/latex
+docs/doxygen.cfg
+docs/Doxyfile

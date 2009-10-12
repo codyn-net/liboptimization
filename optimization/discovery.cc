@@ -28,12 +28,28 @@ using namespace std;
 using namespace optimization;
 using namespace base::signals;
 
+/** \brief Check the discovery namespace (const).
+ * @param ns the namespace to check
+ *
+ * Check if the specified namespace matches with the namespace set for this
+ * discovery object.
+ *
+ * @return: true if the namespaces match, false otherwise
+ *
+ */
 bool
 Discovery::Data::CheckNamespace(string const &ns) const
 {
 	return (this->ns == ns);
 }
 
+/** \brief Discovery constructor.
+ *
+ * Constructor.
+ *
+ * Create new discovery object.
+ *
+ */
 Discovery::Discovery()
 :
 	UdpServer(Constants::DiscoveryGroup, Constants::DiscoveryPort)
@@ -42,6 +58,13 @@ Discovery::Discovery()
 	addPrivateData(d_data);
 }
 
+/** \brief Listen on the discovery address.
+ *
+ * Start listening on the discovery address.
+ *
+ * @return: true if listening, false otherwise
+ *
+ */
 bool
 Discovery::Listen()
 {
@@ -55,13 +78,27 @@ Discovery::Listen()
 	return ret;
 }
 
+/** \brief The discovery namespace (const).
+ *
+ * Get the discovery namespace. The namespace is used to separate several
+ * groups of master and worker processes.
+ *
+ * @return: Description
+ *
+ */
 string const &
 Discovery::Namespace() const
 {
 	return d_data->ns;
 }
 
-bool
+/** \brief Discovery data callback handler.
+ * @param args data args
+ *
+ * Called when data is received on the discovery port.
+ *
+ */
+void
 Discovery::Data::OnDataHandler(UdpServer::DataArgs &args) 
 {
 	vector<messages::discovery::Discovery> discovery;
@@ -94,24 +131,43 @@ Discovery::Data::OnDataHandler(UdpServer::DataArgs &args)
 			
 			debug_worker << "Received wakeup: " << info.Connection << endl;
 			onWakeup(info);
-		}		
+		}
 	}
-	
-	return false;
 }
 
+/** \brief Set the discovery namespace.
+ * @param ns the namespace
+ *
+ * Set the discovery namespace. The namespace is used to separate several
+ * groups of master and worker processes.
+ * \fn void Discovery::SetNamespace(std::string const &ns)
+ */
 void
 Discovery::SetNamespace(string const &ns)
 {
 	d_data->ns = ns;
 }
 
+/** \brief Greeting signal.
+ *
+ * Signal emitted when a greeting message was received.
+ *
+ * @return: the signal object
+ *
+ */
 Signal<Discovery::Info> &
 Discovery::OnGreeting()
 {
 	return d_data->onGreeting;
 }
 
+/** \brief OnWakeup signal
+ *
+ * Signal emitted when a wakeup message was received.
+ *
+ * @return: the signal object
+ *
+ */
 Signal<Discovery::Info> &
 Discovery::OnWakeup()
 {
