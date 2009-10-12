@@ -21,7 +21,7 @@
 #ifndef __OPTIMIZATION_WEBOTS_H__
 #define __OPTIMIZATION_WEBOTS_H__
 
-#include <optimization/Messages/task.pb.h>
+#include <optimization/task.pb.h>
 #include <network/network.hh>
 #include <os/os.hh>
 #include <map>
@@ -41,30 +41,30 @@ namespace optimization
 
 		public:
 			/* Constructor/destructor */
-			static Webots &instance();
+			static Webots &Instance();
 
 			/* Public functions */
-			messages::task::Task::Description &request();
-			void response(messages::task::Response &response);
+			messages::task::Task::Description &Request();
+			void Response(messages::task::Response &response);
 			
-			void respond(std::map<std::string, double> const &fitness);
-			void respond(messages::task::Response::Status status, std::map<std::string, double> const &fitness);
+			void Respond(std::map<std::string, double> const &fitness);
+			void Respond(messages::task::Response::Status status, std::map<std::string, double> const &fitness);
 
-			void respondFail();
+			void RespondFail();
 			
 			operator bool() const;
-			bool hasRequest() const;
+			bool HasRequest() const;
 			
-			void waitForRequest();
+			void WaitForRequest();
 			
-			bool setting(std::string const &key, std::string &value);
-			bool setting(std::string const &key);
+			bool Setting(std::string const &key, std::string &value);
+			bool Setting(std::string const &key);
 		private:
 			/* Private functions */
 			Webots();
-			void readSettings();
+			void ReadSettings();
 			
-			bool onData(os::FileDescriptor::DataArgs &args);
+			bool OnData(os::FileDescriptor::DataArgs &args);
 	};
 }
 

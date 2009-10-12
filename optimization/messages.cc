@@ -1,5 +1,5 @@
 /*
- *  setting1.cc - This file is part of liboptimization
+ *  messages.cc - This file is part of liboptimization
  *
  *  Copyright (C) 2009 - Jesse van den Kieboom
  *
@@ -18,20 +18,25 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
  */
 
-#include "webots.ih"
+#include "messages.hh"
 
-bool Webots::setting(string const &key, string &value)
+using namespace std;
+using namespace optimization;
+
+bool
+Messages::Create(::google::protobuf::Message const &message,
+                 string                            &serialized)
 {
-	// Make sure to wait for request first
-	waitForRequest();
-
-	map<string, string>::const_iterator found = d_settings.find(key);
-
-	if (found == d_settings.end())
+	if (!message.SerializeToString(&serialized))
 	{
 		return false;
 	}
-
-	value = found->second;
+	
+	stringstream s;
+	
+	size_t len = serialized.length();
+	s << len << " " << serialized;
+	
+	serialized = s.str();
 	return true;
 }

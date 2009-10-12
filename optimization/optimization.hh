@@ -21,10 +21,11 @@
 #ifndef __OPTIMIZATION_OPTIMIZATION_H__
 #define __OPTIMIZATION_OPTIMIZATION_H__
 
-#include <optimization/Constants/constants.hh>
-#include <optimization/Discovery/discovery.hh>
-#include <optimization/Dispatcher/dispatcher.hh>
-#include <optimization/Webots/webots.hh>
+#include <optimization/constants.hh>
+#include <optimization/discovery.hh>
+#include <optimization/dispatcher.hh>
+#include <optimization/webots.hh>
+#include <optimization/messages.hh>
 
 #endif /* __OPTIMIZATION_OPTIMIZATION_H__ */
 

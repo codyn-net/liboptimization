@@ -21,7 +21,7 @@
 #ifndef __OPTIMIZATION_DISPATCHER_H__
 #define __OPTIMIZATION_DISPATCHER_H__
 
-#include <optimization/Messages/task.pb.h>
+#include <optimization/task.pb.h>
 #include <glibmm.h>
 
 namespace optimization
@@ -34,32 +34,25 @@ namespace optimization
 
 		public:
 			/* Public functions */
-			virtual bool run();
+			virtual bool Run();
 			
-			messages::task::Task::Description &request();
+			messages::task::Task::Description &Request();
 
-			bool setting(std::string const &key, std::string &value) const;
-			bool setting(std::string const &key) const;
+			bool Setting(std::string const &key, std::string &value) const;
+			bool Setting(std::string const &key) const;
 		protected:
-			virtual bool readRequest();
-			void readSettings();
+			virtual bool ReadRequest();
+			void ReadSettings();
 
-			virtual bool writeResponse(messages::task::Response &response);
-
-			virtual bool runSolution() = 0;
+			virtual bool WriteResponse(messages::task::Response &response);
+			virtual bool RunSolution() = 0;
+			virtual bool UseMainLoop() const;
 			
-			virtual bool useMainLoop() const;
-			
-			Glib::RefPtr<Glib::MainLoop> main();
+			Glib::RefPtr<Glib::MainLoop> Main();
 		private:
 			/* Private functions */
 		
 	};
-	
-	inline messages::task::Task::Description &Dispatcher::request()
-	{
-		return d_request;
-	}
 }
 
 #endif /* __OPTIMIZATION_DISPATCHER_H__ */

@@ -30,21 +30,21 @@ namespace optimization
 		public:
 			struct Info
 			{
-				std::string connection;
-				std::string host;
+				std::string Connection;
+				std::string Host;
 			};
 			
 			/* Constructor/destructor */
 			Discovery();
 		
-			void setNs(std::string const &ns);
-			std::string const &ns() const;
+			void SetNamespace(std::string const &ns);
+			std::string const &Namespace() const;
 			
 			/* Public functions */
-			base::signals::Signal<Info> &onGreeting();
-			base::signals::Signal<Info> &onWakeup();
+			base::signals::Signal<Info> &OnGreeting();
+			base::signals::Signal<Info> &OnWakeup();
 			
-			virtual bool listen();
+			virtual bool Listen();
 		private:
 			/* Private functions */
 			struct Data : public base::Object::PrivateData
@@ -54,22 +54,12 @@ namespace optimization
 				base::signals::Signal<Info> onGreeting;
 				base::signals::Signal<Info> onWakeup;
 
-				bool onDataHandler(UdpServer::DataArgs &args);
-				bool checkNs(std::string const &ns) const;
+				bool OnDataHandler(UdpServer::DataArgs &args);
+				bool CheckNamespace(std::string const &ns) const;
 			};
 			
 			Data *d_data;
 	};
-	
-	inline base::signals::Signal<Discovery::Info> &Discovery::onGreeting()
-	{
-		return d_data->onGreeting;
-	}
-	
-	inline base::signals::Signal<Discovery::Info> &Discovery::onWakeup()
-	{
-		return d_data->onWakeup;
-	}
 }
 
 #endif /* __OPTIMIZATION_DISCOVERY_H__ */

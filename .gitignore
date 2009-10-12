@@ -19,3 +19,7 @@ m4
 Makefile
 Makefile.in
 missing
+/optimization/_task.pb.cc
+/optimization/task.pb.h
+/optimization/_discovery.pb.cc
+/optimization/discovery.pb.h

@@ -1,5 +1,5 @@
 /*
- *  datacheckns.cc - This file is part of liboptimization
+ *  constants.cc - This file is part of liboptimization
  *
  *  Copyright (C) 2009 - Jesse van den Kieboom
  *
@@ -18,9 +18,9 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
  */
 
-#include "discovery.ih"
+#include "constants.hh"
 
-bool Discovery::Data::checkNs(string const &ns) const
-{
-	return (this->ns == ns);
-}
+using namespace optimization;
+using namespace std;
+
+string Constants::DiscoveryGroup = "225.0.0.37";

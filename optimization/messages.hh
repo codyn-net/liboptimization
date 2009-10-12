@@ -26,8 +26,8 @@
 #include <string>
 #include <sstream>
 #include <google/protobuf/message.h>
-#include <optimization/Messages/task.pb.h>
-#include <optimization/Messages/discovery.pb.h>
+#include <optimization/task.pb.h>
+#include <optimization/discovery.pb.h>
 
 namespace optimization
 {
@@ -35,13 +35,13 @@ namespace optimization
 	{
 		public:
 			template <typename T>
-			static void extract(os::FileDescriptor::DataArgs &args, std::vector<T> &messages);
+			static void Extract(os::FileDescriptor::DataArgs &args, std::vector<T> &messages);
 			
-			static bool create(::google::protobuf::Message const &message, std::string &serialized);
+			static bool Create(::google::protobuf::Message const &message, std::string &serialized);
 	};
 	
 	template <typename T>
-	void Messages::extract(os::FileDescriptor::DataArgs &args, std::vector<T> &messages)
+	void Messages::Extract(os::FileDescriptor::DataArgs &args, std::vector<T> &messages)
 	{
 		std::string data = args.data;
 	

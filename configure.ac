@@ -49,12 +49,6 @@ AC_SUBST(PACKAGE_LIBOPTIMIZATION_LIBS)
 
 AC_OUTPUT(
 Makefile
-optimization/Constants/Makefile
-optimization/Discovery/Makefile
-optimization/Dispatcher/Makefile
-optimization/Messages/Makefile
-optimization/Webots/Makefile
 optimization/Makefile
-
 liboptimization.pc
 )
