@@ -96,6 +96,11 @@ message Response {
 		required double value = 2;
 	}
 	
+	message KeyValue {
+		required string key = 1;
+		required string value = 2;
+	}
+	
 	// Sub message describing a failure (when status is Failed)
 	message Failure {
 		enum Type
@@ -130,6 +135,9 @@ message Response {
 	
 	// The failure description in case of a 'Failure' response
 	optional Failure failure = 5;
+	
+	// Additional data to be send
+	repeated KeyValue data = 6;
 	
 	// Extensions
 	extensions 1000 to max;
