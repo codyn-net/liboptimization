@@ -38,7 +38,6 @@ AC_LINK_IFELSE(
 
 PKG_CHECK_MODULES(PACKAGE_LIBOPTIMIZATION, [
 	libjessevdk-0.1
-	cpg-network-1.0
 	glibmm-2.4
 ])
 
