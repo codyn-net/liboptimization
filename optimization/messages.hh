@@ -65,13 +65,19 @@ namespace optimization
 			}
 	
 			T message;
-			char *buffer = new char[num + 1];
 
 			if (!s.ignore(1, ' '))
+			{
 				break;
+			}
+
+			char *buffer = new char[num + 1];
 
 			if (!s.read(buffer, num))
+			{
+				delete[] buffer;
 				break;
+			}
 
 			buffer[num] = '\0';
 			
