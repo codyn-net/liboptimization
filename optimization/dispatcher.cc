@@ -81,6 +81,15 @@ Dispatcher::Main()
 	return d_main;
 }
 
+void
+Dispatcher::Stop()
+{
+	if (UseMainLoop() && d_main)
+	{
+		d_main->quit();
+	}
+}
+
 /**
  * @brief Read dispatcher task request from STDIN.
  *

@@ -35,6 +35,7 @@ namespace optimization
 		public:
 			/* Public functions */
 			virtual bool Run();
+			virtual void Stop();
 			
 			messages::task::Task::Description &Request();
 
