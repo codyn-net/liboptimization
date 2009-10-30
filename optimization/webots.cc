@@ -42,7 +42,7 @@ using namespace optimization;
  * The class is a singleton from which you can get an instance using Instance().
  * A basic use of the class is the following:
  * \code
- * optimiation::Webots &request = optimization::Webots::Instance();
+ * optimization::Webots &request = optimization::Webots::Instance();
  *
  * // See if we are in optimization mode
  * if (request)
