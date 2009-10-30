@@ -60,6 +60,10 @@ using namespace optimization;
  * running the simulation for that amount of time, use Respond() to send back
  * the fitness of the simulation and quit the simulation.
  *
+ * Use Request() to get the optimization::messages::task::Task_Description
+ * object to get the particular parameters and boundaries for the task that
+ * has to be executed.
+ *
  * If you want to send additional data back to the optimizer, you can use
  * one of the Respond() functions that accepts an additional map of string key
  * values. The optimizer will save this additional data so you can extract
