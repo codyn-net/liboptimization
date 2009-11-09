@@ -76,6 +76,7 @@ message Task {
 message Batch {
 	required double priority = 1;
 	repeated Task tasks = 2;
+	optional double timeout = 3;
 }
 
 /* A response message is the response to a certain request. It is send from the
