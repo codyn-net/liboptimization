@@ -37,7 +37,7 @@ AC_LINK_IFELSE(
 		AC_MSG_ERROR([google protobuf is not installed.])])
 
 PKG_CHECK_MODULES(PACKAGE_LIBOPTIMIZATION, [
-	libjessevdk-0.1
+	libjessevdk-0.1 >= 0.2
 	glibmm-2.4
 ])
 

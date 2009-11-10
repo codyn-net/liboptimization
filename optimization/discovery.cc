@@ -23,6 +23,7 @@
 #include <base/base.hh>
 #include <optimization/constants.hh>
 #include <optimization/messages.hh>
+#include <optimization/debug.hh>
 
 using namespace std;
 using namespace optimization;

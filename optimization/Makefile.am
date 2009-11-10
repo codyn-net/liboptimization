@@ -40,9 +40,10 @@ headerdir = $(pkgincludedir)/optimization
 header_DATA = 	\
 	optimization.hh \
 	constants.hh \
-	messages.hh \
+	debug.hh \
 	discovery.hh \
 	dispatcher.hh \
+	messages.hh \
 	webots.hh \
 	$(BUILT_HDRS)
 
