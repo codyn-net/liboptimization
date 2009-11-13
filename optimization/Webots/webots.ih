@@ -1,9 +1,0 @@
-#include "webots.hh"
-
-#include <os/Environment/environment.hh>
-#include <optimization/Messages/messages.hh>
-#include <glibmm.h>
-#include <base/Debug/debug.hh>
-
-using namespace std;
-using namespace optimization;

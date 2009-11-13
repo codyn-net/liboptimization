@@ -1,8 +1,0 @@
-#include "dispatcher.hh"
-#include <iostream>
-#include <optimization/Messages/messages.hh>
-
-using namespace std;
-using namespace optimization;
-using namespace optimization::messages;
-

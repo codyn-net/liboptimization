@@ -1,5 +1,5 @@
 /*
- *  optimization.hh - This file is part of liboptimization
+ *  constants.hh - This file is part of liboptimization
  *
  *  Copyright (C) 2009 - Jesse van den Kieboom
  *
@@ -18,15 +18,30 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
  */
 
-#ifndef __OPTIMIZATION_OPTIMIZATION_H__
-#define __OPTIMIZATION_OPTIMIZATION_H__
+#ifndef __OPTIMIZATION_CONSTANTS_H__
+#define __OPTIMIZATION_CONSTANTS_H__
 
-#include <optimization/constants.hh>
-#include <optimization/debug.hh>
-#include <optimization/discovery.hh>
-#include <optimization/dispatcher.hh>
-#include <optimization/webots.hh>
-#include <optimization/messages.hh>
+#include <string>
 
-#endif /* __OPTIMIZATION_OPTIMIZATION_H__ */
+namespace optimization
+{
+	struct Constants
+	{
+		enum
+		{
+			/** Default discovery port. */
+			DiscoveryPort = 4756,
+
+			/** Default worker port. */
+			WorkerPort = 8723,
+
+			/** Default master port. */
+			MasterPort = 9485
+		};
+		
+		static std::string DiscoveryGroup;
+	};
+}
+
+#endif /* __OPTIMIZATION_CONSTANTS_H__ */
 

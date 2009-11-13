@@ -15,7 +15,7 @@ INCLUDES = \
 	-DPKGDATADIR=\""$(pkgdatadir)"\" \
 	-DPKGLIBDIR=\""$(pkglibdir)"\"
 
-liboptimization_0_1_la_SOURCES = 	\
+liboptimization_1_0_la_SOURCES = 	\
 	dummy.cc
 
 headerdir = $(pkgincludedir)/
@@ -23,20 +23,13 @@ header_DATA =
 
 EXTRA_DIST = \
 	$(header_DATA)
-lib_LTLIBRARIES = liboptimization-0.1.la
-liboptimization_0_1_la_CFLAGS = -D_GNU_SOURCE -g $(PACKAGE_LIBOPTIMIZATION_CFLAGS)
-liboptimization_0_1_la_LDFLAGS = -export-dynamic -no-undefined $(PACKAGE_LIBOPTIMIZATION_LIBS)
-liboptimization_0_1_la_LIBADD = \
+lib_LTLIBRARIES = liboptimization-1.0.la
+liboptimization_1_0_la_CFLAGS = -D_GNU_SOURCE -g $(PACKAGE_LIBOPTIMIZATION_CFLAGS)
+liboptimization_1_0_la_LDFLAGS = -export-dynamic -no-undefined $(PACKAGE_LIBOPTIMIZATION_LIBS)
+liboptimization_1_0_la_LIBADD = \
 \
-	optimization/Boundaries/liboptimizationoptimizationboundaries.la \
 	optimization/Constants/liboptimizationoptimizationconstants.la \
 	optimization/Discovery/liboptimizationoptimizationdiscovery.la \
 	optimization/Dispatcher/liboptimizationoptimizationdispatcher.la \
-	optimization/Fitness/liboptimizationoptimizationfitness.la \
 	optimization/Messages/liboptimizationoptimizationmessages.la \
-	optimization/Optimizer/Extension/liboptimizationoptimizationoptimizerextension.la \
-	optimization/Optimizer/liboptimizationoptimizationoptimizer.la \
-	optimization/Parameters/liboptimizationoptimizationparameters.la \
-	optimization/Settings/liboptimizationoptimizationsettings.la \
-	optimization/Solution/liboptimizationoptimizationsolution.la \
 	optimization/Webots/liboptimizationoptimizationwebots.la 

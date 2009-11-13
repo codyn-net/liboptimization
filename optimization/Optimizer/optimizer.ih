@@ -1,9 +1,0 @@
-#include "optimizer.hh"
-
-#include <base/String/string.hh>
-
-using namespace optimization;
-using namespace base;
-using namespace std;
-using namespace math;
-using namespace db;

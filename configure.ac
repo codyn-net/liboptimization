@@ -1,4 +1,4 @@
-AC_INIT(liboptimization, 0.1)
+AC_INIT(liboptimization, 1.0)
 
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 
@@ -15,7 +15,7 @@ AC_PROG_MAKE_SET
 
 AM_MAINTAINER_MODE
 
-LIBOPTIMIZATION_API_VERSION=0.1
+LIBOPTIMIZATION_API_VERSION=1.0
 AC_SUBST(LIBOPTIMIZATION_API_VERSION)
 
 pkgincludedir="$includedir/liboptimization-$LIBOPTIMIZATION_API_VERSION"
@@ -37,8 +37,7 @@ AC_LINK_IFELSE(
 		AC_MSG_ERROR([google protobuf is not installed.])])
 
 PKG_CHECK_MODULES(PACKAGE_LIBOPTIMIZATION, [
-	libjessevdk-0.1
-	cpg-network-1.0
+	libjessevdk-0.1 >= 0.2
 	glibmm-2.4
 ])
 
@@ -47,22 +46,25 @@ LDFLAGS=$SAVED_LDFLAGS
 AC_SUBST(PACKAGE_LIBOPTIMIZATION_CFLAGS)
 AC_SUBST(PACKAGE_LIBOPTIMIZATION_LIBS)
 
+AC_ARG_ENABLE([docs],
+	AS_HELP_STRING([--enable-docs],[Enable documentation building (default: disabled)]),
+	[enable_docs=$enableval],
+	[enable_docs=no])
+
+if test "x$enable_docs" != "xno"; then
+	AC_CHECK_PROG(DOXYGEN, doxygen, doxygen, no)
+	
+	if test x"$DOXYGEN" == "xno"; then
+		AC_MSG_ERROR([you need to have doxygen installed for generating documentation])
+	fi
+fi
+
+AM_CONDITIONAL(ENABLE_DOCS, test x"$enable_docs" = "xyes")
+
 AC_OUTPUT(
 Makefile
-optimization/Boundaries/Makefile
-optimization/Constants/Makefile
-optimization/Container/Makefile
-optimization/Discovery/Makefile
-optimization/Dispatcher/Makefile
-optimization/Fitness/Makefile
-optimization/Messages/Makefile
-optimization/Optimizer/Extension/Makefile
-optimization/Optimizer/Makefile
-optimization/Parameters/Makefile
-optimization/Settings/Makefile
-optimization/Solution/Makefile
-optimization/Webots/Makefile
 optimization/Makefile
-
 liboptimization.pc
+docs/Makefile
+docs/doxygen.cfg
 )

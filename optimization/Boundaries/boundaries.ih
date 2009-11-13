@@ -1,4 +1,0 @@
-#include "boundaries.hh"
-
-using namespace std;
-using namespace optimization;

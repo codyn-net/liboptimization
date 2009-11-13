@@ -1,4 +1,0 @@
-#include "constants.hh"
-
-using namespace optimization;
-using namespace std;

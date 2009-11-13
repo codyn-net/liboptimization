@@ -1,8 +1,0 @@
-#include "discovery.hh"
-
-#include <base/base.hh>
-#include <optimization/Constants/constants.hh>
-#include <optimization/Messages/messages.hh>
-
-using namespace std;
-using namespace optimization;

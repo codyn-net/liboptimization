@@ -2,11 +2,11 @@ prefix=@prefix@
 exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
-protodir=@pkgincludedir@/optimization/Messages
+protodir=@pkgincludedir@/optimization
 
 Name: liboptimization-optimization
 Description: liboptimization C++ optimization library
-Requires: glibmm-2.4 libjessevdk-0.1 cpg-network-1.0
+Requires: glibmm-2.4 libjessevdk-0.1 >= 0.2
 Version: @VERSION@
 Libs: -L${libdir} -loptimization-@LIBOPTIMIZATION_API_VERSION@ -lprotobuf
 Cflags: -I${includedir}/liboptimization-@LIBOPTIMIZATION_API_VERSION@

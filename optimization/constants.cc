@@ -1,5 +1,5 @@
 /*
- *  optimization.hh - This file is part of liboptimization
+ *  constants.cc - This file is part of liboptimization
  *
  *  Copyright (C) 2009 - Jesse van den Kieboom
  *
@@ -18,15 +18,18 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
  */
 
-#ifndef __OPTIMIZATION_OPTIMIZATION_H__
-#define __OPTIMIZATION_OPTIMIZATION_H__
+#include "constants.hh"
 
-#include <optimization/constants.hh>
-#include <optimization/debug.hh>
-#include <optimization/discovery.hh>
-#include <optimization/dispatcher.hh>
-#include <optimization/webots.hh>
-#include <optimization/messages.hh>
+using namespace optimization;
+using namespace std;
 
-#endif /* __OPTIMIZATION_OPTIMIZATION_H__ */
+/**
+ * @class optimization::Constants
+ * @brief Optimization constants
+ *
+ * Class that defines some useful constants used in optimization.
+ *
+ */
 
+/** Default multicast discovery group address */
+string Constants::DiscoveryGroup = "225.0.0.37";
