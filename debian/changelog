@@ -1,4 +1,10 @@
-liboptimization (0.1-1) $DIST; urgency=low
+liboptimization (1.0-1) UNRELEASED; urgency=low
+
+  * New upstream release 
+
+ -- Jesse van den Kieboom <jvanden@grijpc10.epfl.ch>  Tue, 10 Nov 2009 18:14:44 +0100
+
+liboptimization (0.1-1) UNRELEASED; urgency=low
 
   * Initial release
 
