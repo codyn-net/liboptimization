@@ -42,12 +42,12 @@ using namespace optimization;
  * The class is a singleton from which you can get an instance using Instance().
  * A basic use of the class is the following:
  * \code
- * optimization::Webots &request = optimization::Webots::Instance();
+ * optimization::Webots &optinst = optimization::Webots::Instance();
  *
  * // See if we are in optimization mode
- * if (request)
+ * if (optinst)
  * {
- *     request.WaitForRequest();
+ *     optinst.WaitForRequest();
  *
  *     // Read parameters, setup your controller
  * }

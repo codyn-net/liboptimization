@@ -39,4 +39,10 @@
  * The library contains one more specialized class (optimization::Webots) which
  * is a singleton class that can be used in a webots controller in conjunction
  * with the webots dispatcher.
+ *
+ * NOTE: The generated documentation for the protobuf classes is a bit strange
+ * with doxygen. Until a way is found to fix that, the nested protobuf classes
+ * are indicated with <Base>_<Nested> (not the underscore). In your code the
+ * prefered way of referring to this nested classes is <Base>::<Nested>.
+ *
  */

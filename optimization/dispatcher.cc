@@ -81,6 +81,14 @@ Dispatcher::Main()
 	return d_main;
 }
 
+/**
+ * @brief Stop dispatcher.
+ *
+ * Stop the dispatcher. The default implementation will quit the main loop
+ * if one is used. You can override this in your dispatcher if you need to
+ * clean up something for example.
+ *
+ **/
 void
 Dispatcher::Stop()
 {

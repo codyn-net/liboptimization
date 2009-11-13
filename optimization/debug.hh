@@ -10,9 +10,15 @@
 
 namespace optimization
 {
+	/** @brief Optimization debug class.
+	 *
+	 * Simple debug class for debugging optimization framework.
+	 **/
 	class Debug : public base::Debug
 	{
 		public:
+			/** @brief Optimization debug domains.
+			 **/
 			struct Domain
 			{
 				enum Values

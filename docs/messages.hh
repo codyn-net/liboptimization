@@ -289,6 +289,43 @@ namespace optimization::messages::task
  */
 
 /**
+ * @fn bool Batch::has_timeout() const
+ * @brief Get whether the timeout field has been set.
+ *
+ * Get whether the timeout field has been set.
+ *
+ * @return whether the timeout field has been set
+ *
+ */
+
+/**
+ * @fn void Batch::clear_timeout()
+ * @brief Clears the timeout field.
+ *
+ * Clears the timeout field.
+ *
+ */
+
+/**
+ * @fn void Batch::set_timeout(double value)
+ * @brief Set the timeout field.
+ * @param timeout the field value
+ *
+ * Set the value of the timeout field.
+ *
+ */
+
+/**
+ * @fn double Batch::timeout() const
+ * @brief Get the timeout field.
+ *
+ * Get the timeout field.
+ *
+ * @return the value of the timeout field
+ *
+ */
+ 
+/**
  * @fn int Batch::tasks_size() const
  * @brief Get the number of items in the tasks field list.
  *

@@ -68,7 +68,6 @@ using namespace base::signals;
  * discovery object.
  *
  * @return true if the namespaces match, false otherwise
- *
  */
 bool
 Discovery::Data::CheckNamespace(string const &ns) const
@@ -178,7 +177,7 @@ Discovery::Data::OnDataHandler(UdpServer::DataArgs &args)
  *
  * Set the discovery namespace. The namespace is used to separate several
  * groups of master and worker processes.
- * @fn void Discovery::SetNamespace(std::string const &ns)
+ * @fn void optimization::Discovery::SetNamespace(std::string const &ns)
  */
 void
 Discovery::SetNamespace(string const &ns)
