@@ -1,4 +1,4 @@
-AC_INIT(liboptimization, 1.0)
+AC_INIT(liboptimization, 1.1)
 
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 
