@@ -197,6 +197,18 @@ Webots::ReadSettings()
 	}
 }
 
+void
+Webots::ReadParameters()
+{
+	size_t num = d_request.parameters_size();
+
+	for (size_t i = 0; i < num; ++i)
+	{
+		messages::task::Task::Description::Parameter const &parameter = d_request.parameters(i);
+		d_parameters[parameter.name()] = parameter;
+	}
+}
+
 /**
  * @brief Get the dispatcher task request.
  *
@@ -438,6 +450,51 @@ Webots::Setting(string const &key)
 }
 
 /**
+ * @brief Get parameter.
+ * @param name parameter name
+ * @param parameter parameter return value
+ *
+ * Get a parameter.
+ *
+ * @return true if the parameter was found, false otherwise
+ * @fn bool Webots::Parameter(std::string const &name, messages::task::Task::Description::Parameter &parameter)
+ */
+bool
+Webots::Parameter(string const                                 &name,
+                  messages::task::Task::Description::Parameter &parameter)
+{
+	// Make sure to wait for request first
+	WaitForRequest();
+
+	map<string, messages::task::Task::Description::Parameter>::const_iterator found = d_parameters.find(name);
+
+	if (found == d_parameters.end())
+	{
+		return false;
+	}
+
+	parameter = found->second;
+	return true;
+}
+
+/**
+ * @brief Check if a parameter is set.
+ * @param name parameter name
+ *
+ * Check whether a parameter is set.
+ *
+ * @return true if the parameter is set, false otherwise
+ * @fn bool Webots::Parameter(std::string const &name)
+ */
+bool
+Webots::Parameter(string const &name)
+{
+	messages::task::Task::Description::Parameter dummy;
+
+	return Parameter(name, dummy);
+}
+
+/**
  * @brief Wait for request from dispatcher.
  *
  * Wait for a task request from the webots dispatcher. You should always wait
@@ -455,4 +512,5 @@ Webots::WaitForRequest()
 	}
 
 	ReadSettings();
+	ReadParameters();
 }
