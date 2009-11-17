@@ -36,6 +36,7 @@ namespace optimization
 		network::Client d_client;
 		messages::task::Task::Description d_request;
 		std::map<std::string, std::string> d_settings;
+		std::map<std::string, messages::task::Task::Description::Parameter> d_parameters;
 
 		bool d_hasRequest;
 
@@ -64,10 +65,15 @@ namespace optimization
 			
 			bool Setting(std::string const &key, std::string &value);
 			bool Setting(std::string const &key);
+			
+			bool Parameter(std::string const &name, messages::task::Task::Description::Parameter &parameter);
+			bool Parameter(std::string const &name);
 		private:
 			/* Private functions */
 			Webots();
+
 			void ReadSettings();
+			void ReadParameters();
 			
 			void OnData(os::FileDescriptor::DataArgs &args);
 	};
