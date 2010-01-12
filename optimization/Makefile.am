@@ -44,6 +44,7 @@ INSTHEADERS = \
 	dispatcher.hh \
 	messages.hh \
 	processes.hh \
+	taskreader.hh \
 	webots.hh
 	
 headerdir = $(pkgincludedir)/optimization
@@ -58,6 +59,7 @@ liboptimization_1_0_la_SOURCES = \
 	discovery.cc \
 	dispatcher.cc \
 	processes.cc \
+	taskreader.cc \
 	webots.cc \
 	$(BUILT_SOURCES)
 
