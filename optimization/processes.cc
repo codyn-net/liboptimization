@@ -7,8 +7,8 @@
 using namespace std;
 using namespace optimization;
 
-pid_t
-Processes::Parent(pid_t child)
+GPid
+Processes::Parent(GPid child)
 {
 	stringstream path;
 
@@ -32,7 +32,7 @@ Processes::Parent(pid_t child)
 
 	stringstream s(line.substr(pos + 1));
 	string dummy;
-	pid_t parentPid;
+	GPid parentPid;
 
 	if (!(s >> dummy >> parentPid))
 	{
@@ -42,11 +42,11 @@ Processes::Parent(pid_t child)
 	return parentPid;
 }
 
-vector<pid_t>
-Processes::Collect(map<pid_t, vector<pid_t> > const &mapping, pid_t parent, bool recurse)
+vector<GPid>
+Processes::Collect(map<GPid, vector<GPid> > const &mapping, GPid parent, bool recurse)
 {
-	map<pid_t, vector<pid_t> >::const_iterator found;
-	vector<pid_t> ret;
+	map<GPid, vector<GPid> >::const_iterator found;
+	vector<GPid> ret;
 
 	found = mapping.find(parent);
 
@@ -55,13 +55,13 @@ Processes::Collect(map<pid_t, vector<pid_t> > const &mapping, pid_t parent, bool
 		return ret;
 	}
 
-	for (vector<pid_t>::const_iterator iter = found->second.begin(); iter != found->second.end(); ++iter)
+	for (vector<GPid>::const_iterator iter = found->second.begin(); iter != found->second.end(); ++iter)
 	{
 		ret.push_back(*iter);
 
 		if (recurse)
 		{
-			vector<pid_t> r = Collect(mapping, *iter, true);
+			vector<GPid> r = Collect(mapping, *iter, true);
 			copy(r.begin(), r.end(), back_inserter(ret));
 		}
 	}
@@ -69,15 +69,15 @@ Processes::Collect(map<pid_t, vector<pid_t> > const &mapping, pid_t parent, bool
 	return ret;
 }
 
-vector<pid_t>
-Processes::Children(pid_t parent, bool recurse)
+vector<GPid>
+Processes::Children(GPid parent, bool recurse)
 {
-	map<pid_t, vector<pid_t> > childMap;
+	map<GPid, vector<GPid> > childMap;
 	DIR *d = opendir("/proc");
 
 	if (d == 0)
 	{
-		return vector<pid_t>();
+		return vector<GPid>();
 	}
 
 	dirent *entry;
@@ -87,25 +87,25 @@ Processes::Children(pid_t parent, bool recurse)
 		stringstream s;
 		s << entry->d_name;
 
-		pid_t child;
+		GPid child;
 
 		if (!(s >> child))
 		{
 			continue;
 		}
 
-		pid_t parentPid = Parent(child);
+		GPid parentPid = Parent(child);
 
 		if (parentPid == -1)
 		{
 			continue;
 		}
 
-		map<pid_t, vector<pid_t> >::iterator found = childMap.find(parentPid);
+		map<GPid, vector<GPid> >::iterator found = childMap.find(parentPid);
 
 		if (found == childMap.end())
 		{
-			vector<pid_t> children;
+			vector<GPid> children;
 			children.push_back(child);
 
 			childMap[parentPid] = children;

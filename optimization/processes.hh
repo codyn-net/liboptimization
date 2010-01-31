@@ -2,18 +2,18 @@
 #define __OPTIMIZATION_PROCESSES_H__
 
 #include <vector>
-#include <sys/types.h>
 #include <map>
+#include <glibmm.h>
 
 namespace optimization
 {
 	class Processes
 	{
 		public:
-			static pid_t Parent(pid_t pid);
-			static std::vector<pid_t> Children(pid_t pid, bool recurse = false);
+			static pid_t Parent(GPid pid);
+			static std::vector<GPid> Children(GPid pid, bool recurse = false);
 		private:
-			static std::vector<pid_t> Collect(std::map<pid_t, std::vector<pid_t> > const &mapping, pid_t parent, bool recurse);
+			static std::vector<GPid> Collect(std::map<GPid, std::vector<GPid> > const &mapping, GPid parent, bool recurse);
 	};
 }
 
