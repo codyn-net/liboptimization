@@ -21,11 +21,11 @@
 #ifndef __OPTIMIZATION_DISCOVERY_H__
 #define __OPTIMIZATION_DISCOVERY_H__
 
-#include <network/network.hh>
+#include <jessevdk/network/network.hh>
 
 namespace optimization
 {
-	class Discovery : public network::UdpServer
+	class Discovery : public jessevdk::network::UdpServer
 	{
 		public:
 			struct Info
@@ -44,18 +44,18 @@ namespace optimization
 			std::string const &Namespace() const;
 			
 			/* Public functions */
-			base::signals::Signal<Info> &OnGreeting();
-			base::signals::Signal<Info> &OnWakeup();
+			jessevdk::base::signals::Signal<Info> &OnGreeting();
+			jessevdk::base::signals::Signal<Info> &OnWakeup();
 			
 			virtual bool Listen();
 		private:
 			/* Private functions */
-			struct Data : public base::Object::PrivateData
+			struct Data : public jessevdk::base::Object::PrivateData
 			{
 				std::string ns;
 				
-				base::signals::Signal<Info> onGreeting;
-				base::signals::Signal<Info> onWakeup;
+				jessevdk::base::signals::Signal<Info> onGreeting;
+				jessevdk::base::signals::Signal<Info> onWakeup;
 
 				void OnDataHandler(UdpServer::DataArgs &args);
 				bool CheckNamespace(std::string const &ns) const;

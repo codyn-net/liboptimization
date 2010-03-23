@@ -22,8 +22,8 @@
 #define __OPTIMIZATION_WEBOTS_H__
 
 #include <optimization/task.pb.h>
-#include <network/network.hh>
-#include <os/os.hh>
+#include <jessevdk/network/network.hh>
+#include <jessevdk/os/os.hh>
 #include <map>
 #include <string>
 
@@ -33,7 +33,7 @@ namespace optimization
 	{
 		static Webots *s_instance;
 
-		network::Client d_client;
+		jessevdk::network::Client d_client;
 		messages::task::Task::Description d_request;
 		std::map<std::string, std::string> d_settings;
 		std::map<std::string, messages::task::Task::Description::Parameter> d_parameters;
@@ -75,7 +75,7 @@ namespace optimization
 			void ReadSettings();
 			void ReadParameters();
 			
-			void OnData(os::FileDescriptor::DataArgs &args);
+			void OnData(jessevdk::os::FileDescriptor::DataArgs &args);
 	};
 }
 

@@ -1,4 +1,4 @@
-AC_INIT(liboptimization, 1.1)
+AC_INIT(liboptimization, 2.0)
 
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 
@@ -13,9 +13,11 @@ AC_HEADER_STDC
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 
+AC_CONFIG_HEADERS(optimization/config.hh)
 AM_MAINTAINER_MODE
+m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
 
-LIBOPTIMIZATION_API_VERSION=1.0
+LIBOPTIMIZATION_API_VERSION=2.0
 AC_SUBST(LIBOPTIMIZATION_API_VERSION)
 
 pkgincludedir="$includedir/liboptimization-$LIBOPTIMIZATION_API_VERSION"
@@ -37,7 +39,7 @@ AC_LINK_IFELSE(
 		AC_MSG_ERROR([google protobuf is not installed.])])
 
 PKG_CHECK_MODULES(PACKAGE_LIBOPTIMIZATION, [
-	libjessevdk-0.1 >= 0.2
+	libjessevdk-1.0 >= 1.0
 	glibmm-2.4
 ])
 

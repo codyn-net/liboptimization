@@ -21,7 +21,7 @@
 #ifndef __OPTIMIZATION_MESSAGES_H__
 #define __OPTIMIZATION_MESSAGES_H__
 
-#include <os/FileDescriptor/filedescriptor.hh>
+#include <jessevdk/os/os.hh>
 #include <vector>
 #include <string>
 #include <sstream>
@@ -35,7 +35,7 @@ namespace optimization
 	{
 		public:
 			template <typename T>
-			static void Extract(os::FileDescriptor::DataArgs &args, std::vector<T> &messages);
+			static void Extract(jessevdk::os::FileDescriptor::DataArgs &args, std::vector<T> &messages);
 			
 			static bool Create(::google::protobuf::Message const &message, std::string &serialized);
 	};
@@ -50,7 +50,7 @@ namespace optimization
 	 *
 	 */
 	template <typename T>
-	void Messages::Extract(os::FileDescriptor::DataArgs &args, std::vector<T> &messages)
+	void Messages::Extract(jessevdk::os::FileDescriptor::DataArgs &args, std::vector<T> &messages)
 	{
 		std::string data = args.data;
 	
@@ -98,7 +98,7 @@ namespace optimization
 			messages.push_back(message);
 		}
 
-		args.buffer(data);
+		args.Buffer(data);
 	}
 }
 

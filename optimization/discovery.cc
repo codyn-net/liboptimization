@@ -20,14 +20,14 @@
 
 #include "discovery.hh"
 
-#include <base/base.hh>
+#include <jessevdk/base/base.hh>
 #include <optimization/constants.hh>
 #include <optimization/messages.hh>
 #include <optimization/debug.hh>
 
 using namespace std;
 using namespace optimization;
-using namespace base::signals;
+using namespace jessevdk::base::signals;
 
 /**
  * @class optimization::Discovery
@@ -88,7 +88,7 @@ Discovery::Discovery()
 	UdpServer(Constants::DiscoveryGroup, Constants::DiscoveryPort)
 {
 	d_data = new Data();
-	addPrivateData(d_data);
+	AddPrivateData(d_data);
 }
 
 /**
@@ -102,11 +102,11 @@ Discovery::Discovery()
 bool
 Discovery::Listen()
 {
-	bool ret = UdpServer::listen();
+	bool ret = UdpServer::Listen();
 
 	if (ret)
 	{
-		onData().add(*d_data, &Discovery::Data::OnDataHandler);
+		OnData().Add(*d_data, &Discovery::Data::OnDataHandler);
 	}
 
 	return ret;
@@ -135,7 +135,7 @@ Discovery::Namespace() const
  *
  */
 void
-Discovery::Data::OnDataHandler(UdpServer::DataArgs &args) 
+Discovery::Data::OnDataHandler(UdpServer::DataArgs &args)
 {
 	vector<messages::discovery::Discovery> discovery;
 	vector<messages::discovery::Discovery>::iterator iter;
@@ -152,7 +152,7 @@ Discovery::Data::OnDataHandler(UdpServer::DataArgs &args)
 			continue;
 		}
 
-		info.Host = args.address.host(true);
+		info.Host = args.Address.Host(true);
 
 		if (gr.type() == messages::discovery::Discovery::TypeGreeting)
 		{

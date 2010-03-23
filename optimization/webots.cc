@@ -20,10 +20,8 @@
 
 #include "webots.hh"
 
-#include <os/Environment/environment.hh>
 #include <optimization/messages.hh>
 #include <glibmm.h>
-#include <base/Debug/debug.hh>
 
 using namespace std;
 using namespace optimization;
@@ -88,7 +86,7 @@ Webots::Webots()
 	string path;
 
 	// Get unix socket name from environment
-	if (!os::Environment::variable("OPTIMIZATION_UNIX_SOCKET", path))
+	if (!jessevdk::os::Environment::Variable("OPTIMIZATION_UNIX_SOCKET", path))
 	{
 		return;
 	}
@@ -96,14 +94,14 @@ Webots::Webots()
 	Glib::init();
 
 	// Open unix socket client
-	d_client = network::Client::Unix(path);
+	d_client = jessevdk::network::Client::Unix(path);
 
 	if (!d_client)
 	{
 		return;
 	}
 
-	d_client.onData().add(*this, &Webots::OnData);
+	d_client.OnData().Add(*this, &Webots::OnData);
 }
 
 /**
@@ -147,7 +145,7 @@ Webots::Instance()
  *
  */
 void
-Webots::OnData(os::FileDescriptor::DataArgs &args) 
+Webots::OnData(jessevdk::os::FileDescriptor::DataArgs &args) 
 {
 	vector<messages::task::Task::Description> request;
 	vector<messages::task::Task::Description>::iterator iter;
@@ -400,7 +398,7 @@ Webots::Response(messages::task::Response &res)
 
 	if (Messages::Create(res, serialized))
 	{
-		d_client.write(serialized);
+		d_client.Write(serialized);
 	}
 }
 
