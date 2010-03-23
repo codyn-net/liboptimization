@@ -52,8 +52,8 @@ header_DATA = 	\
 	$(INSTHEADERS) \
 	$(BUILT_HDRS)
 
-lib_LTLIBRARIES = liboptimization-1.0.la
-liboptimization_1_0_la_SOURCES = \
+lib_LTLIBRARIES = liboptimization-2.0.la
+liboptimization_2_0_la_SOURCES = \
 	messages.cc \
 	constants.cc \
 	discovery.cc \
@@ -63,8 +63,8 @@ liboptimization_1_0_la_SOURCES = \
 	webots.cc \
 	$(BUILT_SOURCES)
 
-liboptimization_1_0_la_CFLAGS = -g $(PACKAGE_LIBOPTIMIZATION_CFLAGS)
-liboptimization_1_0_la_LDFLAGS = -export-dynamic -no-undefined $(PACKAGE_LIBOPTIMIZATION_LIBS)
+liboptimization_2_0_la_CFLAGS = -g $(PACKAGE_LIBOPTIMIZATION_CFLAGS)
+liboptimization_2_0_la_LDFLAGS = -export-dynamic -no-undefined $(PACKAGE_LIBOPTIMIZATION_LIBS)
 
 EXTRA_DIST = \
 	$(INSTHEADERS) \
