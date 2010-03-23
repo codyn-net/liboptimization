@@ -3,19 +3,19 @@
  *
  *  Copyright (C) 2009 - Jesse van den Kieboom
  *
- * This library is free software; you can redistribute it and/or modify it 
- * under the terms of the GNU Lesser General Public License as published by the 
- * Free Software Foundation; either version 2.1 of the License, or (at your 
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
  * option) any later version.
- * 
- * This library is distributed in the hope that it will be useful, but WITHOUT 
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License 
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
  * for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public License 
+ *
+ * You should have received a copy of the GNU Lesser General Public License
  * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
 #include "webots.hh"
@@ -80,8 +80,6 @@ Webots *Webots::s_instance = 0;
  *
  */
 Webots::Webots()
-:
-	d_hasRequest(false)
 {
 	string path;
 
@@ -105,20 +103,6 @@ Webots::Webots()
 }
 
 /**
- * @brief Check whether a request has been received (const).
- *
- * Check whether a dispatcher task request has been received.
- *
- * @return true if a request has been received, false otherwise
- *
- */
-bool
-Webots::HasRequest() const
-{
-	return d_hasRequest;
-}
-
-/**
  * @brief Get webots dispatcher singleton instance.
  *
  * Get the webots dispatcher singleton instance.
@@ -127,7 +111,7 @@ Webots::HasRequest() const
  *
  */
 Webots &
-Webots::Instance() 
+Webots::Instance()
 {
 	if (!s_instance)
 	{
@@ -145,18 +129,16 @@ Webots::Instance()
  *
  */
 void
-Webots::OnData(jessevdk::os::FileDescriptor::DataArgs &args) 
+Webots::OnData(jessevdk::os::FileDescriptor::DataArgs &args)
 {
-	vector<messages::task::Task::Description> request;
-	vector<messages::task::Task::Description>::iterator iter;
+	vector<messages::task::Task> request;
+	vector<messages::task::Task>::iterator iter;
 
 	Messages::Extract(args, request);
 
-	for (iter = request.begin(); iter != request.end(); ++iter)
+	if (request.size() != 0)
 	{
-		d_request = *iter;
-		d_hasRequest = true;
-		break;
+		ReadRequest(request[0]);
 	}
 }
 
@@ -178,51 +160,6 @@ Webots::operator bool() const
 }
 
 /**
- * @brief Read settings.
- *
- * Read settings.
- *
- */
-void
-Webots::ReadSettings()
-{
-	size_t num = d_request.settings_size();
-
-	for (size_t i = 0; i < num; ++i)
-	{
-		messages::task::Task::Description::KeyValue const &kv = d_request.settings(i);
-		d_settings[kv.key()] = kv.value();
-	}
-}
-
-void
-Webots::ReadParameters()
-{
-	size_t num = d_request.parameters_size();
-
-	for (size_t i = 0; i < num; ++i)
-	{
-		messages::task::Task::Description::Parameter const &parameter = d_request.parameters(i);
-		d_parameters[parameter.name()] = parameter;
-	}
-}
-
-/**
- * @brief Get the dispatcher task request.
- *
- * Get the dispatcher task request. Make sure to call WaitForRequest() before
- * calling this function to ensure the request is received.
- *
- * @return the dispatcher task request
- *
- */
-optimization::messages::task::Task::Description &
-Webots::Request()
-{
-	return d_request;
-}
-
-/**
  * @brief Write success response to the dispatcher.
  * @param fitness the solution fitness
  *
@@ -235,7 +172,7 @@ Webots::Request()
  * @fn void Webots::Respond(std::map<std::string, double> const &fitness)
  */
 void
-Webots::Respond(map<string, double> const &fitness) 
+Webots::Respond(map<string, double> const &fitness)
 {
 	map<string, string> data;
 	Respond(fitness, data);
@@ -252,7 +189,7 @@ Webots::Respond(map<string, double> const &fitness)
  *
  */
 void
-Webots::Respond(double fitness) 
+Webots::Respond(double fitness)
 {
 	map<string, string> data;
 	Respond(fitness, data);
@@ -267,8 +204,8 @@ Webots::Respond(double fitness)
  * @fn void Webots::Respond(messages::task::Response::Status status, std::map<std::string, double> const &fitness)
  */
 void
-Webots::Respond(messages::task::Response::Status  status, 
-                map<string, double> const        &fitness) 
+Webots::Respond(messages::task::Response::Status  status,
+                map<string, double> const        &fitness)
 {
 	map<string, string> data;
 	Respond(status, fitness, data);
@@ -279,7 +216,7 @@ Webots::Respond(messages::task::Response::Status  status,
  * @param fitness the solution fitness
  * @param data additional data
  *
- * Write a success response to the dispatcher with additional data. 
+ * Write a success response to the dispatcher with additional data.
  * This is the most convenient way
  * of writing a response back to the dispatcher. This sends a single fitness
  * value, if you want to send multiple fitness values, you can use:
@@ -292,7 +229,7 @@ Webots::Respond(double fitness, std::map<string, string> const &data)
 {
 	map<string, double> fitnessmap;
 	fitnessmap["value"] = fitness;
-	
+
 	Respond(fitnessmap, data);
 }
 
@@ -301,7 +238,7 @@ Webots::Respond(double fitness, std::map<string, string> const &data)
  * @param fitness the solution fitness
  * @param data additional data
  *
- * Write a success response to the dispatcher with additional data. 
+ * Write a success response to the dispatcher with additional data.
  * This is the most convenient way
  * of writing a response back to the dispatcher. The fitness is a map of
  * fitness names to values. You can thus set multiple fitness values if you
@@ -323,7 +260,7 @@ Webots::Respond(std::map<std::string, double> const &fitness, std::map<string, s
  * @param data additional data
  *
  * Write a response back to the dispatcher with some additional data. Consider
- * using 
+ * using
  * Respond(std::map<std::string, double> const &fitness, std::map<std::string, std::string> const &data)
  * which automatically sets the status to Success.
  *
@@ -370,7 +307,7 @@ Webots::Respond(messages::task::Response::Status status, std::map<std::string, d
  *
  */
 void
-Webots::RespondFail() 
+Webots::RespondFail()
 {
 	map<string, double> fitness;
 	Respond(messages::task::Response::Failed, fitness);
@@ -403,96 +340,6 @@ Webots::Response(messages::task::Response &res)
 }
 
 /**
- * @brief Get dispatcher setting.
- * @param key setting key
- * @param value setting value return value
- *
- * Get a dispatcher setting.
- *
- * @return true if the setting was found, false otherwise
- * @fn bool Webots::Setting(std::string const &key, std::string &value)
- */
-bool
-Webots::Setting(string const &key, 
-                string       &value)
-{
-	// Make sure to wait for request first
-	WaitForRequest();
-
-	map<string, string>::const_iterator found = d_settings.find(key);
-
-	if (found == d_settings.end())
-	{
-		return false;
-	}
-
-	value = found->second;
-	return true;
-}
-
-/**
- * @brief Check if a dispatcher setting is set.
- * @param key setting key
- *
- * Check whether a dispatcher setting is set.
- *
- * @return true if the setting is set, false otherwise
- * @fn bool Webots::Setting(std::string const &key)
- */
-bool
-Webots::Setting(string const &key)
-{
-	string dummy;
-
-	return Setting(key, dummy);
-}
-
-/**
- * @brief Get parameter.
- * @param name parameter name
- * @param parameter parameter return value
- *
- * Get a parameter.
- *
- * @return true if the parameter was found, false otherwise
- * @fn bool Webots::Parameter(std::string const &name, messages::task::Task::Description::Parameter &parameter)
- */
-bool
-Webots::Parameter(string const                                 &name,
-                  messages::task::Task::Description::Parameter &parameter)
-{
-	// Make sure to wait for request first
-	WaitForRequest();
-
-	map<string, messages::task::Task::Description::Parameter>::const_iterator found = d_parameters.find(name);
-
-	if (found == d_parameters.end())
-	{
-		return false;
-	}
-
-	parameter = found->second;
-	return true;
-}
-
-/**
- * @brief Check if a parameter is set.
- * @param name parameter name
- *
- * Check whether a parameter is set.
- *
- * @return true if the parameter is set, false otherwise
- * @fn bool Webots::Parameter(std::string const &name)
- */
-bool
-Webots::Parameter(string const &name)
-{
-	messages::task::Task::Description::Parameter dummy;
-
-	return Parameter(name, dummy);
-}
-
-/**
  * @brief Wait for request from dispatcher.
  *
  * Wait for a task request from the webots dispatcher. You should always wait
@@ -504,11 +351,13 @@ Webots::WaitForRequest()
 {
 	Glib::RefPtr<Glib::MainContext> ctx = Glib::MainContext::get_default();
 
-	while (!HasRequest())
+	if (!d_client)
+	{
+		return;
+	}
+
+	while (!HasTask())
 	{
 		ctx->iteration(true);
 	}
-
-	ReadSettings();
-	ReadParameters();
 }

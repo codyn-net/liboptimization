@@ -23,51 +23,42 @@ message Task {
 	// The dispatcher to dispatch this task to
 	required string dispatcher = 2;
 
-	/* The description sub message is the message that is being relayed to the
-	 * dispatcher from the worker. It contains the full description of the 
-	 * task.
+	// The name of the job to which this task belongs
+	required string job = 3;
+	
+	// The optimizer name which is running the optimization process
+	required string optimizer = 4;
+	
+	/* The parameter message denotes a specific parameter setting for this
+	 * particular task.
 	 */
-	message Description {
-		// The name of the job to which this task belongs
-		required string job = 1;
+	message Parameter {
+		// The parameter name
+		required string name = 1;
 		
-		// The optimizer name which is running the optimization process
-		required string optimizer = 2;
+		// The parameter value
+		required double value = 2;
 		
-		/* The parameter message denotes a specific parameter setting for this
-		 * particular task.
-		 */
-		message Parameter {
-			// The parameter name
-			required string name = 1;
-			
-			// The parameter value
-			required double value = 2;
-			
-			// The parameter boundaries
-			required double min = 3;
-			required double max = 4; 
-		}
-		
-		// A list of parameters
-		repeated Parameter parameters = 3;
-		
-		/* The keyvalue message is used to make a dictionary of key -> value
-		 * items. It is used to encode particular dispatcher settings */
-		message KeyValue {
-			required string key = 1;
-			required string value = 2;
-		}
-		
-		// Dictionary of any additional dispatcher settings
-		repeated KeyValue settings = 4;
-		
-		// Extensions
-		extensions 1000 to max;
+		// The parameter boundaries
+		required double min = 3;
+		required double max = 4; 
 	}
 	
-	// The task description
-	required Description description = 3;
+	// A list of parameters
+	repeated Parameter parameters = 5;
+	
+	/* The keyvalue message is used to make a dictionary of key -> value
+	 * items. It is used to encode particular dispatcher settings */
+	message KeyValue {
+		required string key = 1;
+		required string value = 2;
+	}
+	
+	// Dictionary of any additional dispatcher settings
+	repeated KeyValue settings = 6;
+	
+	// Extensions
+	extensions 1000 to max;
 }
 
 /*

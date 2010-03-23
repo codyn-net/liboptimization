@@ -29,7 +29,7 @@ namespace optimization
 {
 	class TaskReader
 	{
-		messages::task::Task::Description d_request;
+		messages::task::Task d_task;
 		std::map<std::string, std::string> d_settings;
 		std::map<std::string, double> d_parameters;
 		bool d_taskRead;
@@ -39,16 +39,19 @@ namespace optimization
 			TaskReader();
 			TaskReader(std::istream &stream);
 
-			messages::task::Task::Description &TaskDescription();
+			messages::task::Task &Task();
 
-			bool Setting(std::string const &key, std::string &value) const;
-			bool Setting(std::string const &key) const;
+			virtual bool Setting(std::string const &key, std::string &value) const;
+			virtual bool Setting(std::string const &key) const;
 
-			bool Parameter(std::string const &key, double &value) const;
+			virtual bool Parameter(std::string const &key, double &value) const;
 
-			bool ReadRequest(std::istream &stream);
+			virtual bool ReadRequest(std::istream &stream);
 
 			operator bool() const;
+			bool HasTask() const;
+		protected:
+			void ReadRequest(messages::task::Task const &task);
 		private:
 			/* Private functions */
 			void ReadSettings();

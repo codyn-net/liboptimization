@@ -80,7 +80,7 @@ TaskReader::ReadRequest(istream &stream)
 
 	if (stream.read(s, num))
 	{
-		if (d_request.ParseFromArray(s, num))
+		if (d_task.ParseFromArray(s, num))
 		{
 			ret = true;
 
@@ -103,6 +103,17 @@ TaskReader::ReadRequest(istream &stream)
 	return ret;
 }
 
+void
+TaskReader::ReadRequest(messages::task::Task const &task)
+{
+	d_task = task;
+
+	ReadSettings();
+	ReadParameters();
+
+	d_taskRead = true;
+}
+
 /**
  * @brief Read task settings.
  *
@@ -112,11 +123,12 @@ TaskReader::ReadRequest(istream &stream)
 void
 TaskReader::ReadSettings()
 {
-	size_t num = d_request.settings_size();
+	size_t num = d_task.settings_size();
+	d_settings.clear();
 
 	for (size_t i = 0; i < num; ++i)
 	{
-		messages::task::Task::Description::KeyValue const &kv = d_request.settings(i);
+		messages::task::Task::KeyValue const &kv = d_task.settings(i);
 		d_settings[kv.key()] = kv.value();
 	}
 }
@@ -130,11 +142,12 @@ TaskReader::ReadSettings()
 void
 TaskReader::ReadParameters()
 {
-	size_t num = d_request.parameters_size();
+	size_t num = d_task.parameters_size();
+	d_parameters.clear();
 
 	for (size_t i = 0; i < num; ++i)
 	{
-		messages::task::Task::Description::Parameter const &parameter = d_request.parameters(i);
+		messages::task::Task::Parameter const &parameter = d_task.parameters(i);
 		d_parameters[parameter.name()] = parameter.value();
 	}
 }
@@ -211,13 +224,19 @@ TaskReader::Setting(string const &key) const
  * @return the task request
  *
  */
-optimization::messages::task::Task::Description &
-TaskReader::TaskDescription()
+optimization::messages::task::Task &
+TaskReader::Task()
 {
-	return d_request;
+	return d_task;
 }
 
 TaskReader::operator bool() const
+{
+	return d_taskRead;
+}
+
+bool
+TaskReader::HasTask() const
 {
 	return d_taskRead;
 }

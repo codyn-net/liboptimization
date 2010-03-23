@@ -22,37 +22,28 @@
 #define __OPTIMIZATION_DISPATCHER_H__
 
 #include <optimization/task.pb.h>
+#include <optimization/taskreader.hh>
 #include <glibmm.h>
 
 namespace optimization
 {
-	class Dispatcher
+	class Dispatcher : public TaskReader
 	{
-		messages::task::Task::Description d_request;
-		std::map<std::string, std::string> d_settings;
 		Glib::RefPtr<Glib::MainLoop> d_main;
 
 		public:
 			/* Public functions */
 			virtual bool Run();
 			virtual void Stop();
-			
-			messages::task::Task::Description &Request();
-
-			bool Setting(std::string const &key, std::string &value) const;
-			bool Setting(std::string const &key) const;
 		protected:
-			virtual bool ReadRequest();
-			void ReadSettings();
-
 			virtual bool WriteResponse(messages::task::Response &response);
+
 			virtual bool RunTask() = 0;
 			virtual bool UseMainLoop() const;
-			
+
 			Glib::RefPtr<Glib::MainLoop> Main();
 		private:
 			/* Private functions */
-		
 	};
 }
 

@@ -24,28 +24,24 @@
 #include <optimization/task.pb.h>
 #include <jessevdk/network/network.hh>
 #include <jessevdk/os/os.hh>
+#include <optimization/taskreader.hh>
+
 #include <map>
 #include <string>
 
 namespace optimization
 {
-	class Webots
+	class Webots : public TaskReader
 	{
 		static Webots *s_instance;
 
 		jessevdk::network::Client d_client;
-		messages::task::Task::Description d_request;
-		std::map<std::string, std::string> d_settings;
-		std::map<std::string, messages::task::Task::Description::Parameter> d_parameters;
-
-		bool d_hasRequest;
 
 		public:
 			/* Constructor/destructor */
 			static Webots &Instance();
 
 			/* Public functions */
-			messages::task::Task::Description &Request();
 			void Response(messages::task::Response &response);
 			
 			void Respond(double fitness);
@@ -59,22 +55,10 @@ namespace optimization
 			void RespondFail();
 			
 			operator bool() const;
-			bool HasRequest() const;
-			
 			void WaitForRequest();
-			
-			bool Setting(std::string const &key, std::string &value);
-			bool Setting(std::string const &key);
-			
-			bool Parameter(std::string const &name, messages::task::Task::Description::Parameter &parameter);
-			bool Parameter(std::string const &name);
 		private:
 			/* Private functions */
 			Webots();
-
-			void ReadSettings();
-			void ReadParameters();
-			
 			void OnData(jessevdk::os::FileDescriptor::DataArgs &args);
 	};
 }
