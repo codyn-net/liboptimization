@@ -3,19 +3,19 @@
  *
  *  Copyright (C) 2009 - Jesse van den Kieboom
  *
- * This library is free software; you can redistribute it and/or modify it 
- * under the terms of the GNU Lesser General Public License as published by the 
- * Free Software Foundation; either version 2.1 of the License, or (at your 
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
  * option) any later version.
- * 
- * This library is distributed in the hope that it will be useful, but WITHOUT 
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License 
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
  * for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public License 
+ *
+ * You should have received a copy of the GNU Lesser General Public License
  * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
 #ifndef __OPTIMIZATION_MESSAGES_H__
@@ -36,10 +36,10 @@ namespace optimization
 		public:
 			template <typename T>
 			static void Extract(jessevdk::os::FileDescriptor::DataArgs &args, std::vector<T> &messages);
-			
+
 			static bool Create(::google::protobuf::Message const &message, std::string &serialized);
 	};
-	
+
 	/**
  * @brief Extract protobuf messages from buffered data.
 	 * @param args the data args from a file descriptor (socket, stream, file)
@@ -53,7 +53,7 @@ namespace optimization
 	void Messages::Extract(jessevdk::os::FileDescriptor::DataArgs &args, std::vector<T> &messages)
 	{
 		std::string data = args.data;
-	
+
 		while (true)
 		{
 			size_t num;
@@ -63,7 +63,7 @@ namespace optimization
 			{
 				break;
 			}
-	
+
 			T message;
 
 			if (!s.ignore(1, ' '))
@@ -80,7 +80,7 @@ namespace optimization
 			}
 
 			buffer[num] = '\0';
-			
+
 			try
 			{
 				message.ParseFromArray(buffer, num);
