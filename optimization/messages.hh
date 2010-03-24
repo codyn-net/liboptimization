@@ -28,6 +28,7 @@
 #include <google/protobuf/message.h>
 #include <optimization/task.pb.h>
 #include <optimization/discovery.pb.h>
+#include <optimization/command.pb.h>
 
 namespace optimization
 {
