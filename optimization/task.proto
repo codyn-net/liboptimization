@@ -62,13 +62,19 @@ message Task {
 }
 
 /*
+ * The identification of the job to the master
+ */
+message Identify {
+	required string user = 1;
+	required double priority = 2;
+	optional double timeout = 3;
+}
+
+/*
  * A batch of tasks send from the optimizer to the master
  */
 message Batch {
-	required double priority = 1;
-	required string user = 2;
-	repeated Task tasks = 3;
-	optional double timeout = 4;
+	repeated Task tasks = 1;
 }
 
 /* A response message is the response to a certain request. It is send from the
@@ -147,6 +153,7 @@ message Communication {
 		CommunicationResponse = 2;
 		CommunicationToken = 3;
 		CommunicationCancel = 4;
+		CommunicationIdentify = 5;
 	}
 	
 	// The type of communication
@@ -166,4 +173,7 @@ message Communication {
 	
 	// The cancel description in case of CommunicationCancel type
 	optional Cancel cancel = 6;
+
+	// The identify description in case of CommunicationIdentify type
+	optional Identify identify = 7;
 }
