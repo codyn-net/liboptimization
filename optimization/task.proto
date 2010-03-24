@@ -76,6 +76,7 @@ message Identify {
  */
 message Batch {
 	repeated Task tasks = 1;
+	required double progress = 2;
 }
 
 /* A response message is the response to a certain request. It is send from the
