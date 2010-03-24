@@ -65,9 +65,10 @@ message Task {
  * The identification of the job to the master
  */
 message Identify {
-	required string user = 1;
-	required double priority = 2;
-	optional double timeout = 3;
+	required string name = 1;
+	required string user = 2;
+	required double priority = 3;
+	optional double timeout = 4;
 }
 
 /*
