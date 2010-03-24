@@ -36,7 +36,10 @@ namespace optimization
 			WorkerPort = 8723,
 
 			/** Default master port. */
-			MasterPort = 9485
+			MasterPort = 9485,
+
+			/** Default command port */
+			CommandPort = 7123
 		};
 
 		static std::string DiscoveryGroup;
