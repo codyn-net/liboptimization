@@ -48,8 +48,8 @@ message Job {
 
 	required double progress = 6;
 
-	required uint32 tasksSuccess = 7;
-	required uint32 tasksFail = 8;
+	required uint32 taskssuccess = 7;
+	required uint32 tasksfailed = 8;
 }
 
 message InfoResponse {
