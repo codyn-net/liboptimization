@@ -12,10 +12,12 @@ INCLUDES = \
 	-DPKGLIBDIR=\""$(pkglibdir)"\"
 
 BUILT_SOURCES = 	\
+	_command.pb.cc	\
 	_task.pb.cc 	\
 	_discovery.pb.cc
 
 BUILT_HDRS = 		\
+	command.pb.h	\
 	task.pb.h 	\
 	discovery.pb.h
 
@@ -23,7 +25,13 @@ _task.pb.cc: task.proto task.pb.h
 	protoc --cpp_out=/tmp/ -I$(srcdir) $(srcdir)/task.proto && mv /tmp/task.pb.cc $@
 
 task.pb.h: task.proto
-	protoc --cpp_out=/tmp/ -I$(srcdir) $< && mv /tmp/$@ $@	
+	protoc --cpp_out=/tmp/ -I$(srcdir) $< && mv /tmp/$@ $@
+
+_command.pb.cc: command.proto command.pb.h
+	protoc --cpp_out=/tmp/ -I$(srcdir) $(srcdir)/command.proto && mv /tmp/command.pb.cc $@
+
+command.pb.h: command.proto
+	protoc --cpp_out=/tmp/ -I$(srcdir) $< && mv /tmp/$@ $@
 
 _discovery.pb.cc: discovery.proto discovery.pb.h
 	protoc --cpp_out=/tmp/ -I$(srcdir) $(srcdir)/discovery.proto && mv /tmp/discovery.pb.cc $@
@@ -33,6 +41,7 @@ discovery.pb.h: discovery.proto
 
 protodir = $(pkgincludedir)/optimization
 proto_DATA = 		\
+	command.proto	\
 	task.proto	\
 	discovery.proto
 
@@ -46,7 +55,7 @@ INSTHEADERS = \
 	processes.hh \
 	taskreader.hh \
 	webots.hh
-	
+
 headerdir = $(pkgincludedir)/optimization
 header_DATA = 	\
 	$(INSTHEADERS) \
