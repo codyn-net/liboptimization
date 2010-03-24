@@ -80,5 +80,5 @@ message Response {
 
 	optional KillResponse kill = 6;
 	optional SetPriorityResponse setpriority = 7;
-	optional AuthenticateResponse autenticate = 8;
+	optional AuthenticateResponse authenticate = 8;
 }
