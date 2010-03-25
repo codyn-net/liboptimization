@@ -43,13 +43,17 @@ message Job {
 	required uint32 id = 1;
 	required string name = 2;
 	required string user = 3;
-	required uint64 started = 4;
-	required double priority = 5;
+	required double priority = 4;
 
-	required double progress = 6;
+	required uint64 started = 5;
+	required uint64 lastupdate = 6;
 
-	required uint32 taskssuccess = 7;
-	required uint32 tasksfailed = 8;
+	required double progress = 7;
+
+	required uint32 taskssuccess = 8;
+	required uint32 tasksfailed = 9;
+
+	required double runtime = 10;
 }
 
 message InfoResponse {
