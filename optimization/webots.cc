@@ -100,6 +100,7 @@ Webots::Webots()
 	}
 
 	d_client.OnData().Add(*this, &Webots::OnData);
+	WaitForRequest();
 }
 
 /**

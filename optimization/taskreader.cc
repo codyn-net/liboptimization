@@ -147,8 +147,8 @@ TaskReader::ReadParameters()
 
 	for (size_t i = 0; i < num; ++i)
 	{
-		messages::task::Task::Parameter const &parameter = d_task.parameters(i);
-		d_parameters[parameter.name()] = parameter.value();
+		task::Task::Parameter const &parameter = d_task.parameters(i);
+		d_parameters[parameter.name()] = parameter;
 	}
 }
 
@@ -178,8 +178,8 @@ TaskReader::Setting(string const &key, string &value) const
 
 /**
  * @brief Get task task parameter (const).
- * @param key the setting key
- * @param value setting value return value
+ * @param name the parameter name
+ * @param value parameter return value
  *
  * Get a task parameter from the task request.
  *
@@ -187,17 +187,49 @@ TaskReader::Setting(string const &key, string &value) const
  * @fn bool TaskReader::Parameter(std::string const &key, double &value) const
  */
 bool
-TaskReader::Parameter(string const &key, double &value) const
+TaskReader::Parameter(string const &name, task::Task::Parameter &parameter) const
 {
-	map<string, double>::const_iterator found = d_parameters.find(key);
+	map<string, task::Task::Parameter>::const_iterator found = d_parameters.find(name);
 
 	if (found == d_parameters.end())
 	{
 		return false;
 	}
 
-	value = found->second;
+	parameter = found->second;
 	return true;
+}
+
+/**
+ * @brief Get task task parameter (const).
+ * @param name the parameter name
+ * @param value parameter value return value
+ *
+ * Get a task parameter from the task request.
+ *
+ * @return true if the setting could be found, false otherwise
+ * @fn bool TaskReader::Parameter(std::string const &key, double &value) const
+ */
+bool
+TaskReader::Parameter(string const &name, double &value) const
+{
+	task::Task::Parameter parameter;
+
+	if (!Parameter(name, parameter))
+	{
+		return false;
+	}
+
+	value = parameter.value();
+	return true;
+}
+
+bool
+TaskReader::Parameter(string const &name) const
+{
+	task::Task::Parameter parameter;
+
+	return Parameter(name, parameter);
 }
 
 /**

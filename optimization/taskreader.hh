@@ -31,7 +31,7 @@ namespace optimization
 	{
 		messages::task::Task d_task;
 		std::map<std::string, std::string> d_settings;
-		std::map<std::string, double> d_parameters;
+		std::map<std::string, messages::task::Task::Parameter> d_parameters;
 		bool d_taskRead;
 
 		public:
@@ -44,7 +44,9 @@ namespace optimization
 			virtual bool Setting(std::string const &key, std::string &value) const;
 			virtual bool Setting(std::string const &key) const;
 
-			virtual bool Parameter(std::string const &key, double &value) const;
+			virtual bool Parameter(std::string const &name, messages::task::Task::Parameter &parameter) const;
+			bool Parameter(std::string const &name, double &value) const;
+			bool Parameter(std::string const &name) const;
 
 			virtual bool ReadRequest(std::istream &stream);
 
