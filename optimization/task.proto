@@ -41,7 +41,7 @@ message Task {
 		
 		// The parameter boundaries
 		required double min = 3;
-		required double max = 4; 
+		required double max = 4;
 	}
 	
 	// A list of parameters
