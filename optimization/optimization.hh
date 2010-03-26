@@ -21,7 +21,6 @@
 #ifndef __OPTIMIZATION_OPTIMIZATION_H__
 #define __OPTIMIZATION_OPTIMIZATION_H__
 
-#include <optimization/config.hh>
 #include <optimization/constants.hh>
 #include <optimization/debug.hh>
 #include <optimization/discovery.hh>
