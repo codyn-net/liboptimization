@@ -58,7 +58,7 @@ message Task {
 	repeated KeyValue settings = 6;
 
 	// Optional additional data to send
-	optional string data = 7;
+	repeated KeyValue data = 7;
 
 	// Extensions
 	extensions 1000 to max;
