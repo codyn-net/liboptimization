@@ -56,7 +56,10 @@ message Task {
 	
 	// Dictionary of any additional dispatcher settings
 	repeated KeyValue settings = 6;
-	
+
+	// Optional additional data to send
+	optional string data = 7;
+
 	// Extensions
 	extensions 1000 to max;
 }
