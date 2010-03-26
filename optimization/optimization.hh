@@ -21,12 +21,16 @@
 #ifndef __OPTIMIZATION_OPTIMIZATION_H__
 #define __OPTIMIZATION_OPTIMIZATION_H__
 
+#include <optimization/config.hh>
 #include <optimization/constants.hh>
 #include <optimization/debug.hh>
 #include <optimization/discovery.hh>
 #include <optimization/dispatcher.hh>
-#include <optimization/webots.hh>
 #include <optimization/messages.hh>
+#include <optimization/optimization.hh>
+#include <optimization/taskreader.hh>
+#include <optimization/webots.hh>
+
 
 #endif /* __OPTIMIZATION_OPTIMIZATION_H__ */
 

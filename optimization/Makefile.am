@@ -52,7 +52,6 @@ INSTHEADERS = \
 	discovery.hh \
 	dispatcher.hh \
 	messages.hh \
-	processes.hh \
 	taskreader.hh \
 	webots.hh
 
@@ -67,7 +66,6 @@ liboptimization_2_0_la_SOURCES = \
 	constants.cc \
 	discovery.cc \
 	dispatcher.cc \
-	processes.cc \
 	taskreader.cc \
 	webots.cc \
 	$(BUILT_SOURCES)
