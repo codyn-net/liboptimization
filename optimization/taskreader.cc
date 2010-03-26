@@ -86,6 +86,7 @@ TaskReader::ReadRequest(istream &stream)
 
 			ReadSettings();
 			ReadParameters();
+			ReadData();
 		}
 		else
 		{
@@ -110,6 +111,7 @@ TaskReader::ReadRequest(messages::task::Task const &task)
 
 	ReadSettings();
 	ReadParameters();
+	ReadData();
 
 	d_taskRead = true;
 }
@@ -130,6 +132,25 @@ TaskReader::ReadSettings()
 	{
 		messages::task::Task::KeyValue const &kv = d_task.settings(i);
 		d_settings[kv.key()] = kv.value();
+	}
+}
+
+/**
+ * @brief Read task data.
+ *
+ * Reads the tasks data from the request.
+ *
+ */
+void
+TaskReader::ReadData()
+{
+	size_t num = d_task.data_size();
+	d_data.clear();
+
+	for (size_t i = 0; i < num; ++i)
+	{
+		messages::task::Task::KeyValue const &kv = d_task.data(i);
+		d_data[kv.key()] = kv.value();
 	}
 }
 
@@ -201,6 +222,30 @@ TaskReader::Parameter(string const &name, task::Task::Parameter &parameter) cons
 }
 
 /**
+ * @brief Get task data (const).
+ * @param key the data key
+ * @param value data value return value
+ *
+ * Get a task data from the task request.
+ *
+ * @return true if the data could be found, false otherwise
+ * @fn bool TaskReader::Data(std::string const &key, std::string &value) const
+ */
+bool
+TaskReader::Data(string const &key, string &value) const
+{
+	map<string, string>::const_iterator found = d_data.find(key);
+
+	if (found == d_data.end())
+	{
+		return false;
+	}
+
+	value = found->second;
+	return true;
+}
+
+/**
  * @brief Get task task parameter (const).
  * @param name the parameter name
  * @param value parameter value return value
@@ -246,6 +291,22 @@ TaskReader::Setting(string const &key) const
 {
 	string dummy;
 	return Setting(key, dummy);
+}
+
+/**
+ * @brief Check if task data is set (const).
+ * @param key data key
+ *
+ * Check whether a task data in the task request is set.
+ *
+ * @return true if the task data is set, false otherwise
+ * @fn bool TaskReader::Data(std::string const &key) const
+ */
+bool
+TaskReader::Data(string const &key) const
+{
+	string dummy;
+	return Data(key, dummy);
 }
 
 /**
