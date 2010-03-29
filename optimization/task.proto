@@ -14,6 +14,10 @@ message Cancel {
 	required uint32 id = 1;
 }
 
+message Ping {
+	required uint32 id = 1;
+}
+
 /* The task message describes a task to be executed on a worker.
  */ 
 message Task {
@@ -159,6 +163,7 @@ message Communication {
 		CommunicationToken = 3;
 		CommunicationCancel = 4;
 		CommunicationIdentify = 5;
+		CommunicationPing = 6;
 	}
 	
 	// The type of communication
@@ -181,4 +186,6 @@ message Communication {
 
 	// The identify description in case of CommunicationIdentify type
 	optional Identify identify = 7;
+
+	optional Ping ping = 8;
 }

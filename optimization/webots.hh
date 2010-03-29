@@ -60,6 +60,8 @@ namespace optimization
 			/* Private functions */
 			Webots();
 			void OnData(jessevdk::os::FileDescriptor::DataArgs &args);
+
+			void PeriodicPing();
 	};
 }
 

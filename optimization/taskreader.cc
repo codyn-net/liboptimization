@@ -62,43 +62,49 @@ TaskReader::ReadRequest(istream &stream)
 	size_t num;
 
 	d_taskRead = false;
-
-	if (!(stream >> num))
-	{
-		cerr << "** [TaskReader] Could not read message size" << endl;
-		return false;
-	}
-
-	if (!stream.ignore(1, ' '))
-	{
-		cerr << "** [TaskReader] Invalid message header" << endl;
-		return false;
-	}
-
-	char *s = new char[num + 1];
 	bool ret = false;
 
-	if (stream.read(s, num))
+	while (stream && !ret)
 	{
-		if (d_task.ParseFromArray(s, num))
+		if (!(stream >> num))
 		{
-			ret = true;
+			cerr << "** [TaskReader] Could not read message size" << endl;
+			return false;
+		}
 
-			ReadSettings();
-			ReadParameters();
-			ReadData();
+		if (!stream.ignore(1, ' '))
+		{
+			cerr << "** [TaskReader] Invalid message header" << endl;
+			return false;
+		}
+
+		char *s = new char[num + 1];
+
+		if (stream.read(s, num))
+		{
+			task::Communication comm;
+
+			if (comm.ParseFromArray(s, num) && comm.type() == task::Communication::CommunicationTask)
+			{
+				d_task = comm.task();
+				ret = true;
+
+				ReadSettings();
+				ReadParameters();
+				ReadData();
+			}
+			else
+			{
+				cerr << "** [TaskReader] Could not parse message from array" << endl;
+			}
 		}
 		else
 		{
-			cerr << "** [TaskReader] Could not parse message from array" << endl;
+			cerr << "** [TaskReader] Could not read message" << endl;
 		}
-	}
-	else
-	{
-		cerr << "** [TaskReader] Could not read message" << endl;
-	}
 
-	delete[] s;
+		delete[] s;
+	}
 
 	d_taskRead = ret;
 	return ret;

@@ -165,9 +165,14 @@ Dispatcher::UseMainLoop() const
  *
  */
 bool
-Dispatcher::WriteResponse(messages::task::Response &response)
+Dispatcher::WriteResponse(messages::task::Response const &response)
 {
 	string serialized;
+
+	messages::task::Communication comm;
+
+	comm.set_type(messages::task::Communication::CommunicationResponse);
+	*(comm.mutable_response()) = response;
 
 	if (Messages::Create(response, serialized))
 	{

@@ -83,6 +83,8 @@ Webots::Webots()
 {
 	string path;
 
+	Glib::thread_init();
+
 	// Get unix socket name from environment
 	if (!jessevdk::os::Environment::Variable("OPTIMIZATION_UNIX_SOCKET", path))
 	{
@@ -101,6 +103,11 @@ Webots::Webots()
 
 	d_client.OnData().Add(*this, &Webots::OnData);
 	WaitForRequest();
+
+	if (*this && !Setting("no-periodic-ping"))
+	{
+		Glib::Thread::create(sigc::mem_fun(*this, &Webots::PeriodicPing), false);
+	}
 }
 
 /**
@@ -132,14 +139,14 @@ Webots::Instance()
 void
 Webots::OnData(jessevdk::os::FileDescriptor::DataArgs &args)
 {
-	vector<messages::task::Task> request;
-	vector<messages::task::Task>::iterator iter;
+	vector<messages::task::Communication> request;
+	vector<messages::task::Communication>::iterator iter;
 
 	Messages::Extract(args, request);
 
 	if (request.size() != 0)
 	{
-		ReadRequest(request[0]);
+		ReadRequest(request[0].task());
 	}
 }
 
@@ -332,9 +339,13 @@ Webots::Response(messages::task::Response &res)
 	}
 
 	// Send the response
+	messages::task::Communication comm;
+	comm.set_type(messages::task::Communication::CommunicationResponse);
+
+	*(comm.mutable_response()) = res;
 	string serialized;
 
-	if (Messages::Create(res, serialized))
+	if (Messages::Create(comm, serialized))
 	{
 		d_client.Write(serialized);
 	}
@@ -360,5 +371,27 @@ Webots::WaitForRequest()
 	while (!HasTask())
 	{
 		ctx->iteration(true);
+	}
+}
+
+void
+Webots::PeriodicPing()
+{
+	while (true)
+	{
+		sleep(20);
+
+		// Send ping
+		messages::task::Communication comm;
+
+		comm.set_type(messages::task::Communication::CommunicationPing);
+		comm.mutable_ping()->set_id(Task().id());
+
+		string serialized;
+
+		if (Messages::Create(comm, serialized))
+		{
+			d_client.Write(serialized);
+		}
 	}
 }

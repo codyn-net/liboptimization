@@ -36,7 +36,7 @@ namespace optimization
 			virtual bool Run();
 			virtual void Stop();
 		protected:
-			virtual bool WriteResponse(messages::task::Response &response);
+			virtual bool WriteResponse(messages::task::Response const &response);
 
 			virtual bool RunTask() = 0;
 			virtual bool UseMainLoop() const;
