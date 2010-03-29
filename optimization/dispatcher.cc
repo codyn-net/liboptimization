@@ -174,7 +174,7 @@ Dispatcher::WriteResponse(messages::task::Response const &response)
 	comm.set_type(messages::task::Communication::CommunicationResponse);
 	*(comm.mutable_response()) = response;
 
-	if (Messages::Create(response, serialized))
+	if (Messages::Create(comm, serialized))
 	{
 		cout.write(serialized.c_str(), serialized.length());
 		cout.flush();
