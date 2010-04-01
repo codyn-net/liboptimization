@@ -3,38 +3,38 @@
  *
  *  Copyright (C) 2009 - Jesse van den Kieboom
  *
- * This library is free software; you can redistribute it and/or modify it 
- * under the terms of the GNU Lesser General Public License as published by the 
- * Free Software Foundation; either version 2.1 of the License, or (at your 
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
  * option) any later version.
- * 
- * This library is distributed in the hope that it will be useful, but WITHOUT 
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License 
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
  * for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public License 
+ *
+ * You should have received a copy of the GNU Lesser General Public License
  * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
 #include "discovery.hh"
 
-#include <base/base.hh>
+#include <jessevdk/base/base.hh>
 #include <optimization/constants.hh>
 #include <optimization/messages.hh>
 #include <optimization/debug.hh>
 
 using namespace std;
 using namespace optimization;
-using namespace base::signals;
+using namespace jessevdk::base::signals;
 
 /**
  * @class optimization::Discovery
  * @brief Optimization discovery
  *
  * This class implements a very simple discovery protocol used by the master
- * and worker process to be able to discovery each other. There are two 
+ * and worker process to be able to discovery each other. There are two
  * messages: Wakeup and Greeting. The workers will periodically send Greeting
  * messages (by default over multicast, see Constants::DiscoveryGroup). This
  * message contains the address description of the location of the worker, so
@@ -46,7 +46,7 @@ using namespace base::signals;
  * to send there periodic greeting.
  *
  * The discovery protocol implements a namespace to seperate different groups
- * of workers and masters (see Namespace() and SetNamespace()). By default 
+ * of workers and masters (see Namespace() and SetNamespace()). By default
  * a discovery object is in the anonymous namespace.
  *
  */
@@ -88,7 +88,7 @@ Discovery::Discovery()
 	UdpServer(Constants::DiscoveryGroup, Constants::DiscoveryPort)
 {
 	d_data = new Data();
-	addPrivateData(d_data);
+	AddPrivateData(d_data);
 }
 
 /**
@@ -102,11 +102,11 @@ Discovery::Discovery()
 bool
 Discovery::Listen()
 {
-	bool ret = UdpServer::listen();
+	bool ret = UdpServer::Listen();
 
 	if (ret)
 	{
-		onData().add(*d_data, &Discovery::Data::OnDataHandler);
+		OnData().Add(*d_data, &Discovery::Data::OnDataHandler);
 	}
 
 	return ret;
@@ -135,24 +135,24 @@ Discovery::Namespace() const
  *
  */
 void
-Discovery::Data::OnDataHandler(UdpServer::DataArgs &args) 
+Discovery::Data::OnDataHandler(UdpServer::DataArgs &args)
 {
 	vector<messages::discovery::Discovery> discovery;
 	vector<messages::discovery::Discovery>::iterator iter;
-	
+
 	Messages::Extract(args, discovery);
-	
+
 	for (iter = discovery.begin(); iter != discovery.end(); ++iter)
 	{
 		messages::discovery::Discovery &gr = *iter;
 		Info info;
-		
+
 		if (!CheckNamespace(gr.has_namespace_() ? gr.namespace_() : ""))
 		{
 			continue;
 		}
 
-		info.Host = args.address.host(true);
+		info.Host = args.Address.Host(true);
 
 		if (gr.type() == messages::discovery::Discovery::TypeGreeting)
 		{
@@ -164,7 +164,7 @@ Discovery::Data::OnDataHandler(UdpServer::DataArgs &args)
 		else if (gr.type() == messages::discovery::Discovery::TypeWakeup)
 		{
 			info.Connection = gr.wakeup().connection();
-			
+
 			debug_worker << "Received wakeup: " << info.Connection << endl;
 			onWakeup(info);
 		}

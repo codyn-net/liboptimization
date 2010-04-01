@@ -1,0 +1,88 @@
+package optimization.messages.command;
+
+enum CommandType {
+	List = 0;
+	Info = 1;
+	Kill = 2;
+	SetPriority = 3;
+	Authenticate = 4;
+	NumCommands = 5;
+}
+
+message KillCommand {
+	required uint32 id = 1;
+}
+
+message SetPriorityCommand {
+	required uint32 id = 1;
+	required double priority = 2;
+}
+
+message AuthenticateCommand {
+	optional string token = 1;
+}
+
+message ListCommand {
+}
+
+message InfoCommand {
+	required uint32 id = 1;
+}
+
+message Command {
+	required CommandType type = 1;
+
+	optional ListCommand list = 2;
+	optional InfoCommand info = 3;
+	optional KillCommand kill = 4;
+	optional SetPriorityCommand setpriority = 5;
+	optional AuthenticateCommand authenticate = 6;
+}
+
+message Job {
+	required uint32 id = 1;
+	required string name = 2;
+	required string user = 3;
+	required double priority = 4;
+
+	required uint64 started = 5;
+	required uint64 lastupdate = 6;
+
+	required double progress = 7;
+
+	required uint32 taskssuccess = 8;
+	required uint32 tasksfailed = 9;
+
+	required double runtime = 10;
+}
+
+message InfoResponse {
+	required Job job = 1;
+}
+
+message ListResponse {
+	repeated Job jobs = 1;
+}
+
+message AuthenticateResponse {
+	required string challenge = 1;
+}
+
+message KillResponse {
+}
+
+message SetPriorityResponse {
+}
+
+message Response {
+	required CommandType type = 1;
+	required bool status = 2;
+	required string message = 3;
+
+	optional ListResponse list = 4;
+	optional InfoResponse info = 5;
+
+	optional KillResponse kill = 6;
+	optional SetPriorityResponse setpriority = 7;
+	optional AuthenticateResponse authenticate = 8;
+}
