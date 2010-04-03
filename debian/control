@@ -1,11 +1,11 @@
-Source: liboptimization
+Source: liboptimization2
 Priority: extra
 Maintainer: Jesse van den Kieboom <jesse.vandenkieboom@epfl.ch>
 Build-Depends: debhelper (>= 7),
                autotools-dev,
                cdbs,
                pkg-config,
-               libjessevdk-dev (>= 0.2),
+               libjessevdk1-dev (>= 1.0),
                libglibmm-2.4-dev,
                zlib1g-dev,
                libprotobuf-dev (<< 2.1),
@@ -14,11 +14,11 @@ Standards-Version: 3.8.0
 Section: libs
 Homepage: http://birg.epfl.ch
 
-Package: liboptimization-dev
+Package: liboptimization2-dev
 Section: libdevel
 Architecture: any
-Depends: liboptimization1,
-         libjessevdk-dev (>= 0.2),
+Depends: liboptimization2,
+         libjessevdk1-dev (>= 1.0),
          libglibmm-2.4-dev,
          libprotobuf-dev (<< 2.1),
          zlib1g-dev,
@@ -26,9 +26,9 @@ Depends: liboptimization1,
 Description: liboptimization C++ system - Development files
  Optimization C++ subsystem
 
-Package: liboptimization1
+Package: liboptimization2
 Section: libs
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libjessevdk0 (>= 0.2), libprotobuf0 (<< 2.1) | libprotobuf3 (<< 2.1)
+Depends: ${shlibs:Depends}, ${misc:Depends}, libjessevdk1 (>= 1.0), libprotobuf0 (<< 2.1) | libprotobuf3 (<< 2.1)
 Description: liboptimization C++ system
  Optimization C++ subsystem
