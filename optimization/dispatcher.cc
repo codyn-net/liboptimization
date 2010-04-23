@@ -25,6 +25,7 @@
 using namespace std;
 using namespace optimization;
 using namespace optimization::messages;
+using namespace jessevdk::os;
 
 /**
  * @class optimization::Dispatcher
@@ -92,7 +93,7 @@ Dispatcher::Main()
 void
 Dispatcher::Stop()
 {
-	if (UseMainLoop() && d_main)
+	if (d_main)
 	{
 		d_main->quit();
 	}
@@ -120,17 +121,19 @@ Dispatcher::Run()
 		return false;
 	}
 
-	if (UseMainLoop())
-	{
-		d_main = Glib::MainLoop::create();
-	}
+	d_main = Glib::MainLoop::create();
+
+	d_stdin.OnData().Add(*this, &Dispatcher::OnData);
+
+	d_stdin.Assign(STDIN_FILENO);
+	d_stdin.Attach();
 
 	if (!RunTask())
 	{
 		return false;
 	}
 
-	if (d_main)
+	if (UseMainLoop())
 	{
 		d_main->run();
 	}
@@ -184,5 +187,28 @@ Dispatcher::WriteResponse(messages::task::Response const &response)
 	else
 	{
 		return false;
+	}
+}
+
+void
+Dispatcher::OnData(FileDescriptor::DataArgs &args)
+{
+	vector<task::Communication> messages;
+	vector<task::Communication>::iterator iter;
+
+	// Extract response messages
+	Messages::Extract(args, messages);
+
+	for (iter = messages.begin(); iter != messages.end(); ++iter)
+	{
+		switch (iter->type())
+		{
+			case task::Communication::CommunicationCancel:
+				Stop();
+			break;
+			default:
+				// Don't care about anything else really
+			break;
+		}
 	}
 }

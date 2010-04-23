@@ -24,12 +24,14 @@
 #include <optimization/task.pb.h>
 #include <optimization/taskreader.hh>
 #include <glibmm.h>
+#include <jessevdk/os/filedescriptor.hh>
 
 namespace optimization
 {
 	class Dispatcher : public TaskReader
 	{
 		Glib::RefPtr<Glib::MainLoop> d_main;
+		jessevdk::os::FileDescriptor d_stdin;
 
 		public:
 			/* Public functions */
@@ -44,6 +46,7 @@ namespace optimization
 			Glib::RefPtr<Glib::MainLoop> Main();
 		private:
 			/* Private functions */
+			void OnData(jessevdk::os::FileDescriptor::DataArgs &args);
 	};
 }
 
