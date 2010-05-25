@@ -31,15 +31,33 @@ using namespace optimization::messages;
  * @class optimization::TaskReader
  * @brief TaskReader class.
  *
- * TODO
+ * The task reader is a convenient class which reads a task description
+ * from a stream (for example cin or a file). It provides some convenient
+ * functions to get named parameters and dispatcher settings.
+ *
  */
 
+/**
+ * @brief Create new task reader.
+ *
+ * This creates an empty task reader.
+ *
+ * @see ReadRequest
+ */
 TaskReader::TaskReader()
 :
 	d_taskRead(false)
 {
 }
 
+/**
+ * @brief Create new task reader for an input stream
+ *
+ * Create a new task reader which starts reading the task from the specified
+ * input stream.
+ *
+ * @fn TaskReader::TaskReader(std::istream &stream)
+ */
 TaskReader::TaskReader(istream &stream)
 :
 	d_taskRead(false)
@@ -48,12 +66,12 @@ TaskReader::TaskReader(istream &stream)
 }
 
 /**
- * @brief Read task task request from STDIN.
+ * @brief Read task description from input stream.
  *
- * Reads the task request from STDIN.
+ * Reads the task description from an input stream.
  *
  * @return true if the request could be read, false otherwise
- *
+ * @fn bool optimization::TaskReader::ReadRequest(std::istream &stream)
  */
 bool
 TaskReader::ReadRequest(istream &stream)
@@ -211,7 +229,7 @@ TaskReader::Setting(string const &key, string &value) const
  * Get a task parameter from the task request.
  *
  * @return true if the setting could be found, false otherwise
- * @fn bool TaskReader::Parameter(std::string const &key, double &value) const
+ * @fn bool TaskReader::Parameter(std::string const &name, messages::task::Task::Parameter &parameter) const;
  */
 bool
 TaskReader::Parameter(string const &name, task::Task::Parameter &parameter) const
@@ -275,6 +293,15 @@ TaskReader::Parameter(string const &name, double &value) const
 	return true;
 }
 
+/**
+ * @brief Check if task parameter is set (const).
+ * @param name parameter name
+ *
+ * Check whether a task parameter in the task request is set.
+ *
+ * @return true if the task parameter is set, false otherwise
+ * @fn bool TaskReader::Parameter(std::string const &key) const
+ */
 bool
 TaskReader::Parameter(string const &name) const
 {
@@ -329,11 +356,27 @@ TaskReader::Task()
 	return d_task;
 }
 
+/**
+ * @brief Check whether a task has been successfully read.
+ *
+ * Check if a task has been successfully read.
+ *
+ * @return true if a task was read, false otherwise
+ * @see HasTask
+ */
 TaskReader::operator bool() const
 {
 	return d_taskRead;
 }
 
+/**
+ * @brief Check whether a task has been successfully read.
+ *
+ * Check if a task has been successfully read.
+ *
+ * @return true if a task was read, false otherwise
+ *
+ */
 bool
 TaskReader::HasTask() const
 {
