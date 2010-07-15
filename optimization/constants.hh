@@ -39,7 +39,10 @@ namespace optimization
 			MasterPort = 9485,
 
 			/** Default command port */
-			CommandPort = 7123
+			CommandPort = 7123,
+
+			/** Default monitor port */
+			MonitorPort = 8175
 		};
 
 		static std::string DiscoveryGroup;
