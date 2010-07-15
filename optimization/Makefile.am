@@ -14,12 +14,14 @@ INCLUDES = \
 BUILT_SOURCES = 	\
 	_command.pb.cc	\
 	_task.pb.cc 	\
-	_discovery.pb.cc
+	_discovery.pb.cc \
+	_monitor.pb.cc
 
 BUILT_HDRS = 		\
 	command.pb.h	\
 	task.pb.h 	\
-	discovery.pb.h
+	discovery.pb.h \
+	monitor.pb.h
 
 _task.pb.cc: task.proto task.pb.h
 	protoc --cpp_out=/tmp/ -I$(srcdir) $(srcdir)/task.proto && mv /tmp/task.pb.cc $@
@@ -39,11 +41,18 @@ _discovery.pb.cc: discovery.proto discovery.pb.h
 discovery.pb.h: discovery.proto
 	protoc --cpp_out=/tmp/ -I$(srcdir) $< && mv /tmp/$@ $@
 
+_monitor.pb.cc: monitor.proto monitor.pb.h
+	protoc --cpp_out=/tmp/ -I$(srcdir) $(srcdir)/monitor.proto && mv /tmp/monitor.pb.cc $@
+
+monitor.pb.h: monitor.proto
+	protoc --cpp_out=/tmp/ -I$(srcdir) $< && mv /tmp/$@ $@
+
 protodir = $(pkgincludedir)/optimization
 proto_DATA = 		\
 	command.proto	\
 	task.proto	\
-	discovery.proto
+	discovery.proto \
+	monitor.proto
 
 INSTHEADERS = \
 	optimization.hh \

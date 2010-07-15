@@ -1,4 +1,4 @@
-AC_INIT(liboptimization, 2.1)
+AC_INIT(liboptimization, 2.2)
 
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 
@@ -23,24 +23,10 @@ AC_SUBST(LIBOPTIMIZATION_API_VERSION)
 pkgincludedir="$includedir/liboptimization-$LIBOPTIMIZATION_API_VERSION"
 AC_SUBST(pkgincludedir)
 
-dnl Testing for google protobuf
-AC_LANG(C++)
-SAVED_LDFLAGS=$LDFLAGS
-LDFLAGS="$LDFLAGS -lprotobuf -lpthread"
-
-AC_MSG_CHECKING([for google protobuf])
-
-AC_LINK_IFELSE(
-	[AC_LANG_PROGRAM([#include <google/protobuf/dynamic_message.h>],
-		[google::protobuf::DynamicMessageFactory dummy])],
-	[AC_MSG_RESULT([yes])],
-	[
-		AC_MSG_RESULT([no])
-		AC_MSG_ERROR([google protobuf is not installed.])])
-
 PKG_CHECK_MODULES(PACKAGE_LIBOPTIMIZATION, [
 	libjessevdk-1.0 >= 1.0
 	glibmm-2.4
+	protobuf >= 2.2.0a
 ])
 
 LDFLAGS=$SAVED_LDFLAGS

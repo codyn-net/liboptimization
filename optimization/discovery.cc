@@ -118,7 +118,7 @@ Discovery::Listen()
  * Get the discovery namespace. The namespace is used to separate several
  * groups of master and worker processes.
  *
- * @return Description
+ * @return the discovery namespace
  *
  */
 string const &
@@ -172,15 +172,16 @@ Discovery::Data::OnDataHandler(UdpServer::DataArgs &args)
 }
 
 /**
+ * @fn void optimization::Discovery::SetNamespace(std::string const &ns)
  * @brief Set the discovery namespace.
  * @param ns the namespace
  *
  * Set the discovery namespace. The namespace is used to separate several
  * groups of master and worker processes.
- * @fn void optimization::Discovery::SetNamespace(std::string const &ns)
+ *
  */
 void
-Discovery::SetNamespace(string const &ns)
+Discovery::SetNamespace(const string &ns)
 {
 	d_data->ns = ns;
 }

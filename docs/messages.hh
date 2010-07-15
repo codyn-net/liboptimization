@@ -401,7 +401,7 @@ namespace optimization::messages::task
  *
  * The task message is a full description of a single task, as to be carried
  * out by a worker/dispatcher. It describes the task id, which dispatcher to
- * use, and the general task description (see Task_Description).
+ * use, and the general task description.
  *
  */
 
@@ -500,56 +500,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn bool Task::has_description() const
- * @brief Get whether the description field has been set.
- *
- * Get whether the description field has been set.
- *
- * @return whether the description field has been set
- *
- */
-
-/**
- * @fn void Task::clear_description()
- * @brief Clear the description field.
- *
- * Clear the description field.
- *
- */
-
-/**
- * @fn Task_Description &Task::description() const
- * @brief Get the description field.
- *
- * Get the description field.
- *
- * @return the value of the description field
- *
- */
-
-/**
- * @fn Task_Description *Task::mutable_description()
- * @brief Get the mutable description field value.
- *
- * Get the mutable description field value.
- *
- * @return the mutable description field value
- *
- */
-
-/**
- * @class Task_Description
- * @brief Main task description message.
- *
- * The task description message describes the actual task that is caried out.
- * This message is contained within a Task message which is send to the worker
- * process. The worker then sends the Task_Description message to the 
- * dispatcher.
- *
- */
-
-/**
- * @fn bool Task_Description::has_job() const
+ * @fn bool Task::has_job() const
  * @brief Get whether the job field has been set.
  *
  * Get whether the job field has been set.
@@ -559,7 +510,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn void Task_Description::clear_job()
+ * @fn void Task::clear_job()
  * @brief Clears the job field.
  *
  * Clears the job field.
@@ -567,7 +518,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn void Task_Description::set_job(const ::std::string &value)
+ * @fn void Task::set_job(const ::std::string &value)
  * @brief Set the job field.
  * @param job the field value
  *
@@ -576,7 +527,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn void Task_Description::set_job(const char *value)
+ * @fn void Task::set_job(const char *value)
  * @brief Set the job field.
  * @param job the field value
  *
@@ -585,7 +536,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn const ::std::string &Task_Description::job() const
+ * @fn const ::std::string &Task::job() const
  * @brief Get the job field.
  *
  * Get the job field.
@@ -595,7 +546,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn ::std::string *Task_Description::job()
+ * @fn ::std::string *Task::mutable_job()
  * @brief Get the mutable job field.
  *
  * Get the mutable job field.
@@ -605,7 +556,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn bool Task_Description::has_optimizer() const
+ * @fn bool Task::has_optimizer() const
  * @brief Get whether the optimizer field has been set.
  *
  * Get whether the optimizer field has been set.
@@ -615,7 +566,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn void Task_Description::clear_optimizer()
+ * @fn void Task::clear_optimizer()
  * @brief Clears the optimizer field.
  *
  * Clears the optimizer field.
@@ -623,7 +574,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn void Task_Description::set_optimizer(const ::std::string &value)
+ * @fn void Task::set_optimizer(const ::std::string &value)
  * @brief Set the optimizer field.
  * @param optimizer the field value
  *
@@ -632,7 +583,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn void Task_Description::set_optimizer(const char *value)
+ * @fn void Task::set_optimizer(const char *value)
  * @brief Set the optimizer field.
  * @param optimizer the field value
  *
@@ -641,7 +592,17 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn const ::std::string &Task_Description::optimizer() const
+ * @fn std::string *Task::mutable_optimizer()
+ * @brief Get the mutable optimizer field.
+ *
+ * Get the mutable optimizer field.
+ *
+ * @return the mutable optimizer field.
+ *
+ */
+
+/**
+ * @fn const ::std::string &Task::optimizer() const
  * @brief Get the optimizer field.
  *
  * Get the optimizer field.
@@ -651,7 +612,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn ::std::string *Task_Description::optimizer()
+ * @fn ::std::string *Task::optimizer()
  * @brief Get the mutable optimizer field.
  *
  * Get the mutable optimizer field.
@@ -661,7 +622,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn int Task_Description::parameters_size() const
+ * @fn int Task::parameters_size() const
  * @brief Get the number of items in the parameters field list.
  *
  * Get the number of items in the parameters field list.
@@ -671,7 +632,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn void Task_Description::clear_parameters()
+ * @fn void Task::clear_parameters()
  * @brief Clears the parameters field.
  *
  * Clears the parameters field.
@@ -679,7 +640,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn google::protobuf::RepeatedPtrField<Task_Description_Parameter> &Task_Description::parameters() const
+ * @fn google::protobuf::RepeatedPtrField<Task_Parameter> &Task::parameters() const
  * @brief Get the parameters field list.
  *
  * Get the parameters field list.
@@ -689,7 +650,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn google::protobuf::RepeatedPtrField<Task_Description_Parameter> *Task_Description::mutable_parameters()
+ * @fn google::protobuf::RepeatedPtrField<Task_Parameter> *Task::mutable_parameters()
  * @brief Get the mutable parameters field list.
  *
  * Get the mutable parameters field list.
@@ -699,7 +660,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn Task_Description_Parameter &Task_Description::parameters(int index) const
+ * @fn Task_Parameter &Task::parameters(int index) const
  * @brief Get an item from the parameters field list.
  * @param index the item index
  *
@@ -710,7 +671,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn Task_Description_Parameter *Task_Description::mutable_parameters(int index)
+ * @fn Task_Parameter *Task::mutable_parameters(int index)
  * @brief Get a mutable item from the parameters field list.
  * @param index the item index
  *
@@ -721,7 +682,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn Task_Description_Parameter *Task_Description::add_parameters()
+ * @fn Task_Parameter *Task::add_parameters()
  * @brief Add a new parameters item to the list.
  *
  * Add a new parameters item to the list.
@@ -731,7 +692,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn int Task_Description::settings_size() const
+ * @fn int Task::settings_size() const
  * @brief Get the number of items in the settings field list.
  *
  * Get the number of items in the settings field list.
@@ -741,7 +702,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn void Task_Description::clear_settings()
+ * @fn void Task::clear_settings()
  * @brief Clears the settings field.
  *
  * Clears the settings field.
@@ -749,7 +710,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn google::protobuf::RepeatedPtrField<Task_Description_KeyValue> &Task_Description::settings() const
+ * @fn google::protobuf::RepeatedPtrField<Task_KeyValue> &Task::settings() const
  * @brief Get the settings field list.
  *
  * Get the settings field list.
@@ -759,7 +720,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn google::protobuf::RepeatedPtrField<Task_Description_KeyValue> *Task_Description::mutable_settings()
+ * @fn google::protobuf::RepeatedPtrField<Task_KeyValue> *Task::mutable_settings()
  * @brief Get the mutable settings field list.
  *
  * Get the mutable settings field list.
@@ -769,7 +730,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn Task_Description_KeyValue &Task_Description::settings(int index) const
+ * @fn Task_KeyValue &Task::settings(int index) const
  * @brief Get an item from the settings field list.
  * @param index the item index
  *
@@ -780,7 +741,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn Task_Description_KeyValue *Task_Description::mutable_settings(int index)
+ * @fn Task_KeyValue *Task::mutable_settings(int index)
  * @brief Get a mutable item from the settings field list.
  * @param index the item index
  *
@@ -791,7 +752,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn Task_Description_KeyValue *Task_Description::add_settings()
+ * @fn Task_KeyValue *Task::add_settings()
  * @brief Add a new settings item to the list.
  *
  * Add a new settings item to the list.
@@ -801,7 +762,77 @@ namespace optimization::messages::task
  */
 
 /**
- * @class Task_Description_Parameter
+ * @fn int Task::data_size() const
+ * @brief Get the number of items in the data field list.
+ *
+ * Get the number of items in the data field list.
+ *
+ * @return the number of items in the data field list
+ *
+ */
+
+/**
+ * @fn void Task::clear_data()
+ * @brief Clears the data field.
+ *
+ * Clears the data field.
+ *
+ */
+
+/**
+ * @fn google::protobuf::RepeatedPtrField<Task_KeyValue> &Task::data() const
+ * @brief Get the data field list.
+ *
+ * Get the data field list.
+ *
+ * @return the data field list
+ *
+ */
+
+/**
+ * @fn google::protobuf::RepeatedPtrField<Task_KeyValue> *Task::mutable_data()
+ * @brief Get the mutable data field list.
+ *
+ * Get the mutable data field list.
+ *
+ * @return the mutable data field list
+ *
+ */
+
+/**
+ * @fn Task_KeyValue &Task::data(int index) const
+ * @brief Get an item from the data field list.
+ * @param index the item index
+ *
+ * Get a specific item from the data field list.
+ *
+ * @return the data item
+ *
+ */
+
+/**
+ * @fn Task_KeyValue *Task::mutable_data(int index)
+ * @brief Get a mutable item from the data field list.
+ * @param index the item index
+ *
+ * Get a specific mutable item from the data field list.
+ *
+ * @return the mutable data item
+ *
+ */
+
+/**
+ * @fn Task_KeyValue *Task::add_data()
+ * @brief Add a new data item to the list.
+ *
+ * Add a new data item to the list.
+ *
+ * @return the newly added data item
+ *
+ */
+
+/**
+ * @class Task_Parameter
  * @brief A task parameter message.
  *
  * Describes a single parameter in the task.
@@ -809,7 +840,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn bool Task_Description_Parameter::has_name() const
+ * @fn bool Task_Parameter::has_name() const
  * @brief Get whether the name field has been set.
  *
  * Get whether the name field has been set.
@@ -819,7 +850,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn void Task_Description_Parameter::clear_name()
+ * @fn void Task_Parameter::clear_name()
  * @brief Clears the name field.
  *
  * Clears the name field.
@@ -827,7 +858,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn void Task_Description_Parameter::set_name(const ::std::string &value)
+ * @fn void Task_Parameter::set_name(const ::std::string &value)
  * @brief Set the name field.
  * @param name the field value
  *
@@ -836,7 +867,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn void Task_Description_Parameter::set_name(const char *value)
+ * @fn void Task_Parameter::set_name(const char *value)
  * @brief Set the name field.
  * @param name the field value
  *
@@ -845,7 +876,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn const ::std::string &Task_Description_Parameter::name() const
+ * @fn const ::std::string &Task_Parameter::name() const
  * @brief Get the name field.
  *
  * Get the name field.
@@ -855,7 +886,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn ::std::string *Task_Description_Parameter::name()
+ * @fn ::std::string *Task_Parameter::name()
  * @brief Get the mutable name field.
  *
  * Get the mutable name field.
@@ -865,7 +896,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn bool Task_Description_Parameter::has_value() const
+ * @fn bool Task_Parameter::has_value() const
  * @brief Get whether the value field has been set.
  *
  * Get whether the value field has been set.
@@ -875,7 +906,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn void Task_Description_Parameter::clear_value()
+ * @fn void Task_Parameter::clear_value()
  * @brief Clears the value field.
  *
  * Clears the value field.
@@ -883,7 +914,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn void Task_Description_Parameter::set_value(double value)
+ * @fn void Task_Parameter::set_value(double value)
  * @brief Set the value field.
  * @param value the field value
  *
@@ -892,7 +923,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn double Task_Description_Parameter::value() const
+ * @fn double Task_Parameter::value() const
  * @brief Get the value field.
  *
  * Get the value field.
@@ -902,7 +933,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn bool Task_Description_Parameter::has_min() const
+ * @fn bool Task_Parameter::has_min() const
  * @brief Get whether the min field has been set.
  *
  * Get whether the min field has been set.
@@ -912,7 +943,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn void Task_Description_Parameter::clear_min()
+ * @fn void Task_Parameter::clear_min()
  * @brief Clears the min field.
  *
  * Clears the min field.
@@ -920,7 +951,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn void Task_Description_Parameter::set_min(double value)
+ * @fn void Task_Parameter::set_min(double value)
  * @brief Set the min field.
  * @param min the field value
  *
@@ -929,7 +960,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn double Task_Description_Parameter::min() const
+ * @fn double Task_Parameter::min() const
  * @brief Get the min field.
  *
  * Get the min field.
@@ -939,7 +970,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn bool Task_Description_Parameter::has_max() const
+ * @fn bool Task_Parameter::has_max() const
  * @brief Get whether the max field has been set.
  *
  * Get whether the max field has been set.
@@ -949,7 +980,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn void Task_Description_Parameter::clear_max()
+ * @fn void Task_Parameter::clear_max()
  * @brief Clears the max field.
  *
  * Clears the max field.
@@ -957,7 +988,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn void Task_Description_Parameter::set_max(double value)
+ * @fn void Task_Parameter::set_max(double value)
  * @brief Set the max field.
  * @param max the field value
  *
@@ -966,7 +997,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn double Task_Description_Parameter::max() const
+ * @fn double Task_Parameter::max() const
  * @brief Get the max field.
  *
  * Get the max field.
@@ -976,7 +1007,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @class Task_Description_KeyValue
+ * @class Task_KeyValue
  * @brief A simple Key/Value message.
  *
  * Describes a key/value pair used to make up a dictionary.
@@ -984,7 +1015,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn bool Task_Description_KeyValue::has_key() const
+ * @fn bool Task_KeyValue::has_key() const
  * @brief Get whether the key field has been set.
  *
  * Get whether the key field has been set.
@@ -994,7 +1025,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn void Task_Description_KeyValue::clear_key()
+ * @fn void Task_KeyValue::clear_key()
  * @brief Clears the key field.
  *
  * Clears the key field.
@@ -1002,7 +1033,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn void Task_Description_KeyValue::set_key(const ::std::string &value)
+ * @fn void Task_KeyValue::set_key(const ::std::string &value)
  * @brief Set the key field.
  * @param key the field value
  *
@@ -1011,7 +1042,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn void Task_Description_KeyValue::set_key(const char *value)
+ * @fn void Task_KeyValue::set_key(const char *value)
  * @brief Set the key field.
  * @param key the field value
  *
@@ -1020,7 +1051,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn const ::std::string &Task_Description_KeyValue::key() const
+ * @fn const ::std::string &Task_KeyValue::key() const
  * @brief Get the key field.
  *
  * Get the key field.
@@ -1030,7 +1061,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn ::std::string *Task_Description_KeyValue::key()
+ * @fn ::std::string *Task_KeyValue::key()
  * @brief Get the mutable key field.
  *
  * Get the mutable key field.
@@ -1040,7 +1071,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn bool Task_Description_KeyValue::has_value() const
+ * @fn bool Task_KeyValue::has_value() const
  * @brief Get whether the value field has been set.
  *
  * Get whether the value field has been set.
@@ -1050,7 +1081,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn void Task_Description_KeyValue::clear_value()
+ * @fn void Task_KeyValue::clear_value()
  * @brief Clears the value field.
  *
  * Clears the value field.
@@ -1058,7 +1089,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn void Task_Description_KeyValue::set_value(const ::std::string &value)
+ * @fn void Task_KeyValue::set_value(const ::std::string &value)
  * @brief Set the value field.
  * @param value the field value
  *
@@ -1067,7 +1098,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn void Task_Description_KeyValue::set_value(const char *value)
+ * @fn void Task_KeyValue::set_value(const char *value)
  * @brief Set the value field.
  * @param value the field value
  *
@@ -1076,7 +1107,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn const ::std::string &Task_Description_KeyValue::value() const
+ * @fn const ::std::string &Task_KeyValue::value() const
  * @brief Get the value field.
  *
  * Get the value field.
@@ -1086,7 +1117,7 @@ namespace optimization::messages::task
  */
 
 /**
- * @fn ::std::string *Task_Description_KeyValue::value()
+ * @fn ::std::string *Task_KeyValue::value()
  * @brief Get the mutable value field.
  *
  * Get the mutable value field.
