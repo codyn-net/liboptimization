@@ -29,6 +29,7 @@
 #include <optimization/task.pb.h>
 #include <optimization/discovery.pb.h>
 #include <optimization/command.pb.h>
+#include <optimization/monitor.pb.h>
 
 namespace optimization
 {
