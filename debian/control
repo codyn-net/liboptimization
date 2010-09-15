@@ -8,8 +8,8 @@ Build-Depends: debhelper (>= 7),
                libjessevdk1-dev (>= 1.0),
                libglibmm-2.4-dev,
                zlib1g-dev,
-               libprotobuf-dev (<< 2.1),
-               protobuf-compiler (<< 2.1)
+               libprotobuf-dev (>= 2.2.0a),
+               protobuf-compiler (>= 2.2.0a)
 Standards-Version: 3.8.0
 Section: libs
 Homepage: http://birg.epfl.ch
@@ -20,15 +20,15 @@ Architecture: any
 Depends: liboptimization2,
          libjessevdk1-dev (>= 1.0),
          libglibmm-2.4-dev,
-         libprotobuf-dev (<< 2.1),
+         libprotobuf-dev (>= 2.2.0a),
          zlib1g-dev,
-         protobuf-compiler (<< 2.1)
+         protobuf-compiler (>= 2.2.0a)
 Description: liboptimization C++ system - Development files
  Optimization C++ subsystem
 
 Package: liboptimization2
 Section: libs
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libjessevdk1 (>= 1.0), libprotobuf0 (<< 2.1) | libprotobuf3 (<< 2.1)
+Depends: ${shlibs:Depends}, ${misc:Depends}, libjessevdk1 (>= 1.0), libprotobuf5 (>= 2.2.0a)
 Description: liboptimization C++ system
  Optimization C++ subsystem
