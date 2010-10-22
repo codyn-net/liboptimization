@@ -75,11 +75,23 @@ message Task {
  * The identification of the job to the master
  */
 message Identify {
+	message Fitness {
+		enum Type
+		{
+			Maximize = 0;
+			Minimize = 1;
+		}
+
+		required Type type = 1;
+		required string name = 2;
+	}
+
 	required string name = 1;
 	required string user = 2;
 	required double priority = 3;
 	optional double timeout = 4;
 	optional uint32 version = 5;
+	repeated Fitness fitness = 6;
 }
 
 /*
@@ -88,6 +100,17 @@ message Identify {
 message Batch {
 	repeated Task tasks = 1;
 	required double progress = 2;
+}
+
+message Progress {
+	message Term
+	{
+		required double best = 1;
+		required double mean = 2;
+	}
+
+	required uint64 tick = 1;
+	repeated Term terms = 2;
 }
 
 /* A response message is the response to a certain request. It is send from the
@@ -158,6 +181,18 @@ message Response {
 	extensions 1000 to max;
 }
 
+message Notification {
+	enum Type
+	{
+		Info = 0;
+		Error = 1;
+		Warning = 2;
+	}
+
+	required Type type = 1;
+	required string message = 2;
+}
+
 /*
  * Communication message send from the master to the worker. It can be either
  * a task Request, or a Token
@@ -171,6 +206,8 @@ message Communication {
 		CommunicationCancel = 4;
 		CommunicationIdentify = 5;
 		CommunicationPing = 6;
+		CommunicationProgress = 7;
+		CommunicationNotification = 8;
 	}
 
 	// The type of communication
@@ -195,4 +232,9 @@ message Communication {
 	optional Identify identify = 7;
 
 	optional Ping ping = 8;
+
+	// Progress send from the job to the master
+	optional Progress progress = 9;
+
+	optional Notification notification = 10;
 }
