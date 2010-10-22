@@ -1,4 +1,5 @@
 package optimization.messages.command;
+import "task.proto";
 
 enum CommandType {
 	List = 0;
@@ -6,7 +7,9 @@ enum CommandType {
 	Kill = 2;
 	SetPriority = 3;
 	Authenticate = 4;
-	NumCommands = 5;
+	Progress = 5;
+	Idle = 6;
+	NumCommands = 7;
 }
 
 message KillCommand {
@@ -29,6 +32,13 @@ message InfoCommand {
 	required uint32 id = 1;
 }
 
+message ProgressCommand {
+	required uint32 id = 1;
+}
+
+message IdleCommand {
+}
+
 message Command {
 	required CommandType type = 1;
 
@@ -37,6 +47,8 @@ message Command {
 	optional KillCommand kill = 4;
 	optional SetPriorityCommand setpriority = 5;
 	optional AuthenticateCommand authenticate = 6;
+	optional ProgressCommand progress = 7;
+	optional IdleCommand idle = 8;
 }
 
 message Job {
@@ -74,6 +86,15 @@ message KillResponse {
 message SetPriorityResponse {
 }
 
+message ProgressResponse {
+	repeated optimization.messages.task.Identify.Fitness fitnesses = 1;
+	repeated optimization.messages.task.Progress items = 2;
+}
+
+message IdleResponse {
+	required uint64 seconds = 1;
+}
+
 message Response {
 	required CommandType type = 1;
 	required bool status = 2;
@@ -85,4 +106,7 @@ message Response {
 	optional KillResponse kill = 6;
 	optional SetPriorityResponse setpriority = 7;
 	optional AuthenticateResponse authenticate = 8;
+
+	optional ProgressResponse progress = 9;
+	optional IdleResponse idle = 10;
 }
