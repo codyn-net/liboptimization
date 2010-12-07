@@ -180,7 +180,7 @@ Webots::operator bool() const
  * @fn void Webots::Respond(std::map<std::string, double> const &fitness)
  */
 void
-Webots::Respond(map<string, double> const &fitness)
+Webots::Respond(std::map<std::string, double> const &fitness)
 {
 	map<string, string> data;
 	Respond(fitness, data);
@@ -212,8 +212,8 @@ Webots::Respond(double fitness)
  * @fn void Webots::Respond(messages::task::Response::Status status, std::map<std::string, double> const &fitness)
  */
 void
-Webots::Respond(messages::task::Response::Status  status,
-                map<string, double> const        &fitness)
+Webots::Respond(messages::task::Response::Status     status,
+                std::map<std::string, double> const &fitness)
 {
 	map<string, string> data;
 	Respond(status, fitness, data);
@@ -233,7 +233,7 @@ Webots::Respond(messages::task::Response::Status  status,
  * @fn void Webots::Respond(double fitness, std::map<std::string, std::string> const &data)
  */
 void
-Webots::Respond(double fitness, std::map<string, string> const &data)
+Webots::Respond(double fitness, std::map<std::string, std::string> const &data)
 {
 	map<string, double> fitnessmap;
 	fitnessmap["value"] = fitness;
@@ -256,7 +256,7 @@ Webots::Respond(double fitness, std::map<string, string> const &data)
  * @fn void Webots::Respond(std::map<std::string, double> const &fitness, std::map<std::string, std::string> const &data)
  */
 void
-Webots::Respond(std::map<std::string, double> const &fitness, std::map<string, string> const &data)
+Webots::Respond(std::map<std::string, double> const &fitness, std::map<std::string, std::string> const &data)
 {
 	Respond(messages::task::Response::Success, fitness, data);
 }
@@ -275,7 +275,7 @@ Webots::Respond(std::map<std::string, double> const &fitness, std::map<string, s
  * @fn void Webots::Respond(messages::task::Response::Status status, std::map<std::string, double> const &fitness, std::map<std::string, std::string> const &data)
  */
 void
-Webots::Respond(messages::task::Response::Status status, std::map<std::string, double> const &fitness, std::map<string, string> const &data)
+Webots::Respond(messages::task::Response::Status status, std::map<std::string, double> const &fitness, std::map<std::string, std::string> const &data)
 {
 	messages::task::Response res;
 
