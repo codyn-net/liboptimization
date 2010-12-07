@@ -60,3 +60,12 @@ liboptimization.pc
 docs/Makefile
 docs/doxygen.cfg
 )
+
+echo "
+
+Configuration:
+
+        Source code location:   ${srcdir}
+        Compiler:               ${CC}
+        Documentation enabled:  $enable_docs
+"

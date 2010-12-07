@@ -46,7 +46,7 @@ using namespace optimization;
  */
 bool
 Messages::Create(::google::protobuf::Message const &message,
-                 string                            &serialized)
+                 std::string                       &serialized)
 {
 	if (!message.SerializeToString(&serialized))
 	{
