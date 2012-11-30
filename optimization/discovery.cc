@@ -70,7 +70,7 @@ using namespace jessevdk::base::signals;
  * @return true if the namespaces match, false otherwise
  */
 bool
-Discovery::Data::CheckNamespace(string const &ns) const
+Discovery::Data::CheckNamespace(std::string const &ns) const
 {
 	return (this->ns == ns);
 }
@@ -181,7 +181,7 @@ Discovery::Data::OnDataHandler(UdpServer::DataArgs &args)
  *
  */
 void
-Discovery::SetNamespace(const string &ns)
+Discovery::SetNamespace(std::string const &ns)
 {
 	d_data->ns = ns;
 }

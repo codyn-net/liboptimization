@@ -1,6 +1,6 @@
 PROJECT_NAME = liboptimization
 
-INPUT = @top_srcdir@/optimization mainpage.hh messages.hh optimization.hh
+INPUT = @top_srcdir@/optimization @srcdir@/mainpage.hh @srcdir@/messages.hh @srcdir@/optimization.hh
 
 FILE_PATTERNS = *.cc *.hh *.pb.h
 
@@ -12,9 +12,9 @@ SEARCHENGINE = YES
 GENERATE_TREEVIEW = YES
 USE_INLINE_TREES = YES
 
-HTML_FOOTER = templates/footer.html
-HTML_HEADER = templates/header.html
-HTML_STYLESHEET = templates/stylesheet.css
+HTML_FOOTER = @srcdir@/templates/footer.html
+HTML_HEADER = @srcdir@/templates/header.html
+HTML_STYLESHEET = @srcdir@/templates/stylesheet.css
 HTML_DYNAMIC_SECTIONS = YES
 FULL_PATH_NAMES = NO
 

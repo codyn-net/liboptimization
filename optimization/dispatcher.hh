@@ -21,7 +21,7 @@
 #ifndef __OPTIMIZATION_DISPATCHER_H__
 #define __OPTIMIZATION_DISPATCHER_H__
 
-#include <optimization/task.pb.h>
+#include <optimization/messages/task.pb.h>
 #include <optimization/taskreader.hh>
 #include <glibmm.h>
 #include <jessevdk/os/filedescriptor.hh>

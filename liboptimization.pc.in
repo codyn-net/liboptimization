@@ -2,7 +2,7 @@ prefix=@prefix@
 exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
-protodir=@pkgincludedir@/optimization
+protodir=@pkgincludedir@
 
 Name: liboptimization-optimization
 Description: liboptimization C++ optimization library

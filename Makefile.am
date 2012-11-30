@@ -1,3 +1,5 @@
+ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
+
 SUBDIRS = optimization
 
 if ENABLE_DOCS
@@ -17,3 +19,5 @@ EXTRA_DIST = \
 
 CLEANFILES = 	\
 	$(pkgconfig_DATA)
+
+DISTCHECK_CONFIGURE_FLAGS = --enable-docs
