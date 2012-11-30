@@ -56,9 +56,9 @@ TaskReader::TaskReader()
  * Create a new task reader which starts reading the task from the specified
  * input stream.
  *
- * @fn TaskReader::TaskReader(std::istream &stream)
+ * @fn optimization::TaskReader::TaskReader(std::istream &stream)
  */
-TaskReader::TaskReader(istream &stream)
+TaskReader::TaskReader(std::istream &stream)
 :
 	d_taskRead(false)
 {
@@ -74,7 +74,7 @@ TaskReader::TaskReader(istream &stream)
  * @fn bool optimization::TaskReader::ReadRequest(std::istream &stream)
  */
 bool
-TaskReader::ReadRequest(istream &stream)
+TaskReader::ReadRequest(std::istream &stream)
 {
 	/* Read request from stdin */
 	size_t num;
@@ -128,6 +128,13 @@ TaskReader::ReadRequest(istream &stream)
 	return ret;
 }
 
+/**
+ * @brief Set task description.
+ *
+ * Set the task description directly. This can be used in subclasses of
+ * TaskReader when a task might be read from something other than a stream.
+ *
+ */
 void
 TaskReader::ReadRequest(messages::task::Task const &task)
 {
@@ -208,7 +215,7 @@ TaskReader::ReadParameters()
  * @fn bool TaskReader::Setting(std::string const &key, std::string &value) const
  */
 bool
-TaskReader::Setting(string const &key, string &value) const
+TaskReader::Setting(std::string const &key, std::string &value) const
 {
 	map<string, string>::const_iterator found = d_settings.find(key);
 
@@ -224,7 +231,7 @@ TaskReader::Setting(string const &key, string &value) const
 /**
  * @brief Get task task parameter (const).
  * @param name the parameter name
- * @param value parameter return value
+ * @param parameter parameter return value
  *
  * Get a task parameter from the task request.
  *
@@ -232,7 +239,7 @@ TaskReader::Setting(string const &key, string &value) const
  * @fn bool TaskReader::Parameter(std::string const &name, messages::task::Task::Parameter &parameter) const;
  */
 bool
-TaskReader::Parameter(string const &name, task::Task::Parameter &parameter) const
+TaskReader::Parameter(std::string const &name, task::Task::Parameter &parameter) const
 {
 	map<string, task::Task::Parameter>::const_iterator found = d_parameters.find(name);
 
@@ -256,7 +263,7 @@ TaskReader::Parameter(string const &name, task::Task::Parameter &parameter) cons
  * @fn bool TaskReader::Data(std::string const &key, std::string &value) const
  */
 bool
-TaskReader::Data(string const &key, string &value) const
+TaskReader::Data(std::string const &key, std::string &value) const
 {
 	map<string, string>::const_iterator found = d_data.find(key);
 
@@ -277,10 +284,10 @@ TaskReader::Data(string const &key, string &value) const
  * Get a task parameter from the task request.
  *
  * @return true if the setting could be found, false otherwise
- * @fn bool TaskReader::Parameter(std::string const &key, double &value) const
+ * @fn bool TaskReader::Parameter(std::string const &name, double &value) const
  */
 bool
-TaskReader::Parameter(string const &name, double &value) const
+TaskReader::Parameter(std::string const &name, double &value) const
 {
 	task::Task::Parameter parameter;
 
@@ -300,10 +307,10 @@ TaskReader::Parameter(string const &name, double &value) const
  * Check whether a task parameter in the task request is set.
  *
  * @return true if the task parameter is set, false otherwise
- * @fn bool TaskReader::Parameter(std::string const &key) const
+ * @fn bool TaskReader::Parameter(std::string const &name) const
  */
 bool
-TaskReader::Parameter(string const &name) const
+TaskReader::Parameter(std::string const &name) const
 {
 	task::Task::Parameter parameter;
 
@@ -320,7 +327,7 @@ TaskReader::Parameter(string const &name) const
  * @fn bool TaskReader::Setting(std::string const &key) const
  */
 bool
-TaskReader::Setting(string const &key) const
+TaskReader::Setting(std::string const &key) const
 {
 	string dummy;
 	return Setting(key, dummy);
@@ -336,7 +343,7 @@ TaskReader::Setting(string const &key) const
  * @fn bool TaskReader::Data(std::string const &key) const
  */
 bool
-TaskReader::Data(string const &key) const
+TaskReader::Data(std::string const &key) const
 {
 	string dummy;
 	return Data(key, dummy);

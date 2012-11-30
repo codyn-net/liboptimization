@@ -21,7 +21,7 @@
 #ifndef __OPTIMIZATION_TASK_READER_H__
 #define __OPTIMIZATION_TASK_READER_H__
 
-#include <optimization/task.pb.h>
+#include <optimization/messages/task.pb.h>
 #include <glibmm.h>
 #include <iosfwd>
 

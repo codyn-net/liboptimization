@@ -2293,3 +2293,393 @@ namespace optimization::messages::discovery
  * @brief Discovery message is of type Wakeup
  */
 }
+
+namespace optimization::messages::command
+{
+/**
+ * @class Command
+ * @brief The main command message
+ *
+ * The Command class represents the main command message. It contains optional
+ * fields for all of the possible commands. A valid command message must contain
+ * a command type and the corresponding submessage field should be filled.
+ *
+ */
+
+/**
+ * @class IdleCommand
+ * @brief The idle command
+ *
+ * The idle command reports the amount of seconds that the optimaster has been
+ * idle (without jobs).
+ *
+ */
+
+/**
+ * @class KillCommand
+ * @brief The kill command
+ *
+ * The kill command removes a job from the master. Note that you need to be
+ * authenticated to execute this command
+ * (@see optimization::messages::command::AuthenticateCommand).
+ *
+ */
+
+/**
+ * @fn bool KillCommand::has_id() const
+ * @brief Get whether the id field has been set.
+ *
+ * Get whether the id field has been set.
+ *
+ * @return whether the id field has been set
+ *
+ */
+
+/**
+ * @fn void KillCommand::clear_id()
+ * @brief Clears the id field.
+ *
+ * Clears the id field.
+ *
+ */
+
+/**
+ * @fn void KillCommand::set_id(::google::protobuf::uint32 value)
+ * @brief Set the id field.
+ * @param value the field value
+ *
+ * Set the value of the id field.
+ *
+ */
+
+/**
+ * @fn ::google::protobuf::uint32 KillCommand::id() const
+ * @brief Get the id field.
+ *
+ * Get the id field.
+ *
+ * @return the value of the id field
+ *
+ */
+
+/**
+ * @class ProgressCommand
+ * @brief The progress command
+ *
+ * The progress command reports the progress of a job.
+ *
+ */
+
+/**
+ * @fn bool ProgressCommand::has_id() const
+ * @brief Get whether the id field has been set.
+ *
+ * Get whether the id field has been set.
+ *
+ * @return whether the id field has been set
+ *
+ */
+
+/**
+ * @fn void ProgressCommand::clear_id()
+ * @brief Clears the id field.
+ *
+ * Clears the id field.
+ *
+ */
+
+/**
+ * @fn void ProgressCommand::set_id(::google::protobuf::uint32 value)
+ * @brief Set the id field.
+ * @param value the field value
+ *
+ * Set the value of the id field.
+ *
+ */
+
+/**
+ * @fn ::google::protobuf::uint32 ProgressCommand::id() const
+ * @brief Get the id field.
+ *
+ * Get the id field.
+ *
+ * @return the value of the id field
+ *
+ */
+
+/**
+ * @class SetPriorityCommand
+ * @brief The set-priority command
+ *
+ * The set-priority command changes the priority of a running job. Note that
+ * you need to be authenticated to execute this command
+ * (@see optimization::messages::command::AuthenticateCommand).
+ *
+ */
+
+/**
+ * @fn bool SetPriorityCommand::has_id() const
+ * @brief Get whether the id field has been set.
+ *
+ * Get whether the id field has been set.
+ *
+ * @return whether the id field has been set
+ *
+ */
+
+/**
+ * @fn void SetPriorityCommand::clear_id()
+ * @brief Clears the id field.
+ *
+ * Clears the id field.
+ *
+ */
+
+/**
+ * @fn void SetPriorityCommand::set_id(::google::protobuf::uint32 value)
+ * @brief Set the id field.
+ * @param value the field value
+ *
+ * Set the value of the id field.
+ *
+ */
+
+/**
+ * @fn ::google::protobuf::uint32 SetPriorityCommand::id() const
+ * @brief Get the id field.
+ *
+ * Get the id field.
+ *
+ * @return the value of the id field
+ *
+ */
+
+/**
+ * @fn bool SetPriorityCommand::has_priority() const
+ * @brief Get whether the priority field has been set.
+ *
+ * Get whether the priority field has been set.
+ *
+ * @return whether the priority field has been set
+ *
+ */
+
+/**
+ * @fn void SetPriorityCommand::clear_priority()
+ * @brief Clears the priority field.
+ *
+ * Clears the priority field.
+ *
+ */
+
+/**
+ * @fn void SetPriorityCommand::set_priority(double value)
+ * @brief Set the priority field.
+ * @param value the field value
+ *
+ * Set the value of the priority field.
+ *
+ */
+
+/**
+ * @fn double SetPriorityCommand::priority() const
+ * @brief Get the priority field.
+ *
+ * Get the priority field.
+ *
+ * @return the value of the priority field
+ *
+ */
+
+/**
+ * @class Job
+ * @brief The job message
+ *
+ * The job message is a submessage that contains information of a job.
+ *
+ */
+
+/**
+ * @class ListCommand
+ * @brief The list command
+ *
+ * The list command lists all currently running jobs.
+ *
+ */
+
+/**
+ * @class AuthenticateCommand
+ * @brief The authenticate command
+ *
+ * The authenticate command authenticates the connection to allow execution
+ * of privileged commands (@see optimization::messages::command::SetPriorityCommand,
+ * @see optimization::messages::command::KillCommand).
+ *
+ */
+
+/**
+ * @fn bool AuthenticateCommand::has_token() const
+ * @brief Get whether the token field has been set.
+ *
+ * Get whether the token field has been set.
+ *
+ * @return whether the token field has been set
+ *
+ */
+
+/**
+ * @fn void AuthenticateCommand::clear_token()
+ * @brief Clears the token field.
+ *
+ * Clears the token field.
+ *
+ */
+
+/**
+ * @fn void AuthenticateCommand::set_token(const ::std::string &value)
+ * @brief Set the token field.
+ * @param token the field value
+ *
+ * Set the value of the token field.
+ *
+ */
+
+/**
+ * @fn void AuthenticateCommand::set_token(const char *value)
+ * @brief Set the token field.
+ * @param token the field value
+ *
+ * Set the value of the token field.
+ *
+ */
+
+/**
+ * @fn const ::std::string &AuthenticateCommand::token() const
+ * @brief Get the token field.
+ *
+ * Get the token field.
+ *
+ * @return the value of the token field
+ *
+ */
+
+/**
+ * @fn ::std::string *AuthenticateCommand::token()
+ * @brief Get the mutable token field.
+ *
+ * Get the mutable token field.
+ *
+ * @return the mutable value of the token field
+ *
+ */
+
+/**
+ * @class InfoCommand
+ * @brief The info command
+ *
+ * The info command provides basic information of a running job.
+ *
+ */
+
+/**
+ * @fn bool InfoCommand::has_id() const
+ * @brief Get whether the has_id field has been set.
+ *
+ * Get whether the has_id field has been set.
+ *
+ * @return whether the has_id field has been set
+ *
+ */
+
+/**
+ * @fn void InfoCommand::clear_has_id()
+ * @brief Clears the has_id field.
+ *
+ * Clears the has_id field.
+ *
+ */
+
+/**
+ * @fn void InfoCommand::set_has_id(::google::protobuf::uint32 value)
+ * @brief Set the has_id field.
+ * @param value the field value
+ *
+ * Set the value of the has_id field.
+ *
+ */
+
+/**
+ * @fn ::google::protobuf::uint32 InfoCommand::has_id() const
+ * @brief Get the has_id field.
+ *
+ * Get the has_id field.
+ *
+ * @return the value of the has_id field
+ *
+ */
+
+/**
+ * @class Response
+ * @brief The main response message
+ *
+ * The Response class represents the main command response message. It
+ * contains optional fields for all of the possible commands.
+ *
+ */
+
+/**
+ * @class ProgressResponse
+ * @brief The progress command response
+ *
+ * The response message for the progress command.
+ *
+ */
+
+/**
+ * @class AuthenticateResponse
+ * @brief The authenticate command response
+ *
+ * The response message for the authenticate command.
+ *
+ */
+
+/**
+ * @class ListResponse
+ * @brief The list command response
+ *
+ * The response message for the list command.
+ *
+ */
+
+/**
+ * @class InfoResponse
+ * @brief The info command response
+ *
+ * The response message for the info command.
+ *
+ */
+
+/**
+ * @class KillResponse
+ * @brief The kill command response
+ *
+ * The response message for the kill command.
+ *
+ */
+
+/**
+ * @class IdleResponse
+ * @brief The idle command response
+ *
+ * The response message for the idle command.
+ *
+ */
+
+/**
+ * @class SetPriorityResponse
+ * @brief The set-priority command response
+ *
+ * The response message for the set-priority command.
+ *
+ */
+}

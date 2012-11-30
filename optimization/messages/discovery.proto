@@ -19,7 +19,7 @@ message Wakeup {
 
 /*
  * The discovery message is used for workers and masters to discover each
- * other. These messages are usually multicasted
+ * other. These messages are usually multicasted.
  */
 message Discovery {
 	// Discovery type

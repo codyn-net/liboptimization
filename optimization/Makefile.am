@@ -12,47 +12,22 @@ INCLUDES = \
 	-DPKGLIBDIR=\""$(pkglibdir)"\"
 
 BUILT_SOURCES = 	\
-	_command.pb.cc	\
-	_task.pb.cc 	\
-	_discovery.pb.cc \
-	_monitor.pb.cc
+	messages/command.pb.cc	\
+	messages/task.pb.cc 	\
+	messages/discovery.pb.cc \
+	messages/monitor.pb.cc
 
-BUILT_HDRS = 		\
-	command.pb.h	\
-	task.pb.h 	\
-	discovery.pb.h \
-	monitor.pb.h
+BUILT_HDRS = $(BUILT_SOURCES:.cc=.h)
 
-_task.pb.cc: task.proto task.pb.h
-	protoc --cpp_out=/tmp/ -I$(srcdir) $(srcdir)/task.proto && mv /tmp/task.pb.cc $@
+messages/%.pb.cc messages/%.pb.h: messages/%.proto
+	$(AM_V_GEN) protoc --cpp_out=$(top_srcdir) -I$(top_srcdir) $(top_srcdir)/optimization/$<
 
-task.pb.h: task.proto
-	protoc --cpp_out=/tmp/ -I$(srcdir) $< && mv /tmp/$@ $@
-
-_command.pb.cc: command.proto command.pb.h
-	protoc --cpp_out=/tmp/ -I$(srcdir) $(srcdir)/command.proto && mv /tmp/command.pb.cc $@
-
-command.pb.h: command.proto
-	protoc --cpp_out=/tmp/ -I$(srcdir) $< && mv /tmp/$@ $@
-
-_discovery.pb.cc: discovery.proto discovery.pb.h
-	protoc --cpp_out=/tmp/ -I$(srcdir) $(srcdir)/discovery.proto && mv /tmp/discovery.pb.cc $@
-
-discovery.pb.h: discovery.proto
-	protoc --cpp_out=/tmp/ -I$(srcdir) $< && mv /tmp/$@ $@
-
-_monitor.pb.cc: monitor.proto monitor.pb.h
-	protoc --cpp_out=/tmp/ -I$(srcdir) $(srcdir)/monitor.proto && mv /tmp/monitor.pb.cc $@
-
-monitor.pb.h: monitor.proto
-	protoc --cpp_out=/tmp/ -I$(srcdir) $< && mv /tmp/$@ $@
-
-protodir = $(pkgincludedir)/optimization
-proto_DATA = 		\
-	command.proto	\
-	task.proto	\
-	discovery.proto \
-	monitor.proto
+protodir = $(pkgincludedir)/optimization/messages
+proto_DATA =				\
+	messages/command.proto		\
+	messages/task.proto		\
+	messages/discovery.proto	\
+	messages/monitor.proto
 
 INSTHEADERS = \
 	optimization.hh \
@@ -65,9 +40,11 @@ INSTHEADERS = \
 	webots.hh
 
 headerdir = $(pkgincludedir)/optimization
-header_DATA = 	\
-	$(INSTHEADERS) \
-	$(BUILT_HDRS)
+header_HEADERS = 	\
+	$(INSTHEADERS)
+
+messagesdir = $(pkgincludedir)/optimization/messages
+messages_HEADERS = $(BUILT_HDRS)
 
 lib_LTLIBRARIES = liboptimization-2.0.la
 liboptimization_2_0_la_SOURCES = \

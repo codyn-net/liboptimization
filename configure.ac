@@ -1,6 +1,6 @@
-AC_INIT(liboptimization, 2.3)
+AC_INIT(liboptimization, 2.4)
 
-AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
+AM_INIT_AUTOMAKE([-Wno-portability])
 
 AC_CONFIG_MACRO_DIR([m4])
 AC_PROG_LIBTOOL
@@ -12,6 +12,8 @@ AC_HEADER_STDC
 
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
+
+PKG_PROG_PKG_CONFIG
 
 AC_CONFIG_HEADERS(optimization/config.hh)
 AM_MAINTAINER_MODE
@@ -32,7 +34,7 @@ PKG_CHECK_MODULES(PACKAGE_LIBOPTIMIZATION, [
 LDFLAGS=$SAVED_LDFLAGS
 
 if test "x$USE_MAINTAINER_MODE" = "xyes"; then
-PACKAGE_LIBOPTIMIZATION_CFLAGS="$PACKAGE_LIBOPTIMIZATION_CFLAGS -Wall -Werror -Wuninitialized -Wmissing-declarations"
+PACKAGE_LIBOPTIMIZATION_CFLAGS="$PACKAGE_LIBOPTIMIZATION_CFLAGS -Wall -Werror -Wuninitialized"
 fi
 
 AC_SUBST(PACKAGE_LIBOPTIMIZATION_CFLAGS)
@@ -60,3 +62,12 @@ liboptimization.pc
 docs/Makefile
 docs/doxygen.cfg
 )
+
+echo "
+
+Configuration:
+
+        Source code location:   ${srcdir}
+        Compiler:               ${CC}
+        Documentation enabled:  $enable_docs
+"

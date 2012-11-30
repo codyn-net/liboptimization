@@ -21,7 +21,7 @@
 #ifndef __OPTIMIZATION_WEBOTS_H__
 #define __OPTIMIZATION_WEBOTS_H__
 
-#include <optimization/task.pb.h>
+#include <optimization/messages/task.pb.h>
 #include <jessevdk/network/network.hh>
 #include <jessevdk/os/os.hh>
 #include <optimization/taskreader.hh>

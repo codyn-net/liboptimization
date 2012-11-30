@@ -1,3 +1,5 @@
+ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
+
 SUBDIRS = optimization
 
 if ENABLE_DOCS

@@ -26,10 +26,10 @@
 #include <string>
 #include <sstream>
 #include <google/protobuf/message.h>
-#include <optimization/task.pb.h>
-#include <optimization/discovery.pb.h>
-#include <optimization/command.pb.h>
-#include <optimization/monitor.pb.h>
+#include <optimization/messages/task.pb.h>
+#include <optimization/messages/discovery.pb.h>
+#include <optimization/messages/command.pb.h>
+#include <optimization/messages/monitor.pb.h>
 
 namespace optimization
 {
