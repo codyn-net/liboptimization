@@ -1,3 +1,9 @@
+liboptimization2 (2.4-1) UNRELEASED; urgency=low
+
+  * New upstream release
+
+ -- Jesse van den Kieboom <jesse.vandenkieboom@epfl.ch>  Fri, 30 Nov 2012 01:48:52 +0100
+
 liboptimization2 (2.3-1) UNRELEASED; urgency=low
 
   * New upstream release
