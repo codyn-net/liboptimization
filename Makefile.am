@@ -19,3 +19,5 @@ EXTRA_DIST = \
 
 CLEANFILES = 	\
 	$(pkgconfig_DATA)
+
+DISTCHECK_CONFIGURE_FLAGS = --enable-docs
