@@ -40,11 +40,11 @@ INSTHEADERS = \
 	webots.hh
 
 headerdir = $(pkgincludedir)/optimization
-header_DATA = 	\
+header_HEADERS = 	\
 	$(INSTHEADERS)
 
 messagesdir = $(pkgincludedir)/optimization/messages
-messages_DATA = $(BUILT_HDRS)
+messages_HEADERS = $(BUILT_HDRS)
 
 lib_LTLIBRARIES = liboptimization-2.0.la
 liboptimization_2_0_la_SOURCES = \
