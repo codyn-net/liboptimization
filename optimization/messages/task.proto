@@ -1,5 +1,8 @@
 package optimization.messages.task;
 
+option java_outer_classname = "Java";
+option java_package = "ch.epfl.biorob.optimization.messages.task";
+
 /*
  * The token message is used to send a token response from the master to the
  * worker. A worker can challenge a master using a Response with status
