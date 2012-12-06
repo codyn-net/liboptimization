@@ -1,4 +1,4 @@
-AC_INIT(liboptimization, 2.4)
+AC_INIT(liboptimization, 2.5)
 
 AM_INIT_AUTOMAKE([-Wno-portability])
 
