@@ -1,3 +1,10 @@
+liboptimization2 (2.6-1) UNRELEASED; urgency=low
+
+  * New upstream release
+  * Link against new libjessevdk
+
+ -- Jesse van den Kieboom <jesse.vandenkieboom@epfl.ch>  Mon, 18 Mar 2013 09:23:07 +0100
+
 liboptimization2 (2.5-1) UNRELEASED; urgency=low
 
   * New upstream release
