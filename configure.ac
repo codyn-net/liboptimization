@@ -1,4 +1,4 @@
-AC_INIT(liboptimization, 2.6)
+AC_INIT(liboptimization, 3.0)
 
 AM_INIT_AUTOMAKE([-Wno-portability])
 
@@ -23,7 +23,7 @@ esac
 AC_MSG_RESULT([$platform_windows])
 AM_CONDITIONAL(PLATFORM_WINDOWS, test "$platform_windows" = "yes")
 
-dnl check for win32 platform
+dnl check for osx platform
 AC_MSG_CHECKING([for OS X platform])
 case "$host" in
 	*-*-darwin*)
@@ -45,7 +45,7 @@ AC_CONFIG_HEADERS(optimization/config.hh)
 AM_MAINTAINER_MODE
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
 
-LIBOPTIMIZATION_API_VERSION=2.0
+LIBOPTIMIZATION_API_VERSION=3.0
 AC_SUBST(LIBOPTIMIZATION_API_VERSION)
 
 pkgincludedir="$includedir/liboptimization-$LIBOPTIMIZATION_API_VERSION"

@@ -38,9 +38,9 @@ header_HEADERS = 	\
 messagesdir = $(pkgincludedir)/optimization/messages
 messages_HEADERS = $(BUILT_HDRS)
 
-lib_LTLIBRARIES = liboptimization-2.0.la
+lib_LTLIBRARIES = liboptimization-3.0.la
 
-liboptimization_2_0_la_SOURCES = \
+liboptimization_3_0_la_SOURCES = \
 	messages.cc \
 	constants.cc \
 	dispatcher.cc \
@@ -48,19 +48,15 @@ liboptimization_2_0_la_SOURCES = \
 	webots.cc \
 	$(BUILT_SOURCES)
 
-liboptimization_2_0_la_CXXFLAGS = -g $(PACKAGE_LIBOPTIMIZATION_CFLAGS)
-liboptimization_2_0_la_LDFLAGS = -export-dynamic -no-undefined $(PACKAGE_LIBOPTIMIZATION_LIBS)
+liboptimization_3_0_la_CXXFLAGS = -g $(PACKAGE_LIBOPTIMIZATION_CFLAGS)
+liboptimization_3_0_la_LDFLAGS = -export-dynamic -no-undefined $(PACKAGE_LIBOPTIMIZATION_LIBS)
 
 if PLATFORM_WINDOWS
-liboptimization_2_0_la_SOURCES += webots_windows.cc
-liboptimization_2_0_la_LDFLAGS += -lws2_32
+liboptimization_3_0_la_SOURCES += webots_windows.cc
+liboptimization_3_0_la_LDFLAGS += -lws2_32
 else
-liboptimization_2_0_la_SOURCES += webots_unix.cc
+liboptimization_3_0_la_SOURCES += webots_unix.cc
 endif
-
-#if PLATFORM_OSX &&
-#liboptimization_2_0_la_CXXFLAGS += -fcolor-diagnostics -fcaret-diagnostics
-#endif
 
 EXTRA_DIST = \
 	$(INSTHEADERS) \
