@@ -52,8 +52,6 @@ pkgincludedir="$includedir/liboptimization-$LIBOPTIMIZATION_API_VERSION"
 AC_SUBST(pkgincludedir)
 
 PKG_CHECK_MODULES(PACKAGE_LIBOPTIMIZATION, [
-	libjessevdk-1.0 >= 1.0
-	glibmm-2.4
 	protobuf >= 2.2.0a
 ])
 

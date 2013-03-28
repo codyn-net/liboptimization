@@ -22,46 +22,47 @@
 #define __OPTIMIZATION_WEBOTS_H__
 
 #include <optimization/messages/task.pb.h>
-#include <jessevdk/network/network.hh>
-#include <jessevdk/os/os.hh>
-#include <optimization/taskreader.hh>
+#include <optimization/dispatcher.hh>
 
 #include <map>
 #include <string>
 
 namespace optimization
 {
-	class Webots : public TaskReader
+	class Webots : public Dispatcher
 	{
 		static Webots *s_instance;
 
-		jessevdk::network::Client d_client;
+		struct PrivateData;
+
+		PrivateData *d;
 
 		public:
 			/* Constructor/destructor */
 			static Webots &Instance();
 
-			/* Public functions */
-			void Response(messages::task::Response &response);
+			virtual ~Webots();
 
+			/* Public functions */
 			void Respond(double fitness);
 			void Respond(std::map<std::string, double> const &fitness);
-			void Respond(messages::task::Response::Status status, std::map<std::string, double> const &fitness);
 
 			void Respond(double fitness, std::map<std::string, std::string> const &data);
 			void Respond(std::map<std::string, double> const &fitness, std::map<std::string, std::string> const &data);
-			void Respond(messages::task::Response::Status status, std::map<std::string, double> const &fitness, std::map<std::string, std::string> const &data);
-
-			void RespondFail();
-
-			operator bool() const;
-			void WaitForRequest();
+		protected:
+			virtual bool WriteResponse(std::string const &s);
 		private:
 			/* Private functions */
 			Webots();
-			void OnData(jessevdk::os::FileDescriptor::DataArgs &args);
 
+			int Connect();
+			void Disconnect(int s);
+			ssize_t Receive(int s, void *sbuffer, size_t length, int flags);
+			ssize_t Send(int s, void *sbuffer, size_t length, int flags);
+
+			void SetupPeriodicPing();
 			void PeriodicPing();
+			static void *PeriodicPingThread(void *ptr);
 	};
 }
 

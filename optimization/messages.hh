@@ -21,7 +21,6 @@
 #ifndef __OPTIMIZATION_MESSAGES_H__
 #define __OPTIMIZATION_MESSAGES_H__
 
-#include <jessevdk/os/os.hh>
 #include <vector>
 #include <string>
 #include <sstream>
@@ -37,50 +36,43 @@ namespace optimization
 	{
 		public:
 			template <typename T>
-			static void Extract(jessevdk::os::FileDescriptor::DataArgs &args, std::vector<T> &messages);
+			static bool Extract(std::istream &stream, T &message);
 
 			static bool Create(::google::protobuf::Message const &message, std::string &serialized);
 	};
 
-	/**
- * @brief Extract protobuf messages from buffered data.
-	 * @param args the data args from a file descriptor (socket, stream, file)
-	 * @param messages return value for received messages
+	/*
+	 * Extract protobuf messages from streams.
+	 * @stream the input stream
+	 * @messages return value for received messages
 	 *
-	 * Extract protobuf messages from data as received from a FileDescriptor or
-	 * any subclass of FileDescriptor.
+	 * Extract protobuf messages from data.
 	 *
 	 */
 	template <typename T>
-	void Messages::Extract(jessevdk::os::FileDescriptor::DataArgs &args, std::vector<T> &messages)
+	bool Messages::Extract(std::istream &stream, T &message)
 	{
-		std::string data = args.data;
+		size_t num;
 
-		while (true)
+		if (!(stream >> num))
 		{
-			size_t num;
-			std::stringstream s(data);
+			return false;
+		}
 
-			if (!(s >> num))
-			{
-				break;
-			}
+		if (!stream.ignore(1, ' '))
+		{
+			return false;
+		}
 
-			T message;
+		char *buffer = new char[num + 1];
+		bool ret = true;
 
-			if (!s.ignore(1, ' '))
-			{
-				break;
-			}
-
-			char *buffer = new char[num + 1];
-
-			if (!s.read(buffer, num))
-			{
-				delete[] buffer;
-				break;
-			}
-
+		if (!stream.read(buffer, num))
+		{
+			ret = false;
+		}
+		else
+		{
 			buffer[num] = '\0';
 
 			try
@@ -89,18 +81,12 @@ namespace optimization
 			}
 			catch (std::exception e)
 			{
-				std::cerr << "Problem with creating message: " << e.what() << std::endl;
-				delete[] buffer;
-				break;
+				ret = false;
 			}
-
-			delete[] buffer;
-
-			data = data.substr(s.tellg());
-			messages.push_back(message);
 		}
 
-		args.Buffer(data);
+		delete[] buffer;
+		return ret;
 	}
 }
 

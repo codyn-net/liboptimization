@@ -21,93 +21,112 @@
 #include "webots.hh"
 
 #include <optimization/messages.hh>
-#include <glibmm.h>
+
+#ifdef MINGW
+#include "webots_windows.hh"
+#else
+#include "webots_unix.hh"
+#endif
 
 using namespace std;
 using namespace optimization;
 
-/**
- * @class optimization::Webots
- * @brief Convenience optimization class for webots controllers
- *
- * The optimization::Webots class is a convenient class for evaluating
- * optimization solutions in webots. It is used in conjunction with the
- * webots dispatcher. Internally, the webots dispatcher sets up a communication
- * channel on which it sends the task request and listens for a response. This
- * class makes it easy to read that request and to send a response back from
- * your webots controller.
- *
- * The class is a singleton from which you can get an instance using Instance().
- * A basic use of the class is the following:
- * \code
- * optimization::Webots &optinst = optimization::Webots::Instance();
- *
- * // See if we are in optimization mode
- * if (optinst)
- * {
- *     optinst.WaitForRequest();
- *
- *     // Read parameters, setup your controller
- * }
- * \endcode
- *
- * You can read additional settings as supplied in for instance a job xml file,
- * using Setting(). For instance, if you want to have your simulation run a
- * certain amount of time while measuring the performance of your robot, you
- * could add a MaximumTime setting, and read it using Setting(). Then after
- * running the simulation for that amount of time, use Respond() to send back
- * the fitness of the simulation and quit the simulation.
- *
- * Use Request() to get the optimization::messages::task::Task_Description
- * object to get the particular parameters and boundaries for the task that
- * has to be executed.
- *
- * If you want to send additional data back to the optimizer, you can use
- * one of the Respond() functions that accepts an additional map of string key
- * values. The optimizer will save this additional data so you can extract
- * it later.
- *
- */
+struct SocketBuffer : public std::streambuf
+{
+	int socket;
+
+	char *buffer;
+
+	size_t contents_size;
+	size_t buffer_size;
+
+	SocketBuffer(int s)
+	:
+		socket(s)
+	{
+		buffer_size = 1024 * 1024;
+		contents_size = 0;
+
+		buffer = (char *)malloc(buffer_size);
+
+		setg(buffer, buffer, buffer + contents_size);
+	}
+
+	int underflow()
+	{
+		if (buffer_size == contents_size)
+		{
+			buffer_size *= 2;
+
+			// Make buffer larger
+			buffer = (char *)realloc(buffer, buffer_size);
+		}
+
+		ssize_t n = ::recv(socket, buffer + contents_size, buffer_size - contents_size, 0);
+
+		if (n <= 0)
+		{
+			return EOF;
+		}
+
+		size_t newcontents = contents_size + n;
+		int ret = (int)*(buffer + contents_size);
+
+		setg(buffer, buffer + contents_size, buffer + newcontents);
+		contents_size = newcontents;
+
+		return ret;
+	}
+
+	~SocketBuffer()
+	{
+		if (buffer)
+		{
+			free(buffer);
+		}
+	}
+};
+
+struct Webots::PrivateData
+{
+	int socket;
+};
 
 Webots *Webots::s_instance = 0;
 
-/**
- * @brief Default constructor.
- *
- * Constructor.
- *
- * The default constructor.
- *
- */
 Webots::Webots()
 {
-	string path;
+	d = new PrivateData();
 
-	Glib::thread_init();
+	d->socket = Connect();
 
-	// Get unix socket name from environment
-	if (!jessevdk::os::Environment::Variable("OPTIMIZATION_UNIX_SOCKET", path))
+	if (d->socket == -1)
 	{
 		return;
 	}
 
-	Glib::init();
+	SocketBuffer buffer(d->socket);
+	istream stream(&buffer);
 
-	// Open unix socket client
-	d_client = jessevdk::network::Client::Unix(path);
-
-	if (!d_client)
+	if (!ReadRequest(stream))
 	{
 		return;
 	}
 
-	d_client.OnData().Add(*this, &Webots::OnData);
-	WaitForRequest();
-
-	if (*this && !Setting("no-periodic-ping"))
+	if (!Setting("no-periodic-ping"))
 	{
-		Glib::Thread::create(sigc::mem_fun(*this, &Webots::PeriodicPing), false);
+		//Glib::Thread::create(sigc::mem_fun(*this, &Webots::PeriodicPing), false);
 	}
+}
+
+Webots::~Webots()
+{
+	if (d->socket != -1)
+	{
+		Disconnect(d->socket);
+	}
+
+	delete d;
 }
 
 /**
@@ -130,44 +149,6 @@ Webots::Instance()
 }
 
 /**
- * @brief Data received callback.
- * @param args data args
- *
- * Called when data has been received.
- *
- */
-void
-Webots::OnData(jessevdk::os::FileDescriptor::DataArgs &args)
-{
-	vector<messages::task::Communication> request;
-	vector<messages::task::Communication>::iterator iter;
-
-	Messages::Extract(args, request);
-
-	if (request.size() != 0)
-	{
-		ReadRequest(request[0].task());
-	}
-}
-
-/**
- * @brief Get dispatcher validity (const).
- *
- * Get whether there is a connection with the webots dispatcher process. This
- * can be very useful if you want to test your webots controller. You can use
- * this function to see if you are in optimization mode or not, and setup
- * your controller accordingly.
- *
- * @return true if there is a connection with the webots dispatcher process,
- * false otherwise
- *
- */
-Webots::operator bool() const
-{
-	return d_client;
-}
-
-/**
  * @brief Write success response to the dispatcher.
  * @param fitness the solution fitness
  *
@@ -182,8 +163,9 @@ Webots::operator bool() const
 void
 Webots::Respond(std::map<std::string, double> const &fitness)
 {
-	map<string, string> data;
-	Respond(fitness, data);
+	SetFitness(fitness);
+
+	Dispatcher::WriteResponse();
 }
 
 /**
@@ -199,24 +181,9 @@ Webots::Respond(std::map<std::string, double> const &fitness)
 void
 Webots::Respond(double fitness)
 {
-	map<string, string> data;
-	Respond(fitness, data);
-}
+	AddFitness("value", fitness);
 
-/**
- * @brief Write fitness response to the dispatcher.
- * @param status the response status
- * @param fitness the fitness
- *
- * Write a response back to the dispatcher. Consider using Respond(std::map<std::string, double> const &fitness) which automatically sets the status to Success.
- * @fn void Webots::Respond(messages::task::Response::Status status, std::map<std::string, double> const &fitness)
- */
-void
-Webots::Respond(messages::task::Response::Status     status,
-                std::map<std::string, double> const &fitness)
-{
-	map<string, string> data;
-	Respond(status, fitness, data);
+	Dispatcher::WriteResponse();
 }
 
 /**
@@ -235,10 +202,10 @@ Webots::Respond(messages::task::Response::Status     status,
 void
 Webots::Respond(double fitness, std::map<std::string, std::string> const &data)
 {
-	map<string, double> fitnessmap;
-	fitnessmap["value"] = fitness;
+	AddFitness("value", fitness);
+	SetData(data);
 
-	Respond(fitnessmap, data);
+	Dispatcher::WriteResponse();
 }
 
 /**
@@ -258,120 +225,21 @@ Webots::Respond(double fitness, std::map<std::string, std::string> const &data)
 void
 Webots::Respond(std::map<std::string, double> const &fitness, std::map<std::string, std::string> const &data)
 {
-	Respond(messages::task::Response::Success, fitness, data);
+	SetFitness(fitness);
+	SetData(data);
+
+	Dispatcher::WriteResponse();
 }
 
-/**
- * @brief Write fitness response to the dispatcher with additional data.
- * @param status the response status
- * @param fitness the fitness
- * @param data additional data
- *
- * Write a response back to the dispatcher with some additional data. Consider
- * using
- * Respond(std::map<std::string, double> const &fitness, std::map<std::string, std::string> const &data)
- * which automatically sets the status to Success.
- *
- * @fn void Webots::Respond(messages::task::Response::Status status, std::map<std::string, double> const &fitness, std::map<std::string, std::string> const &data)
- */
-void
-Webots::Respond(messages::task::Response::Status status, std::map<std::string, double> const &fitness, std::map<std::string, std::string> const &data)
+bool
+Webots::WriteResponse(string const &s)
 {
-	messages::task::Response res;
-
-	res.set_id(0);
-	res.set_status(status);
-
-	for (map<string, double>::const_iterator iter = fitness.begin(); iter != fitness.end(); ++iter)
+	if (d->socket == -1)
 	{
-		messages::task::Response::Fitness *f = res.add_fitness();
-
-		f->set_name(iter->first);
-		f->set_value(iter->second);
+		return false;
 	}
 
-	for (map<string, string>::const_iterator iter = data.begin(); iter != data.end(); ++iter)
-	{
-		messages::task::Response::KeyValue *d = res.add_data();
-
-		d->set_key(iter->first);
-		d->set_value(iter->second);
-	}
-
-	Response(res);
-}
-
-/**
- * @brief Write a fail response to the dispatcher.
- *
- * Write a fail response back to the dispatcher. You can use this to indicate
- * a failure in trying to execute the task. Note that by default, the master
- * process will try to reschedule failed tasks a number of times. Failing a
- * task should therefore be due to things like running out of resources, or
- * general crashes.
- *
- * If you just want to respond a low fitness (if your robot fell over for
- * instance), consider using Respond() with a zero fitness.
- *
- */
-void
-Webots::RespondFail()
-{
-	map<string, double> fitness;
-	Respond(messages::task::Response::Failed, fitness);
-}
-
-/**
- * @brief Write a response to the dispatcher.
- * @param res the response
- *
- * Write a response back to the dispatcher. This is a low level function and
- * you need to create the response object yourself (and make sure it's valid).
- * You can also use a higher level function (Respond() or RespondFail()).
- *
- */
-void
-Webots::Response(messages::task::Response &res)
-{
-	if (!d_client)
-	{
-		return;
-	}
-
-	// Send the response
-	messages::task::Communication comm;
-	comm.set_type(messages::task::Communication::CommunicationResponse);
-
-	*(comm.mutable_response()) = res;
-	string serialized;
-
-	if (Messages::Create(comm, serialized))
-	{
-		d_client.Write(serialized);
-	}
-}
-
-/**
- * @brief Wait for request from dispatcher.
- *
- * Wait for a task request from the webots dispatcher. You should always wait
- * for the request to arrive before doing anything.
- *
- */
-void
-Webots::WaitForRequest()
-{
-	Glib::RefPtr<Glib::MainContext> ctx = Glib::MainContext::get_default();
-
-	if (!d_client)
-	{
-		return;
-	}
-
-	while (!HasTask())
-	{
-		ctx->iteration(true);
-	}
+	return Send(d->socket, (void *)s.c_str(), s.length(), 0) == s.length();
 }
 
 void
@@ -379,7 +247,7 @@ Webots::PeriodicPing()
 {
 	while (true)
 	{
-		sleep(20);
+		sleep(15);
 
 		// Send ping
 		messages::task::Communication comm;
@@ -391,7 +259,17 @@ Webots::PeriodicPing()
 
 		if (Messages::Create(comm, serialized))
 		{
-			d_client.Write(serialized);
+			Send(d->socket, (void *)serialized.c_str(), serialized.length(), 0);
 		}
 	}
 }
+
+void *
+Webots::PeriodicPingThread(void *ptr)
+{
+	Webots *wb = (Webots *)ptr;
+	wb->PeriodicPing();
+
+	return 0;
+}
+

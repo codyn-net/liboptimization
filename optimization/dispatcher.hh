@@ -23,30 +23,35 @@
 
 #include <optimization/messages/task.pb.h>
 #include <optimization/taskreader.hh>
-#include <glibmm.h>
-#include <jessevdk/os/filedescriptor.hh>
 
 namespace optimization
 {
 	class Dispatcher : public TaskReader
 	{
-		Glib::RefPtr<Glib::MainLoop> d_main;
-		jessevdk::os::FileDescriptor d_stdin;
+		struct PrivateData;
+
+		PrivateData *d;
 
 		public:
-			/* Public functions */
-			virtual bool Run();
-			virtual void Stop();
+			Dispatcher();
+			Dispatcher(std::istream &stream, std::ostream &out);
+			virtual ~Dispatcher();
+
+			virtual bool WriteResponse();
+
+			virtual void SetResponse(messages::task::Response const &response);
+
+			virtual void AddFitness(std::string const &name, double value);
+			virtual void SetFitness(std::map<std::string, double> const &fitness);
+
+			virtual void AddData(std::string const &name, std::string const &value);
+			virtual void SetData(std::map<std::string, std::string> const &data);
+
+			virtual bool ReadRequest(std::istream &stream);
 		protected:
-			virtual bool WriteResponse(messages::task::Response const &response);
-
-			virtual bool RunTask() = 0;
-			virtual bool UseMainLoop() const;
-
-			Glib::RefPtr<Glib::MainLoop> Main();
+			virtual bool WriteResponse(std::string const &s);
 		private:
-			/* Private functions */
-			void OnData(jessevdk::os::FileDescriptor::DataArgs &args);
+			void SetupResponse();
 	};
 }
 

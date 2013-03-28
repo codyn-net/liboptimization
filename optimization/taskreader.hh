@@ -22,23 +22,21 @@
 #define __OPTIMIZATION_TASK_READER_H__
 
 #include <optimization/messages/task.pb.h>
-#include <glibmm.h>
 #include <iosfwd>
 
 namespace optimization
 {
 	class TaskReader
 	{
-		messages::task::Task d_task;
-		std::map<std::string, std::string> d_settings;
-		std::map<std::string, std::string> d_data;
-		std::map<std::string, messages::task::Task::Parameter> d_parameters;
-		bool d_taskRead;
+		struct PrivateData;
+
+		PrivateData *d;
 
 		public:
 			/* Public functions */
 			TaskReader();
 			TaskReader(std::istream &stream);
+			virtual ~TaskReader();
 
 			messages::task::Task &Task();
 

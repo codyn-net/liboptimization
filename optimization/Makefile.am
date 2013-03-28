@@ -3,13 +3,7 @@ INCLUDES = \
 	-I$(top_builddir)\
 	-I$(top_srcdir) \
 	-I$(top_builddir) \
-	$(PACKAGE_LIBOPTIMIZATION_CFLAGS) \
-	-DDATADIR=\""$(datadir)"\" \
-	-DLIBDIR=\""$(libdir)"\" \
-	-DCONFDIR=\""$(sysconfdir)"\" \
-	-DPREFIXDIR=\""$(prefix)"\" \
-	-DPKGDATADIR=\""$(pkgdatadir)"\" \
-	-DPKGLIBDIR=\""$(pkglibdir)"\"
+	$(PACKAGE_LIBOPTIMIZATION_CFLAGS)
 
 BUILT_SOURCES = 	\
 	messages/command.pb.cc	\
@@ -32,8 +26,6 @@ proto_DATA =				\
 INSTHEADERS = \
 	optimization.hh \
 	constants.hh \
-	debug.hh \
-	discovery.hh \
 	dispatcher.hh \
 	messages.hh \
 	taskreader.hh \
@@ -47,17 +39,28 @@ messagesdir = $(pkgincludedir)/optimization/messages
 messages_HEADERS = $(BUILT_HDRS)
 
 lib_LTLIBRARIES = liboptimization-2.0.la
+
 liboptimization_2_0_la_SOURCES = \
 	messages.cc \
 	constants.cc \
-	discovery.cc \
 	dispatcher.cc \
 	taskreader.cc \
 	webots.cc \
 	$(BUILT_SOURCES)
 
-liboptimization_2_0_la_CFLAGS = -g $(PACKAGE_LIBOPTIMIZATION_CFLAGS)
+liboptimization_2_0_la_CXXFLAGS = -g $(PACKAGE_LIBOPTIMIZATION_CFLAGS)
 liboptimization_2_0_la_LDFLAGS = -export-dynamic -no-undefined $(PACKAGE_LIBOPTIMIZATION_LIBS)
+
+if PLATFORM_WINDOWS
+liboptimization_2_0_la_SOURCES += webots_windows.cc
+liboptimization_2_0_la_LDFLAGS += -lws2_32
+else
+liboptimization_2_0_la_SOURCES += webots_unix.cc
+endif
+
+#if PLATFORM_OSX &&
+#liboptimization_2_0_la_CXXFLAGS += -fcolor-diagnostics -fcaret-diagnostics
+#endif
 
 EXTRA_DIST = \
 	$(INSTHEADERS) \

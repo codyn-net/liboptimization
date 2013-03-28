@@ -19,13 +19,21 @@
  */
 
 #include "taskreader.hh"
-#include <iostream>
 #include <optimization/messages.hh>
 #include <iostream>
 
 using namespace std;
 using namespace optimization;
 using namespace optimization::messages;
+
+struct TaskReader::PrivateData
+{
+	messages::task::Task task;
+	std::map<std::string, std::string> settings;
+	std::map<std::string, std::string> data;
+	std::map<std::string, messages::task::Task::Parameter> parameters;
+	bool taskRead;
+};
 
 /**
  * @class optimization::TaskReader
@@ -45,9 +53,9 @@ using namespace optimization::messages;
  * @see ReadRequest
  */
 TaskReader::TaskReader()
-:
-	d_taskRead(false)
 {
+	d = new PrivateData();
+	d->taskRead = false;
 }
 
 /**
@@ -59,10 +67,16 @@ TaskReader::TaskReader()
  * @fn optimization::TaskReader::TaskReader(std::istream &stream)
  */
 TaskReader::TaskReader(std::istream &stream)
-:
-	d_taskRead(false)
 {
+	d = new PrivateData();
+	d->taskRead = false;
+
 	ReadRequest(stream);
+}
+
+TaskReader::~TaskReader()
+{
+	delete d;
 }
 
 /**
@@ -77,55 +91,25 @@ bool
 TaskReader::ReadRequest(std::istream &stream)
 {
 	/* Read request from stdin */
-	size_t num;
+	d->taskRead = false;
 
-	d_taskRead = false;
-	bool ret = false;
+	task::Communication comm;
 
-	while (stream && !ret)
+	// Keep reading until a correct message has been received (or end of stream)
+	while (stream && !Messages::Extract(stream, comm))
 	{
-		if (!(stream >> num))
-		{
-			cerr << "** [TaskReader] Could not read message size" << endl;
-			return false;
-		}
-
-		if (!stream.ignore(1, ' '))
-		{
-			cerr << "** [TaskReader] Invalid message header" << endl;
-			return false;
-		}
-
-		char *s = new char[num + 1];
-
-		if (stream.read(s, num))
-		{
-			task::Communication comm;
-
-			if (comm.ParseFromArray(s, num) && comm.type() == task::Communication::CommunicationTask)
-			{
-				d_task = comm.task();
-				ret = true;
-
-				ReadSettings();
-				ReadParameters();
-				ReadData();
-			}
-			else
-			{
-				cerr << "** [TaskReader] Could not parse message from array" << endl;
-			}
-		}
-		else
-		{
-			cerr << "** [TaskReader] Could not read message" << endl;
-		}
-
-		delete[] s;
 	}
 
-	d_taskRead = ret;
-	return ret;
+	if (comm.type() == task::Communication::CommunicationTask)
+	{
+		ReadRequest(comm.task());
+	}
+	else
+	{
+		cerr << "** [TaskReader] Could not parse message from array" << endl;
+	}
+
+	return d->taskRead;
 }
 
 /**
@@ -138,13 +122,13 @@ TaskReader::ReadRequest(std::istream &stream)
 void
 TaskReader::ReadRequest(messages::task::Task const &task)
 {
-	d_task = task;
+	d->task = task;
 
 	ReadSettings();
 	ReadParameters();
 	ReadData();
 
-	d_taskRead = true;
+	d->taskRead = true;
 }
 
 /**
@@ -156,13 +140,13 @@ TaskReader::ReadRequest(messages::task::Task const &task)
 void
 TaskReader::ReadSettings()
 {
-	size_t num = d_task.settings_size();
-	d_settings.clear();
+	size_t num = d->task.settings_size();
+	d->settings.clear();
 
 	for (size_t i = 0; i < num; ++i)
 	{
-		messages::task::Task::KeyValue const &kv = d_task.settings(i);
-		d_settings[kv.key()] = kv.value();
+		messages::task::Task::KeyValue const &kv = d->task.settings(i);
+		d->settings[kv.key()] = kv.value();
 	}
 }
 
@@ -175,13 +159,13 @@ TaskReader::ReadSettings()
 void
 TaskReader::ReadData()
 {
-	size_t num = d_task.data_size();
-	d_data.clear();
+	size_t num = d->task.data_size();
+	d->data.clear();
 
 	for (size_t i = 0; i < num; ++i)
 	{
-		messages::task::Task::KeyValue const &kv = d_task.data(i);
-		d_data[kv.key()] = kv.value();
+		messages::task::Task::KeyValue const &kv = d->task.data(i);
+		d->data[kv.key()] = kv.value();
 	}
 }
 
@@ -194,13 +178,13 @@ TaskReader::ReadData()
 void
 TaskReader::ReadParameters()
 {
-	size_t num = d_task.parameters_size();
-	d_parameters.clear();
+	size_t num = d->task.parameters_size();
+	d->parameters.clear();
 
 	for (size_t i = 0; i < num; ++i)
 	{
-		task::Task::Parameter const &parameter = d_task.parameters(i);
-		d_parameters[parameter.name()] = parameter;
+		task::Task::Parameter const &parameter = d->task.parameters(i);
+		d->parameters[parameter.name()] = parameter;
 	}
 }
 
@@ -217,9 +201,9 @@ TaskReader::ReadParameters()
 bool
 TaskReader::Setting(std::string const &key, std::string &value) const
 {
-	map<string, string>::const_iterator found = d_settings.find(key);
+	map<string, string>::const_iterator found = d->settings.find(key);
 
-	if (found == d_settings.end())
+	if (found == d->settings.end())
 	{
 		return false;
 	}
@@ -241,9 +225,9 @@ TaskReader::Setting(std::string const &key, std::string &value) const
 bool
 TaskReader::Parameter(std::string const &name, task::Task::Parameter &parameter) const
 {
-	map<string, task::Task::Parameter>::const_iterator found = d_parameters.find(name);
+	map<string, task::Task::Parameter>::const_iterator found = d->parameters.find(name);
 
-	if (found == d_parameters.end())
+	if (found == d->parameters.end())
 	{
 		return false;
 	}
@@ -265,9 +249,9 @@ TaskReader::Parameter(std::string const &name, task::Task::Parameter &parameter)
 bool
 TaskReader::Data(std::string const &key, std::string &value) const
 {
-	map<string, string>::const_iterator found = d_data.find(key);
+	map<string, string>::const_iterator found = d->data.find(key);
 
-	if (found == d_data.end())
+	if (found == d->data.end())
 	{
 		return false;
 	}
@@ -360,7 +344,7 @@ TaskReader::Data(std::string const &key) const
 optimization::messages::task::Task &
 TaskReader::Task()
 {
-	return d_task;
+	return d->task;
 }
 
 /**
@@ -373,7 +357,7 @@ TaskReader::Task()
  */
 TaskReader::operator bool() const
 {
-	return d_taskRead;
+	return d->taskRead;
 }
 
 /**
@@ -387,5 +371,5 @@ TaskReader::operator bool() const
 bool
 TaskReader::HasTask() const
 {
-	return d_taskRead;
+	return d->taskRead;
 }

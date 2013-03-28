@@ -32,17 +32,11 @@ namespace optimization
 			/** Default discovery port. */
 			DiscoveryPort = 4756,
 
-			/** Default worker port. */
-			WorkerPort = 8723,
-
 			/** Default master port. */
 			MasterPort = 9485,
 
 			/** Default command port */
 			CommandPort = 7123,
-
-			/** Default monitor port */
-			MonitorPort = 8175
 		};
 
 		static std::string DiscoveryGroup;
