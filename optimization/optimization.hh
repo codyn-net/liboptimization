@@ -22,8 +22,6 @@
 #define __OPTIMIZATION_OPTIMIZATION_H__
 
 #include <optimization/constants.hh>
-#include <optimization/debug.hh>
-#include <optimization/discovery.hh>
 #include <optimization/dispatcher.hh>
 #include <optimization/messages.hh>
 #include <optimization/optimization.hh>
