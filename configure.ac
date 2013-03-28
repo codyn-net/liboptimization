@@ -10,6 +10,32 @@ AC_STDC_HEADERS
 AC_PROG_CXX
 AC_HEADER_STDC
 
+dnl check for win32 platform
+AC_MSG_CHECKING([for Windows platform])
+case "$host" in
+	*-*-mingw*|*-*-cygwin*)
+		platform_windows=yes
+		;;
+	*)
+		platform_windows=no
+		;;
+esac
+AC_MSG_RESULT([$platform_windows])
+AM_CONDITIONAL(PLATFORM_WINDOWS, test "$platform_windows" = "yes")
+
+dnl check for win32 platform
+AC_MSG_CHECKING([for OS X platform])
+case "$host" in
+	*-*-darwin*)
+		platform_osx=yes
+		;;
+	*)
+		platform_osx=no
+		;;
+esac
+AC_MSG_RESULT([$platform_osx])
+AM_CONDITIONAL(PLATFORM_OSX, test "$platform_osx" = "yes")
+
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 
