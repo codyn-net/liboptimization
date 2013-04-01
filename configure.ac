@@ -68,10 +68,10 @@ AC_ARG_ENABLE([docs],
 	[enable_docs=no])
 
 if test "x$enable_docs" != "xno"; then
-	AC_CHECK_PROG(DOXYGEN, doxygen, doxygen, no)
+	AC_CHECK_PROG(CLDOC, cldoc, cldoc, no)
 	
-	if test x"$DOXYGEN" == "xno"; then
-		AC_MSG_ERROR([you need to have doxygen installed for generating documentation])
+	if test x"$CLDOC" == "xno"; then
+		AC_MSG_ERROR([you need to have cldoc installed for generating documentation])
 	fi
 fi
 
@@ -82,7 +82,6 @@ Makefile
 optimization/Makefile
 liboptimization.pc
 docs/Makefile
-docs/doxygen.cfg
 )
 
 echo "
