@@ -26,6 +26,15 @@
 
 namespace optimization
 {
+	/* Task reader class.
+	 *
+	 * TaskReader is a class which reads a task specification, encoded
+	 * using protobuf, from a C++ input stream (for example std::cin) and
+	 * provides convienient methods for accessing parameters and settings.
+	 *
+	 * If you are writing a custom dispatcher, please see the <Dispatcher>
+	 * class which also provides writing responses.
+	 */
 	class TaskReader
 	{
 		struct PrivateData;
@@ -33,21 +42,21 @@ namespace optimization
 		PrivateData *d;
 
 		public:
-			/* Public functions */
 			TaskReader();
 			TaskReader(std::istream &stream);
 			virtual ~TaskReader();
 
 			messages::task::Task &Task();
 
-			virtual bool Setting(std::string const &key, std::string &value) const;
-			virtual bool Setting(std::string const &key) const;
+			virtual bool Setting(std::string const &name, std::string *value) const;
+			virtual bool Setting(std::string const &name) const;
 
-			virtual bool Data(std::string const &key, std::string &value) const;
-			virtual bool Data(std::string const &key) const;
+			virtual bool Data(std::string const &name, std::string *value) const;
+			virtual bool Data(std::string const &name) const;
 
-			virtual bool Parameter(std::string const &name, messages::task::Task::Parameter &parameter) const;
-			bool Parameter(std::string const &name, double &value) const;
+			virtual bool Parameter(std::string const &name, messages::task::Task::Parameter *parameter) const;
+
+			bool Parameter(std::string const &name, double *value) const;
 			bool Parameter(std::string const &name) const;
 
 			virtual bool ReadRequest(std::istream &stream);
@@ -57,7 +66,6 @@ namespace optimization
 		protected:
 			void ReadRequest(messages::task::Task const &task);
 		private:
-			/* Private functions */
 			void ReadSettings();
 			void ReadParameters();
 			void ReadData();

@@ -35,22 +35,9 @@ struct TaskReader::PrivateData
 	bool taskRead;
 };
 
-/**
- * @class optimization::TaskReader
- * @brief TaskReader class.
+/* Create new task reader.
  *
- * The task reader is a convenient class which reads a task description
- * from a stream (for example cin or a file). It provides some convenient
- * functions to get named parameters and dispatcher settings.
- *
- */
-
-/**
- * @brief Create new task reader.
- *
- * This creates an empty task reader.
- *
- * @see ReadRequest
+ * Create a new taskreader object.
  */
 TaskReader::TaskReader()
 {
@@ -58,13 +45,12 @@ TaskReader::TaskReader()
 	d->taskRead = false;
 }
 
-/**
- * @brief Create new task reader for an input stream
+/* Create new task reader for an input stream.
+ * @stream the input stream to read from.
  *
  * Create a new task reader which starts reading the task from the specified
- * input stream.
- *
- * @fn optimization::TaskReader::TaskReader(std::istream &stream)
+ * input stream. Note that reading the task is **blocking** until a task has
+ * been read.
  */
 TaskReader::TaskReader(std::istream &stream)
 {
@@ -74,18 +60,21 @@ TaskReader::TaskReader(std::istream &stream)
 	ReadRequest(stream);
 }
 
+/* Default destructor. */
 TaskReader::~TaskReader()
 {
 	delete d;
 }
 
-/**
- * @brief Read task description from input stream.
+/* Read task from input stream.
+ * @stream the input stream to read from.
  *
- * Reads the task description from an input stream.
+ * ReadRequest reads one task from the specified input stream. Note that this
+ * call **blocks** until a task has been successfully read (or there was an error).
+ * You would normally not call this method directly since it's automatically
+ * called from the constructor.
  *
- * @return true if the request could be read, false otherwise
- * @fn bool optimization::TaskReader::ReadRequest(std::istream &stream)
+ * @return true if the request could be read, false otherwise.
  */
 bool
 TaskReader::ReadRequest(std::istream &stream)
@@ -112,11 +101,12 @@ TaskReader::ReadRequest(std::istream &stream)
 	return d->taskRead;
 }
 
-/**
- * @brief Set task description.
+/* Read request from task description object.
+ * @task the task.
  *
- * Set the task description directly. This can be used in subclasses of
- * TaskReader when a task might be read from something other than a stream.
+ * ReadRequest sets the task description directly from the task object. This
+ * is used by subclasses who implement retrieving a task from something other
+ * than a c++ input stream.
  *
  */
 void
@@ -131,12 +121,6 @@ TaskReader::ReadRequest(messages::task::Task const &task)
 	d->taskRead = true;
 }
 
-/**
- * @brief Read task settings.
- *
- * Reads the tasks settings from the request.
- *
- */
 void
 TaskReader::ReadSettings()
 {
@@ -150,12 +134,6 @@ TaskReader::ReadSettings()
 	}
 }
 
-/**
- * @brief Read task data.
- *
- * Reads the tasks data from the request.
- *
- */
 void
 TaskReader::ReadData()
 {
@@ -169,12 +147,6 @@ TaskReader::ReadData()
 	}
 }
 
-/**
- * @brief Read task parameters.
- *
- * Reads the tasks parameters from the request.
- *
- */
 void
 TaskReader::ReadParameters()
 {
@@ -188,42 +160,62 @@ TaskReader::ReadParameters()
 	}
 }
 
-/**
- * @brief Get task task setting (const).
- * @param key the setting key
- * @param value setting value return value
+/* Get a task dispatcher setting by name.
+ * @name the setting name.
+ * @value the setting value return value.
  *
- * Get a task setting from the task request.
+ * Get a dispatcher setting by <name>. <value> will be set to the value of
+ * the setting <name> when the setting could be found. If the setting was not
+ * present, then this method returns false. <value> may be nullptr.
  *
- * @return true if the setting could be found, false otherwise
- * @fn bool TaskReader::Setting(std::string const &key, std::string &value) const
+ * @return true if the setting could be found, false otherwise.
  */
 bool
-TaskReader::Setting(std::string const &key, std::string &value) const
+TaskReader::Setting(std::string const &name, std::string *value) const
 {
-	map<string, string>::const_iterator found = d->settings.find(key);
+	map<string, string>::const_iterator found = d->settings.find(name);
 
 	if (found == d->settings.end())
 	{
 		return false;
 	}
 
-	value = found->second;
+	if (value)
+	{
+		*value = found->second;
+	}
+
 	return true;
 }
 
-/**
- * @brief Get task task parameter (const).
- * @param name the parameter name
- * @param parameter parameter return value
+/* Check if a dispatcher setting exists.
+ * @name the setting name.
  *
- * Get a task parameter from the task request.
+ * Setting checks if a dispatcher setting exists.
  *
- * @return true if the setting could be found, false otherwise
- * @fn bool TaskReader::Parameter(std::string const &name, messages::task::Task::Parameter &parameter) const;
+ * @return true if the setting exists, false otherwise.
  */
 bool
-TaskReader::Parameter(std::string const &name, task::Task::Parameter &parameter) const
+TaskReader::Setting(std::string const &name) const
+{
+	return Setting(name, 0);
+}
+
+/* Get a task parameter by name.
+ * @name the parameter name.
+ * @parameter the parameter value return value.
+ *
+ * Parmaeter gets a task parameter by <name>. <parameter> will be set to the value of
+ * the parameter <name> when the parameter could be found. If the parameter was not
+ * present, then this method returns false. <parameter> may be nullptr.
+ *
+ * If you only need to get the numeric value of the parameter, then use
+ * <Parameter(std::string, double*)> instead.
+ *
+ * @return true if the parameter could be found, false otherwise.
+ */
+bool
+TaskReader::Parameter(std::string const &name, task::Task::Parameter *parameter) const
 {
 	map<string, task::Task::Parameter>::const_iterator found = d->parameters.find(name);
 
@@ -232,114 +224,103 @@ TaskReader::Parameter(std::string const &name, task::Task::Parameter &parameter)
 		return false;
 	}
 
-	parameter = found->second;
+	if (parameter)
+	{
+		*parameter = found->second;
+	}
+
 	return true;
 }
 
-/**
- * @brief Get task data (const).
- * @param key the data key
- * @param value data value return value
+/* Get a task parameter value by name.
+ * @name the parameter name.
+ * @value the parameter value return value.
  *
- * Get a task data from the task request.
+ * Parameter gets a task parameter by <name>. <value> will be set to the value of
+ * the parameter <name> when the parameter could be found. If the parameter was not
+ * present, then this method returns false. <value> may be nullptr.
  *
- * @return true if the data could be found, false otherwise
- * @fn bool TaskReader::Data(std::string const &key, std::string &value) const
+ * @return true if the parameter could be found, false otherwise.
  */
 bool
-TaskReader::Data(std::string const &key, std::string &value) const
+TaskReader::Parameter(std::string const &name, double *value) const
 {
-	map<string, string>::const_iterator found = d->data.find(key);
+	task::Task::Parameter parameter;
+
+	if (!Parameter(name, &parameter))
+	{
+		return false;
+	}
+
+	if (value)
+	{
+		*value = parameter.value();
+	}
+
+	return true;
+}
+
+/* Check if a parameter exists.
+ * @name the parameter name.
+ *
+ * Parameter checks if a parameter with the name <name> exists.
+ *
+ * @return true if the parameter exists, false otherwise.
+ */
+bool
+TaskReader::Parameter(std::string const &name) const
+{
+	return Parameter(name, static_cast<double *>(0));
+}
+
+/* Get a task data item by name.
+ * @name the data item name.
+ * @value the data value return value.
+ *
+ * Data gets a task data item by <name>. <value> will be set to the value of
+ * the data item <name> when the data item could be found. If the data item was not
+ * present, then this method returns false. <value> may be nullptr.
+ *
+ * @return true if the data item could be found, false otherwise.
+ */
+bool
+TaskReader::Data(std::string const &name, std::string *value) const
+{
+	map<string, string>::const_iterator found = d->data.find(name);
 
 	if (found == d->data.end())
 	{
 		return false;
 	}
 
-	value = found->second;
-	return true;
-}
-
-/**
- * @brief Get task task parameter (const).
- * @param name the parameter name
- * @param value parameter value return value
- *
- * Get a task parameter from the task request.
- *
- * @return true if the setting could be found, false otherwise
- * @fn bool TaskReader::Parameter(std::string const &name, double &value) const
- */
-bool
-TaskReader::Parameter(std::string const &name, double &value) const
-{
-	task::Task::Parameter parameter;
-
-	if (!Parameter(name, parameter))
+	if (value)
 	{
-		return false;
+		*value = found->second;
 	}
 
-	value = parameter.value();
 	return true;
 }
 
-/**
- * @brief Check if task parameter is set (const).
- * @param name parameter name
+/* Check if a data item exists.
+ * @name the data item name.
  *
- * Check whether a task parameter in the task request is set.
+ * Data checks if a data item exists.
  *
- * @return true if the task parameter is set, false otherwise
- * @fn bool TaskReader::Parameter(std::string const &name) const
+ * @return true if the data item exists, false otherwise.
  */
 bool
-TaskReader::Parameter(std::string const &name) const
+TaskReader::Data(std::string const &name) const
 {
-	task::Task::Parameter parameter;
-
-	return Parameter(name, parameter);
+	return Data(name, 0);
 }
 
-/**
- * @brief Check if task setting is set (const).
- * @param key setting key
+/* Get the task request.
  *
- * Check whether a task setting in the task request is set.
- *
- * @return true if the task setting is set, false otherwise
- * @fn bool TaskReader::Setting(std::string const &key) const
- */
-bool
-TaskReader::Setting(std::string const &key) const
-{
-	string dummy;
-	return Setting(key, dummy);
-}
-
-/**
- * @brief Check if task data is set (const).
- * @param key data key
- *
- * Check whether a task data in the task request is set.
- *
- * @return true if the task data is set, false otherwise
- * @fn bool TaskReader::Data(std::string const &key) const
- */
-bool
-TaskReader::Data(std::string const &key) const
-{
-	string dummy;
-	return Data(key, dummy);
-}
-
-/**
- * @brief Get the task request.
- *
- * Get the task request to be processed by the task.
+ * Task gets the task request. Note that this will only return a valid task
+ * when a task has been successfully retrieved. Whether or not the task is
+ * valid can be verified with <HasTask>.
  *
  * @return the task request
- *
  */
 optimization::messages::task::Task &
 TaskReader::Task()
@@ -347,26 +328,23 @@ TaskReader::Task()
 	return d->task;
 }
 
-/**
- * @brief Check whether a task has been successfully read.
+/* Check whether a task has been successfully read.
  *
- * Check if a task has been successfully read.
+ * Check if a task has been successfully read. This is a convenience alias for
+ * <HasTask>.
  *
- * @return true if a task was read, false otherwise
- * @see HasTask
+ * @return true if a task was read, false otherwise.
  */
 TaskReader::operator bool() const
 {
 	return d->taskRead;
 }
 
-/**
- * @brief Check whether a task has been successfully read.
+/* Check whether a task has been successfully read.
  *
  * Check if a task has been successfully read.
  *
- * @return true if a task was read, false otherwise
- *
+ * @return true if a task was read, false otherwise.
  */
 bool
 TaskReader::HasTask() const
