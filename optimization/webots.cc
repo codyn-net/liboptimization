@@ -239,7 +239,7 @@ Webots::WriteResponse(string const &s)
 		return false;
 	}
 
-	return Send(d->socket, (void *)s.c_str(), s.length(), 0) == s.length();
+	return Send(d->socket, (void *)s.c_str(), s.length(), 0) == (ssize_t)s.length();
 }
 
 void
