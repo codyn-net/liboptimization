@@ -45,6 +45,7 @@ liboptimization_3_0_la_SOURCES = \
 	constants.cc \
 	dispatcher.cc \
 	taskreader.cc \
+	socketbuffer.cc \
 	webots.cc \
 	$(BUILT_SOURCES)
 

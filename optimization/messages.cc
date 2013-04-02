@@ -23,41 +23,62 @@
 using namespace std;
 using namespace optimization;
 
-/**
- * @class optimization::Messages
- * @brief Optimization messages
+/* Serialize protobuf message to string.
+ * @message message to serialize.
+ * @serialized serialized return value.
  *
- * Class providing useful functions to serialize and deserialize protobuf
- * messages. In particular, extract messages from data received from a
- * FileDescriptor (see Extract()) can be very convenient. Messages can
- * be serialized using Create().
- *
- */
-
-/**
- * @brief Serialize protobuf message to string.
- * @param message message to serialize
- * @param serialized serialized return value
- *
- * Serializes a protobuf message to a string.
+ * Serialize serializes a protobuf message to a string. The serialization
+ * first byte encodes the protobuf message. Then it prefixes the byte encoded
+ * message with the length of the message (in ascii) and a space.
  *
  * @return true if serialization was successful, false otherwise
- * @fn bool Messages::Create(::google::protobuf::Message const &message, std::string &serialized)
  */
 bool
 Messages::Create(::google::protobuf::Message const &message,
-                 std::string                       &serialized)
+                 std::string                       *serialized)
 {
-	if (!message.SerializeToString(&serialized))
+	if (!serialized)
+	{
+		return true;
+	}
+
+	if (!message.SerializeToString(serialized))
 	{
 		return false;
 	}
 
 	stringstream s;
 
-	size_t len = serialized.length();
-	s << len << " " << serialized;
+	size_t len = serialized->length();
+	s << len << " " << *serialized;
 
-	serialized = s.str();
+	*serialized = s.str();
 	return true;
+}
+
+/* WRite protobuf message to stream.
+ * @message message to write.
+ * @stream stream to write to.
+ *
+ * Write serializes a protobuf message and writes it to the given <stream>.
+ * The serialization is done using <Create> which prefixes the byte encoded
+ * message with the length of the message (in ascii) and a space.
+ *
+ * @return true if the write was successful, false otherwise
+ */
+bool
+Messages::Write(::google::protobuf::Message const &message,
+                std::ostream                      &stream)
+{
+	string serialized;
+
+	if (!Create(message, &serialized))
+	{
+		return false;
+	}
+
+	stream.write(serialized.c_str(), serialized.length());
+	stream.flush();
+
+	return stream;
 }

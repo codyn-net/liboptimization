@@ -92,7 +92,13 @@ TaskReader::ReadRequest(std::istream &stream)
 
 	if (comm.type() == task::Communication::CommunicationTask)
 	{
-		ReadRequest(comm.task());
+		d->task = comm.task();
+
+		ReadSettings();
+		ReadParameters();
+		ReadData();
+
+		d->taskRead = true;
 	}
 	else
 	{
@@ -100,26 +106,6 @@ TaskReader::ReadRequest(std::istream &stream)
 	}
 
 	return d->taskRead;
-}
-
-/* Read request from task description object.
- * @task the task.
- *
- * ReadRequest sets the task description directly from the task object. This
- * is used by subclasses who implement retrieving a task from something other
- * than a c++ input stream.
- *
- */
-void
-TaskReader::ReadRequest(messages::task::Task const &task)
-{
-	d->task = task;
-
-	ReadSettings();
-	ReadParameters();
-	ReadData();
-
-	d->taskRead = true;
 }
 
 void
@@ -354,6 +340,7 @@ TaskReader::HasTask() const
 }
 
 /* Save task description to file.
+ * @filename the filename.
  *
  * Save saves a previously received task description to the file <filename>.
  * This does nothing when a task has not yet been received.
@@ -372,6 +359,7 @@ TaskReader::Save(string const &filename)
 }
 
 /* Save task description to stream.
+ * @stream the output stream.
  *
  * Save saves a previously received task description to the output stream <stream>.
  * This does nothing when a task has not yet been received or when the stream
@@ -389,11 +377,5 @@ TaskReader::Save(ostream &stream)
 	comm.set_type(task::Communication::CommunicationTask);
 	*(comm.mutable_task()) = d->task;
 
-	string serialized;
-
-	if (optimization::Messages::Create(comm, serialized))
-	{
-		stream.write(serialized.c_str(), serialized.size());
-		stream.flush();
-	}
+	Messages::Write(comm, stream);
 }

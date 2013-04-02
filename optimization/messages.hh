@@ -32,22 +32,32 @@
 
 namespace optimization
 {
+	/* Convenience methods for extracting and creating messages.
+	 *
+	 * Messages is a class providing two convenience methods for extracting
+	 * a protobuf message from an input stream (<Extract>) and for creating
+	 * a serialized message from a protobuf message (<Create>).
+	 */
 	class Messages
 	{
-		public:
-			template <typename T>
-			static bool Extract(std::istream &stream, T &message);
+	public:
+		template <typename T>
+		static bool Extract(std::istream &stream, T &message);
 
-			static bool Create(::google::protobuf::Message const &message, std::string &serialized);
+		static bool Create(::google::protobuf::Message const &message,
+		                   std::string                       *serialized);
+
+		static bool Write(::google::protobuf::Message const &message,
+		                  std::ostream                      &stream);
 	};
 
-	/*
-	 * Extract protobuf messages from streams.
-	 * @stream the input stream
-	 * @messages return value for received messages
+	/* Extract protobuf messages from streams.
+	 * @stream the input stream.
+	 * @message return value for receive message.
 	 *
-	 * Extract protobuf messages from data.
+	 * Extract a protobuf message of type <T> from the input <stream>.
 	 *
+	 * @return true if a message was successfully extracted, false otherwise.
 	 */
 	template <typename T>
 	bool Messages::Extract(std::istream &stream, T &message)

@@ -29,97 +29,41 @@
 #include "webots_unix.hh"
 #endif
 
+#include "socketbuffer.hh"
+
 using namespace std;
 using namespace optimization;
-
-struct SocketBuffer : public std::streambuf
-{
-	int socket;
-
-	char *buffer;
-
-	size_t contents_size;
-	size_t buffer_size;
-
-	SocketBuffer(int s)
-	:
-		socket(s)
-	{
-		buffer_size = 1024 * 1024;
-		contents_size = 0;
-
-		buffer = (char *)malloc(buffer_size);
-
-		setg(buffer, buffer, buffer + contents_size);
-	}
-
-	int underflow()
-	{
-		if (buffer_size == contents_size)
-		{
-			buffer_size *= 2;
-
-			// Make buffer larger
-			buffer = (char *)realloc(buffer, buffer_size);
-		}
-
-		ssize_t n = ::recv(socket, buffer + contents_size, buffer_size - contents_size, 0);
-
-		if (n <= 0)
-		{
-			return EOF;
-		}
-
-		size_t newcontents = contents_size + n;
-		int ret = (int)*(buffer + contents_size);
-
-		setg(buffer, buffer + contents_size, buffer + newcontents);
-		contents_size = newcontents;
-
-		return ret;
-	}
-
-	~SocketBuffer()
-	{
-		if (buffer)
-		{
-			free(buffer);
-		}
-	}
-};
 
 struct Webots::PrivateData
 {
 	int socket;
+	SocketStream stream;
+
+	PrivateData(int s)
+	:
+		socket(s),
+		stream(s)
+	{
+	}
 };
 
 Webots *Webots::s_instance = 0;
 
 Webots::Webots()
+:
+	Dispatcher(true)
 {
-	d = new PrivateData();
+	d = new PrivateData(Connect());
 
-	d->socket = Connect();
+	Initialize(d->stream, d->stream);
 
-	if (d->socket == -1)
+	if (HasTask() && !Setting("no-periodic-ping"))
 	{
-		return;
-	}
-
-	SocketBuffer buffer(d->socket);
-	istream stream(&buffer);
-
-	if (!ReadRequest(stream))
-	{
-		return;
-	}
-
-	if (!Setting("no-periodic-ping"))
-	{
-		//Glib::Thread::create(sigc::mem_fun(*this, &Webots::PeriodicPing), false);
+		SetupPeriodicPing();
 	}
 }
 
+/* Default destructor. */
 Webots::~Webots()
 {
 	if (d->socket != -1)
@@ -130,13 +74,24 @@ Webots::~Webots()
 	delete d;
 }
 
-/**
- * @brief Get webots dispatcher singleton instance.
+/* Get webots dispatcher singleton instance.
  *
- * Get the webots dispatcher singleton instance.
+ * Instance gets the webots instance which allows interaction with the
+ * optimization framework. See methods on the <optimization::Dispatcher> and
+ * <optimization::TaskReader> base classes for more information on extracting
+ * task information and sending back fitness values. Basic usage:
  *
- * @return the webots dispatcher instance
+ *     [code]
+ *     // Get optimization instance
+ *     optimization::Webots &optim = optimization::Webots::Instance();
+ *     
+ *     // See if we are in optimization mode
+ *     if (optim)
+ *     {
+ *     
+ *     }
  *
+ * @return the webots optimization instance.
  */
 Webots &
 Webots::Instance()
@@ -147,100 +102,6 @@ Webots::Instance()
 	}
 
 	return *s_instance;
-}
-
-/**
- * @brief Write success response to the dispatcher.
- * @param fitness the solution fitness
- *
- * Write a success response to the dispatcher. This is the most convenient way
- * of writing a response back to the dispatcher. The fitness is a map of
- * fitness names to values. You can thus set multiple fitness values if you
- * have a multi objective fitness function (and your optimizer supports this
- * kind of fitness evaluation).
- *
- * @fn void Webots::Respond(std::map<std::string, double> const &fitness)
- */
-void
-Webots::Respond(std::map<std::string, double> const &fitness)
-{
-	SetFitness(fitness);
-
-	Dispatcher::WriteResponse();
-}
-
-/**
- * @brief Write success response to the dispatcher.
- * @param fitness the solution fitness
- *
- * Write a success response to the dispatcher. This is the most convenient way
- * of writing a response back to the dispatcher. This sends a single fitness
- * value, if you want to send multiple fitness values, you can use:
- * void Webots::Response(std::map<std::string, double> const &fitness)
- *
- */
-void
-Webots::Respond(double fitness)
-{
-	AddFitness("value", fitness);
-
-	Dispatcher::WriteResponse();
-}
-
-/**
- * @brief Write success response to the dispatcher with additional data.
- * @param fitness the solution fitness
- * @param data additional data
- *
- * Write a success response to the dispatcher with additional data.
- * This is the most convenient way
- * of writing a response back to the dispatcher. This sends a single fitness
- * value, if you want to send multiple fitness values, you can use:
- * void Webots::Response(std::map<std::string, double> const &fitness, std::map<std::string, std::string> const &data)
- *
- * @fn void Webots::Respond(double fitness, std::map<std::string, std::string> const &data)
- */
-void
-Webots::Respond(double fitness, std::map<std::string, std::string> const &data)
-{
-	AddFitness("value", fitness);
-	SetData(data);
-
-	Dispatcher::WriteResponse();
-}
-
-/**
- * @brief Write success response to the dispatcher with additional data.
- * @param fitness the solution fitness
- * @param data additional data
- *
- * Write a success response to the dispatcher with additional data.
- * This is the most convenient way
- * of writing a response back to the dispatcher. The fitness is a map of
- * fitness names to values. You can thus set multiple fitness values if you
- * have a multi objective fitness function (and your optimizer supports this
- * kind of fitness evaluation).
- *
- * @fn void Webots::Respond(std::map<std::string, double> const &fitness, std::map<std::string, std::string> const &data)
- */
-void
-Webots::Respond(std::map<std::string, double> const &fitness, std::map<std::string, std::string> const &data)
-{
-	SetFitness(fitness);
-	SetData(data);
-
-	Dispatcher::WriteResponse();
-}
-
-bool
-Webots::WriteResponse(string const &s)
-{
-	if (d->socket == -1)
-	{
-		return false;
-	}
-
-	return Send(d->socket, (void *)s.c_str(), s.length(), 0) == (ssize_t)s.length();
 }
 
 void
@@ -258,10 +119,7 @@ Webots::PeriodicPing()
 
 		string serialized;
 
-		if (Messages::Create(comm, serialized))
-		{
-			Send(d->socket, (void *)serialized.c_str(), serialized.length(), 0);
-		}
+		Messages::Write(comm, d->stream);
 	}
 }
 

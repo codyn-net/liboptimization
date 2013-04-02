@@ -41,37 +41,35 @@ namespace optimization
 
 		PrivateData *d;
 
-		public:
-			TaskReader();
-			TaskReader(std::istream &stream);
-			virtual ~TaskReader();
+	public:
+		TaskReader();
+		TaskReader(std::istream &stream);
+		virtual ~TaskReader();
 
-			messages::task::Task &Task();
+		messages::task::Task &Task();
 
-			virtual bool Setting(std::string const &name, std::string *value) const;
-			virtual bool Setting(std::string const &name) const;
+		bool Setting(std::string const &name, std::string *value) const;
+		bool Setting(std::string const &name) const;
 
-			virtual bool Data(std::string const &name, std::string *value) const;
-			virtual bool Data(std::string const &name) const;
+		bool Data(std::string const &name, std::string *value) const;
+		bool Data(std::string const &name) const;
 
-			virtual bool Parameter(std::string const &name, messages::task::Task::Parameter *parameter) const;
+		bool Parameter(std::string const &name, messages::task::Task::Parameter *parameter) const;
 
-			bool Parameter(std::string const &name, double *value) const;
-			bool Parameter(std::string const &name) const;
+		bool Parameter(std::string const &name, double *value) const;
+		bool Parameter(std::string const &name) const;
 
-			virtual bool ReadRequest(std::istream &stream);
+		operator bool() const;
+		bool HasTask() const;
 
-			operator bool() const;
-			bool HasTask() const;
-
-			void Save(std::string const &filename);
-			void Save(std::ostream &stream);
-		protected:
-			void ReadRequest(messages::task::Task const &task);
-		private:
-			void ReadSettings();
-			void ReadParameters();
-			void ReadData();
+		void Save(std::string const &filename);
+		void Save(std::ostream &stream);
+	protected:
+		bool ReadRequest(std::istream &stream);
+	private:
+		void ReadSettings();
+		void ReadParameters();
+		void ReadData();
 	};
 }
 

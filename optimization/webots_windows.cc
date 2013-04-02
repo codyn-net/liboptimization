@@ -74,28 +74,6 @@ Webots::Disconnect(int s)
 	}
 }
 
-ssize_t
-Webots::Receive(int s, void *sbuffer, size_t length, int flags)
-{
-	if (s == -1)
-	{
-		return -1;
-	}
-
-	return ::recv(s, (char *)sbuffer, length, flags);
-}
-
-ssize_t
-Webots::Send(int s, void *sbuffer, size_t length, int flags)
-{
-	if (s == -1)
-	{
-		return -1;
-	}
-
-	return ::send(s, (char *)sbuffer, length, flags);
-}
-
 typedef WINAPI unsigned (*WinThreadFunc)(void *);
 
 void
