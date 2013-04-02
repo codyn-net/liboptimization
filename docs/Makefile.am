@@ -7,13 +7,23 @@ all: html/index.html
 
 SCAN_FILES = \
 	../optimization/taskreader.cc \
-	../optimization/taskreader.hh
+	../optimization/taskreader.hh \
+	../optimization/dispatcher.cc \
+	../optimization/dispatcher.hh \
+	../optimization/webots.cc \
+	../optimization/webots.hh \
+	../optimization/constants.cc \
+	../optimization/constants.hh \
+	../optimization/messages.cc \
+	../optimization/messages.hh \
+	../optimization/messages/task.pb.h \
+	../optimization/messages/task.pb.cc \
+	../optimization/messages/discovery.pb.h \
+	../optimization/messages/discovery.pb.cc
 
 html/index.html: $(PAGES) $(SCAN_FILES)
-	@echo [CLDOC] $(SCAN_FILES); \
-	$(CLDOC) $(PACKAGE_LIBOPTIMIZATION_CFLAGS) -I$(top_srcdir) -I$(top_builddir) -- \
+	$(AM_V_GEN) $(CLDOC) $(PACKAGE_LIBOPTIMIZATION_CFLAGS) -I$(top_srcdir) -I$(top_builddir) -- \
 		--output html \
-		--static \
 		--quiet \
 		--report \
 		$(foreach i,$(PAGES),--merge $(i)) \
