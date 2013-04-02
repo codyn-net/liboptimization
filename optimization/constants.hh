@@ -25,17 +25,22 @@
 
 namespace optimization
 {
+	/* Common constants.
+	 *
+	 * Constants defines some common constants used in the optimization
+	 * framework.
+	 */
 	struct Constants
 	{
 		enum
 		{
-			/** Default discovery port. */
+			/* Default discovery port. */
 			DiscoveryPort = 4756,
 
-			/** Default master port. */
+			/* Default master port. */
 			MasterPort = 9485,
 
-			/** Default command port */
+			/* Default command port */
 			CommandPort = 7123,
 		};
 

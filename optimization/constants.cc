@@ -23,13 +23,5 @@
 using namespace optimization;
 using namespace std;
 
-/**
- * @class optimization::Constants
- * @brief Optimization constants
- *
- * Class that defines some useful constants used in optimization.
- *
- */
-
-/** Default multicast discovery group address */
+/* Default multicast discovery group address (225.0.0.37) */
 string Constants::DiscoveryGroup = "225.0.0.37";
