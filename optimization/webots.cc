@@ -21,6 +21,7 @@
 #include "webots.hh"
 
 #include <optimization/messages.hh>
+#include <cstdio>
 
 #ifdef MINGW
 #include "webots_windows.hh"

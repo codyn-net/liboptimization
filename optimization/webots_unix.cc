@@ -1,6 +1,7 @@
 #include "webots.hh"
-
 #include "webots_unix.hh"
+
+#include <cstdio>
 
 using namespace std;
 using namespace optimization;
