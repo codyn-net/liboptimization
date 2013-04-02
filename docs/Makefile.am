@@ -21,6 +21,7 @@ html/index.html: $(PAGES) $(SCAN_FILES)
 	$(AM_V_GEN) $(CLDOC) $(PACKAGE_LIBOPTIMIZATION_CFLAGS) -I$(top_srcdir) -I$(top_builddir) -- \
 		--output html \
 		--quiet \
+		--static \
 		--report \
 		$(foreach i,$(PAGES),--merge $(i)) \
 		$(SCAN_FILES)
