@@ -63,6 +63,9 @@ namespace optimization
 
 			operator bool() const;
 			bool HasTask() const;
+
+			void Save(std::string const &filename);
+			void Save(std::ostream &stream);
 		protected:
 			void ReadRequest(messages::task::Task const &task);
 		private:

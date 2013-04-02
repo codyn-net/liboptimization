@@ -21,6 +21,7 @@
 #include "taskreader.hh"
 #include <optimization/messages.hh>
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 using namespace optimization;
@@ -350,4 +351,49 @@ bool
 TaskReader::HasTask() const
 {
 	return d->taskRead;
+}
+
+/* Save task description to file.
+ *
+ * Save saves a previously received task description to the file <filename>.
+ * This does nothing when a task has not yet been received.
+ */
+void
+TaskReader::Save(string const &filename)
+{
+	if (!d->taskRead)
+	{
+		return;
+	}
+
+	fstream f(filename.c_str(), ios::out);
+	Save(f);
+	f.close();
+}
+
+/* Save task description to stream.
+ *
+ * Save saves a previously received task description to the output stream <stream>.
+ * This does nothing when a task has not yet been received or when the stream
+ * is not valid.
+ */
+void
+TaskReader::Save(ostream &stream)
+{
+	if (!stream || !d->taskRead)
+	{
+		return;
+	}
+
+	messages::task::Communication comm;
+	comm.set_type(task::Communication::CommunicationTask);
+	*(comm.mutable_task()) = d->task;
+
+	string serialized;
+
+	if (optimization::Messages::Create(comm, serialized))
+	{
+		stream.write(serialized.c_str(), serialized.size());
+		stream.flush();
+	}
 }
