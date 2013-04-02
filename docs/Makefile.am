@@ -15,11 +15,7 @@ SCAN_FILES = \
 	../optimization/constants.cc \
 	../optimization/constants.hh \
 	../optimization/messages.cc \
-	../optimization/messages.hh \
-	../optimization/messages/task.pb.h \
-	../optimization/messages/task.pb.cc \
-	../optimization/messages/discovery.pb.h \
-	../optimization/messages/discovery.pb.cc
+	../optimization/messages.hh
 
 html/index.html: $(PAGES) $(SCAN_FILES)
 	$(AM_V_GEN) $(CLDOC) $(PACKAGE_LIBOPTIMIZATION_CFLAGS) -I$(top_srcdir) -I$(top_builddir) -- \
